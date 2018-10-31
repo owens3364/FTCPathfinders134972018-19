@@ -5,38 +5,41 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class Lift {
-    //Lift Motors
-    private static DcMotor cableDrive;
-    private static LimitedDrive cableLock;
+    private DcMotor cableDrive;
 
-    //Bot use methods
-    static void initialize(HardwareMap map) {
-        cableDrive = map.get(DcMotor.class, "Cable_Drive");
+    static Lift initialize(HardwareMap map, String cableDriveName) {
+        DcMotor cableDrive = map.get(DcMotor.class, cableDriveName);
         cableDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        cableLock = new LimitedDrive("Cable_Lock", "Cable_Min", "Cable_Max", map);
+        return new Lift(cableDrive);
     }
 
-    //Run by power
-    static void setCableDrive(double power) {
-        cableDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        cableDrive.setPower(power);
+    private Lift(DcMotor cableDrive) {
+        this.cableDrive = cableDrive;
     }
 
-    //Run by rotations
-    static void setCableDriveForRotations(double power, int rotations) {
-        cableDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        cableDrive.setPower(power);
-        cableDrive.setTargetPosition(cableDrive.getCurrentPosition() + rotations);
+    void setCableDrive(double power) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            cableDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            cableDrive.setPower(power);
+        }
     }
 
-    //Safely use cable lock, do not allow it to exceed its limits
-    static void setCableLock(double power) {
-        cableLock.set(power);
+    void setCableDriveForRotations(double power, int rotations) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            cableDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            cableDrive.setPower(power);
+            cableDrive.setTargetPosition(cableDrive.getCurrentPosition() + rotations);
+        }
     }
 
-    //Freeze the robot's position on the cable
-    static void freeze() {
+    void freeze() {
+        cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        cableDrive.setPower(0);
+    }
+
+    void coast() {
+        cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         cableDrive.setPower(0);
     }
 }

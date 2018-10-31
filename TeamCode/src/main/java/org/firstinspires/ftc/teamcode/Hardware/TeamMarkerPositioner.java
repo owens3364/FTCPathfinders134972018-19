@@ -4,16 +4,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class TeamMarkerPositioner {
-    //TeamMarkerPositioner Servo
-    private static Servo marker;
+    private Servo marker;
 
-    //Bot use methods
-    static void initialize(HardwareMap map) {
-        marker = map.get(Servo.class, "Team-Marker-Positioner");
+    static TeamMarkerPositioner initialize(HardwareMap map, String markerName) {
+        Servo marker = map.get(Servo.class, markerName);
+        return new TeamMarkerPositioner(marker);
+    }
+
+    private TeamMarkerPositioner(Servo marker) {
+        this.marker = marker;
     }
 
     //Dump team marker and return to original position
-    static void dump() {
+    void dump() {
         new Thread(() -> {
             marker.setPosition(Servo.MAX_POSITION);
             try {

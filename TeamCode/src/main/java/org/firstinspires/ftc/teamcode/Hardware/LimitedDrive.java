@@ -6,59 +6,67 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class LimitedDrive {
-    //LimitedDrive Motor and Limit Switches
     private DcMotor drive;
+    //Limit switches
     private DigitalChannel driveMin;
     private DigitalChannel driveMax;
 
-    //Constructor initializes Motor, Limit Switches
-    LimitedDrive(String driveName, String minLimitName, String maxLimitName, HardwareMap map) {
-        drive = map.get(DcMotor.class, driveName);
+    static LimitedDrive initialize(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
+        DcMotor drive = map.get(DcMotor.class, driveName);
         drive.setDirection(DcMotorSimple.Direction.FORWARD);
-        driveMin = map.get(DigitalChannel.class, minLimitName);
+        DigitalChannel driveMin = map.get(DigitalChannel.class, minLimitName);
         driveMin.setMode(DigitalChannel.Mode.INPUT);
-        driveMax = map.get(DigitalChannel.class, maxLimitName);
+        DigitalChannel driveMax = map.get(DigitalChannel.class, maxLimitName);
         driveMax.setMode(DigitalChannel.Mode.INPUT);
+        return new LimitedDrive(drive, driveMin, driveMax);
+    }
+
+    private LimitedDrive(DcMotor drive, DigitalChannel driveMin, DigitalChannel driveMax) {
+        this.drive = drive;
+        this.driveMin = driveMin;
+        this.driveMax = driveMax;
     }
 
     //Safely sets the power of the LimitedDrive, ensures it does not go past minimum or maximum limits
     void set(double power) {
-        //Ensure the actuator is not at its limit
-        if (power == 0) {
-            drive.setPower(0);
-            return;
-        }
-
-        if (power > 0) {
-            if (driveMax.getState()) {
-                drive.setPower(power);
-                //Monitor the actuator's position and ensure it isn't driven past the limit
-                new Thread(() -> {
-                    while (drive.getPower() != 0) {
-                        //This assumes that the channel is pulled high when not pressed
-                        //Remove the ! if that's not true
-                        if (!driveMax.getState()) {
-                            drive.setPower(0);
-                        }
-                    }
-                }).start();
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            //Ensure the actuator is not at its limit
+            if (power == 0) {
+                drive.setPower(0);
+                return;
             }
-            return;
-        }
 
-        if (power < 0) {
-            if (driveMin.getState()) {
-                drive.setPower(power);
-                //Monitor the actuator's position and ensure it isn't driven past the limit
-                new Thread(() -> {
-                    while (drive.getPower() != 0) {
-                        //This assumes that the channel is pulled high when not pressed
-                        //Remove the ! if that's not true
-                        if (!driveMin.getState()) {
-                            drive.setPower(0);
+            if (power > 0) {
+                if (driveMax.getState()) {
+                    drive.setPower(power);
+                    //Monitor the actuator's position and ensure it isn't driven past the limit
+                    new Thread(() -> {
+                        while (drive.getPower() != 0) {
+                            //This assumes that the channel is pulled high when not pressed
+                            //Remove the ! if that's not true
+                            if (!driveMax.getState()) {
+                                drive.setPower(0);
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
+                }
+                return;
+            }
+
+            if (power < 0) {
+                if (driveMin.getState()) {
+                    drive.setPower(power);
+                    //Monitor the actuator's position and ensure it isn't driven past the limit
+                    new Thread(() -> {
+                        while (drive.getPower() != 0) {
+                            //This assumes that the channel is pulled high when not pressed
+                            //Remove the ! if that's not true
+                            if (!driveMin.getState()) {
+                                drive.setPower(0);
+                            }
+                        }
+                    }).start();
+                }
             }
         }
     }

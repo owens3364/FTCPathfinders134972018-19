@@ -5,25 +5,30 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class Intake {
-    //Intake Motor
-    private static DcMotor intakeDrive;
+    private DcMotor intakeDrive;
 
-    //Bot use methods
-    static void initialize(HardwareMap map) {
-        intakeDrive = map.get(DcMotor.class, "Intake_Drive");
+    static Intake initialize(HardwareMap map, String intakeDriveName) {
+        DcMotor intakeDrive = map.get(DcMotor.class, intakeDriveName);
         intakeDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        return new Intake(intakeDrive);
     }
 
-    //Run by power
-    static void set(double power) {
-        intakeDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        intakeDrive.setPower(power);
+    private Intake(DcMotor intakeDrive) {
+        this.intakeDrive = intakeDrive;
     }
 
-    //Run by rotations
-    static void setForRotations(double power, int rotations) {
-        intakeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        intakeDrive.setPower(power);
-        intakeDrive.setTargetPosition(intakeDrive.getCurrentPosition() + rotations);
+    void set(double power) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            intakeDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            intakeDrive.setPower(power);
+        }
+    }
+
+    void setForRotations(double power, int rotations) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            intakeDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            intakeDrive.setPower(power);
+            intakeDrive.setTargetPosition(intakeDrive.getCurrentPosition() + rotations);
+        }
     }
 }

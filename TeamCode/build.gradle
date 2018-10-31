@@ -10,9 +10,7 @@
 // Custom definitions may go here
 // Include common definitions from above.
 apply from: '../build.common.gradle'
-dependencies {
-    implementation (name:'javacpp', ext:'jar')
-    implementation (name:'javacv', ext:'jar')
-    implementation (name:'opencv-android-arm64', ext:'jar')
-    implementation (name:'ffmpeg-android-arm64', ext:'jar')
+
+repositories {
+    google()
 }
