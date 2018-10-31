@@ -51,4 +51,3 @@ After the prefix, other conventions will apply:
 * Pushbot class names are constructed as:   Pushbot - Mode - Action - OpModetype
 * Concept class names are constructed as:   Concept - Topic - OpModetype
 * Library class names are constructed as:   Library - Topic - OpModetype
-
