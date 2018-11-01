@@ -41,7 +41,7 @@ class GenericTeleOp extends OpMode {
         return startLoopRunning;
     }
 
-    public boolean isStopped() {
+    boolean isStopped() {
         return stopped;
     }
     //State of Control Schemes
@@ -50,8 +50,16 @@ class GenericTeleOp extends OpMode {
 
     //These do not go to telemetry
     //Controllers
-    Controller controller1;
-    Controller controller2;
+    private Controller controller1;
+    private Controller controller2;
+
+    Controller getController1() {
+        return controller1;
+    }
+
+    public Controller getController2() {
+        return controller2;
+    }
 
     boolean setup(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
         //This if statement is here to ensure the controllers are connected and initialized BEFORE TELEOP STARTS
@@ -62,7 +70,10 @@ class GenericTeleOp extends OpMode {
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
         if (gamepad1 == null || gamepad2 == null) {
-            new GamepadDisconnectedAlert().show(FragmentDeploymentHelper.prepareForFragmentDeployment(GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG), GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG);
+            new GamepadDisconnectedAlert().show(
+                    FragmentDeploymentHelper.prepareForFragmentDeployment(
+                            GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG),
+                    GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG);
             return false;
         }
         //This if statement is here to ensure Telemetry is connected and initialized BEFORE TELEOP STARTS
@@ -73,7 +84,10 @@ class GenericTeleOp extends OpMode {
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
         if (telemetry == null) {
-            new TelemetryDisconnectedAlert().show(FragmentDeploymentHelper.prepareForFragmentDeployment(TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG), TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG);
+            new TelemetryDisconnectedAlert().show(
+                    FragmentDeploymentHelper.prepareForFragmentDeployment(
+                            TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG),
+                    TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG);
             return false;
         }
 

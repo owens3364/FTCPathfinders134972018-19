@@ -18,13 +18,9 @@ public final class TeleOpMarkI extends GenericTeleOp {
     @Override
     public void init() {
         if (super.setup(gamepad1, gamepad2, telemetry)) {
-            controller1 = super.controller1;
-            controller2 = super.controller2;
-            if (controller1 == null || controller2 == null) {
-                controller1 = new Controller(gamepad1);
-                controller2 = new Controller(gamepad2);
-            }
             super.init();
+            controller1 = super.getController1();
+            controller2 = super.getController2();
             bot = BotMarkI.initialize(hardwareMap);
 
             //ANY ADDITIONAL CODE HERE

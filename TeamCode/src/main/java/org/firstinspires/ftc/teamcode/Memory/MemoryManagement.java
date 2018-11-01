@@ -10,26 +10,21 @@ import java.util.Objects;
 import static android.content.Context.ACTIVITY_SERVICE;
 
 public final class MemoryManagement {
-    private static LinkedList<Object> objects;
-    private static byte objectLimit;
-    private static short managementRate;
-    private static boolean previouslyInitialized = false;
-    private static boolean stopped = true;
+    private LinkedList<Object> objects;
+    private byte objectLimit;
+    private short managementRate;
+    private boolean alreadyInitialized = false;
+    private boolean stopped = true;
 
-    public static void initialize(ManagementOptions options) {
-        if (previouslyInitialized) {
-            stopped = true;
-            try {
-                Thread.sleep(2048);
-            } catch (InterruptedException ie) {
-                Log.d("ERROR", ie.toString());
-            }
+    public boolean initialize(ManagementOptions options) {
+        if (alreadyInitialized) {
+            return false;
         }
         objects = new LinkedList<>();
         switch (options) {
             case EXTREME:
                 objectLimit = 4;
-                managementRate = 512;
+                managementRate = 256;
                 break;
             case OPTIMAL:
                 objectLimit = 8;
@@ -37,13 +32,13 @@ public final class MemoryManagement {
                 break;
             case LAX:
                 objectLimit = 16;
-                managementRate = 2048;
+                managementRate = 4096;
                 break;
         }
         stopped = false;
         new Thread(() -> {
             while (!stopped) {
-                if (objects.size() >= objectLimit) {
+                if (objects.size() > objectLimit) {
                     for (Object object: objects) {
                         object = null;
                     }
@@ -55,15 +50,26 @@ public final class MemoryManagement {
                     Log.d("ERROR", ie.toString());
                 }
             }
+            if (objects.size() > 0) {
+                for (Object object : objects) {
+                    object = null;
+                }
+            }
+            objects = null;
+            System.gc();
         }).start();
-        previouslyInitialized = true;
+        alreadyInitialized = true;
+        return true;
     }
 
-    public static void free(Object obj) {
+    public void free(Object obj) {
         objects.add(obj);
     }
 
-    public static void stop() {
+    public void stop() {
+        objectLimit = 16;
+        managementRate = 4096;
+        alreadyInitialized = false;
         stopped = true;
     }
 

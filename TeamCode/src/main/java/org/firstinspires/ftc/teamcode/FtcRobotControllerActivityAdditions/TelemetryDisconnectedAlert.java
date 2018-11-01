@@ -12,6 +12,6 @@ public final class TelemetryDisconnectedAlert extends DialogFragment {
     @Override
     public AlertDialog onCreateDialog(Bundle savedInstanceState)
     {
-        return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance).setTitle("Oh no! Telemetry is disconnected!").setMessage("Please PRESS STOP, RESTART the robot, QUIT BOTH the Robot Controller and Driver Station, and try again.").setPositiveButton("OK", null).create();
+        return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance()).setTitle("Oh no! Telemetry is disconnected!").setMessage("Please PRESS STOP, RESTART the robot, QUIT BOTH the Robot Controller and Driver Station, and try again.").setPositiveButton("OK", null).create();
     }
 }

@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.Memory;
 
-enum ManagementOptions {
+public enum ManagementOptions {
     EXTREME, OPTIMAL, LAX
 }
