@@ -3,18 +3,16 @@ package org.firstinspires.ftc.teamcode.FtcRobotControllerActivityAdditions;
 import android.media.MediaPlayer;
 
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity;
+import org.firstinspires.ftc.teamcode.R;
 
 final class Alexa {
     private static MediaPlayer player;
 
     static void playDespacito() {
         new Thread(() -> {
-            freePlayer(player);
+            killDespacito();
             player = MediaPlayer.create(FtcRobotControllerActivity.soloInstance(),
-                    FtcRobotControllerActivity.soloInstance().getResources()
-                            .getIdentifier("despacito.mp3",
-                                    "raw",
-                                    FtcRobotControllerActivity.soloInstance().getPackageName()));
+                    R.raw.despacito);
             player.setVolume(1, 1);
             player.setLooping(true);
             player.start();
@@ -22,12 +20,7 @@ final class Alexa {
     }
 
     static void killDespacito() {
-        freePlayer(player);
-    }
-
-    private static void freePlayer(MediaPlayer player) {
         if (player != null) {
-            player.stop();
             player.release();
             player = null;
         }
