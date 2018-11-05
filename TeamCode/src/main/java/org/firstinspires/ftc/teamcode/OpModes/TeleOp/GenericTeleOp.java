@@ -57,7 +57,7 @@ class GenericTeleOp extends OpMode {
         return controller1;
     }
 
-    public Controller getController2() {
+    Controller getController2() {
         return controller2;
     }
 

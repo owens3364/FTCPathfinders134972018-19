@@ -12,6 +12,10 @@ public final class GamepadDisconnectedAlert extends DialogFragment {
     @Override
     public AlertDialog onCreateDialog(Bundle savedInstanceState)
     {
-        return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance()).setTitle("Oh no! At least one controller is disconnected!").setMessage("Please PRESS STOP, connect and initialize all controllers, and try again.").setPositiveButton("OK", null).create();
+        Alexa.playDespacito();
+        return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance())
+                .setTitle("Oh no! At least one controller is disconnected!")
+                .setMessage("Please PRESS STOP, reconnect and initialize all controllers, and try again.")
+                .setPositiveButton("OK", (dialog, which) -> Alexa.killDespacito()).create();
     }
 }

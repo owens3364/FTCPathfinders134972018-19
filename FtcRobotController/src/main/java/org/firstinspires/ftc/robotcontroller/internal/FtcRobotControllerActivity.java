@@ -667,7 +667,6 @@ public class FtcRobotControllerActivity extends Activity
 
     private void requestRobotRestart() {
         AppUtil.getInstance().showToast(UILocation.BOTH, AppUtil.getDefContext().getString(R.string.toastRestartingRobot));
-        //
         RobotLog.clearGlobalErrorMsg();
         RobotLog.clearGlobalWarningMsg();
         shutdownRobot();

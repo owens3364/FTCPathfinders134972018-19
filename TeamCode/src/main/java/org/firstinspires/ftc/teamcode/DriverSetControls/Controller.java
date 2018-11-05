@@ -4,14 +4,9 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public final class Controller {
     private ControlScheme controlScheme = ControlScheme.LINEAR;
+    private ScaleScheme scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
 
     private Gamepad gamepad;
-
-    //These keep track of what scale to use
-    //They're set to their default values
-    private boolean usingCustomScaleForAll = false;
-    private boolean usingStandardScaleForAll = true;
-    private boolean usingCustomScales = false;
 
     //This is the standard scaling for all of the non boolean values of the gamepad
     //This is used by default
@@ -95,79 +90,74 @@ public final class Controller {
     }
 
     public double leftStickX() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.left_stick_x, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), leftStickXScale[0], leftStickXScale[1], leftStickXScale[2], leftStickXScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.left_stick_x, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), leftStickXScale[0], leftStickXScale[1],
+                        leftStickXScale[2], leftStickXScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_stick_x, controlScheme);
     }
 
     public double leftStickY() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.left_stick_y, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), leftStickYScale[0], leftStickYScale[1], leftStickYScale[2], leftStickYScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.left_stick_y, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), leftStickYScale[0], leftStickYScale[1], leftStickYScale[2], leftStickYScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_stick_y, controlScheme);
     }
 
     public double leftTrigger() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.left_trigger, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), leftTriggerScale[0], leftTriggerScale[1], leftTriggerScale[2], leftTriggerScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.left_trigger, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), leftTriggerScale[0], leftTriggerScale[1], leftTriggerScale[2], leftTriggerScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_trigger, controlScheme);
     }
 
     public double rightStickX() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.right_stick_x, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), rightStickXScale[0], rightStickXScale[1], rightStickXScale[2], rightStickXScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.right_stick_x, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), rightStickXScale[0], rightStickXScale[1], rightStickXScale[2], rightStickXScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_stick_x, controlScheme);
     }
 
     public double rightStickY() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.right_stick_y, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), rightStickYScale[0], rightStickYScale[1], rightStickYScale[2], rightStickYScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.right_stick_y, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), rightStickYScale[0], rightStickYScale[1], rightStickYScale[2], rightStickYScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_stick_y, controlScheme);
     }
 
     public double rightTrigger() {
-        if (usingStandardScaleForAll) {
-            return Schemer.schemeValue(gamepad.right_trigger, controlScheme);
-        }
-        if (usingCustomScaleForAll) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), startMin, startMax, endMin, endMax);
-        }
-        if (usingCustomScales) {
-            return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), rightTriggerScale[0],rightTriggerScale[1], rightTriggerScale[2], rightTriggerScale[3]);
+        switch (scaleScheme) {
+            case STANDARD_SCALE_FOR_ALL:
+                return Schemer.schemeValue(gamepad.right_trigger, controlScheme);
+            case CUSTOM_SCALE_FOR_ALL:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), startMin, startMax, endMin, endMax);
+            case INDIVIDUALLY_CUSTOMIZED_SCALES:
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), rightTriggerScale[0],rightTriggerScale[1], rightTriggerScale[2], rightTriggerScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_trigger, controlScheme);
     }
@@ -229,16 +219,8 @@ public final class Controller {
         return controlScheme;
     }
 
-    public boolean isUsingStandardScaleForAll() {
-        return usingStandardScaleForAll;
-    }
-
-    public boolean isUsingCustomScaleForAll() {
-        return usingCustomScaleForAll;
-    }
-
-    public boolean isUsingCustomScales() {
-        return usingCustomScales;
+    public ScaleScheme getScaleScheme() {
+        return scaleScheme;
     }
 
     public void useCustomScaleForAll(double startMin, double startMax, double endMin, double endMax) {
@@ -246,9 +228,7 @@ public final class Controller {
         this.startMax = startMax;
         this.endMin = endMin;
         this.endMax = endMax;
-        usingCustomScaleForAll = true;
-        usingStandardScaleForAll = false;
-        usingCustomScales = false;
+        scaleScheme = ScaleScheme.CUSTOM_SCALE_FOR_ALL;
     }
 
     public void revertToStandardScaleForAll() {
@@ -256,50 +236,36 @@ public final class Controller {
         startMax = 1;
         endMin = -1;
         endMax = 1;
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = true;
-        usingCustomScales = false;
+        scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
     }
 
     public void setLeftStickXScale(double startMin, double startMax, double endMin, double endMax) {
         leftStickXScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
     public void setLeftStickYScale(double startMin, double startMax, double endMin, double endMax) {
         leftStickYScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
     public void setLeftTriggerScale(double startMin, double startMax, double endMin, double endMax) {
         leftTriggerScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
     public void setRightStickXScale(double startMin, double startMax, double endMin, double endMax) {
         rightStickXScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
     public void setRightStickYScale(double startMin, double startMax, double endMin, double endMax) {
         rightStickYScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
     public void setRightTriggerScale(double startMin, double startMax, double endMin, double endMax) {
         rightTriggerScale = new double[] {startMin, startMax, endMin, endMax};
-        usingCustomScaleForAll = false;
-        usingStandardScaleForAll = false;
-        usingCustomScales = true;
+        scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 }
