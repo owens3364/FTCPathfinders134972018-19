@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.DriverSetControls;
 
-import java.lang.Math;
-
 final class Schemer {
     static double schemeValue(double value, ControlScheme controlScheme) {
         if (value == 0) {

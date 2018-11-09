@@ -3,17 +3,13 @@ package org.firstinspires.ftc.teamcode.OpModes.TeleOp;
 import android.util.Log;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.exception.RobotCoreException;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.robotcore.internal.ui.GamepadUser;
 import org.firstinspires.ftc.teamcode.DriverSetControls.Controller;
 import org.firstinspires.ftc.teamcode.FtcRobotControllerActivityAdditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.FtcRobotControllerActivityAdditions.GamepadDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.FtcRobotControllerActivityAdditions.TelemetryDisconnectedAlert;
-
-import java.util.Arrays;
 
 class GenericTeleOp extends OpMode {
     //State of this class
@@ -75,6 +71,7 @@ class GenericTeleOp extends OpMode {
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
+        /*
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
             Log.d("DISCONNECTED", "GAMEPAD");
             new GamepadDisconnectedAlert().show(
@@ -99,6 +96,7 @@ class GenericTeleOp extends OpMode {
             return false;
         }
 
+        */
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
         this.telemetry = telemetry;

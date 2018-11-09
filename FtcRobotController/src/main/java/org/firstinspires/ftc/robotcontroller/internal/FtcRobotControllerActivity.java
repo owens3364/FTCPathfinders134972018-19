@@ -110,16 +110,17 @@ import org.firstinspires.ftc.robotcore.internal.webserver.RobotControllerWebInfo
 import org.firstinspires.ftc.robotcore.internal.webserver.WebServer;
 import org.firstinspires.inspection.RcInspectionActivity;
 
-/*
-START STUFF I ADDED
-*/
 import java.lang.ref.WeakReference;
-/*
-END STUFF I ADDED
-*/
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+/*
+START STUFF I ADDED
+*/
+/*
+END STUFF I ADDED
+*/
 
 @SuppressWarnings("WeakerAccess")
 public class FtcRobotControllerActivity extends Activity
