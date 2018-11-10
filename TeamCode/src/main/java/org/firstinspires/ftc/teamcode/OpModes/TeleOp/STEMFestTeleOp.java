@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
-@TeleOp(name="STEMFest", group="TeleOp")
-public final class STEMFestDriverControlled extends OpMode {
+@TeleOp(name="STEMFEST TELEOP", group="TeleOp")
+public final class STEMFestTeleOp extends OpMode {
     private DcMotor left;
     private DcMotor right;
 

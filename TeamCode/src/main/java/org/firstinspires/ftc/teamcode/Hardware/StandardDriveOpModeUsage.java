@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.Hardware;
 
-public interface OpModeUsage {
+public interface StandardDriveOpModeUsage {
     //Any data all bots should have is listed here and implemented by class names starting with "Bot"
     double getMMPerDriveRotation();
     void setLeftDrive(double power);
@@ -20,6 +20,8 @@ public interface OpModeUsage {
     void setHookDriveForMM(double power, int mm);
     void freezeHook();
     void freezeLift();
+    void coastHook();
+    void coastLift();
     void activateHook();
     void retractHook();
     void zeroAll();

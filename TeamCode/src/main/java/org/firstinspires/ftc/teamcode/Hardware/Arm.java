@@ -5,39 +5,46 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-final class Arm {
+public final class Arm {
     private DcMotor sliderDrive;
-    private Servo sliderYaw;
-    private Servo sliderPitch;
-    private Servo leftGrip;
-    private Servo rightGrip;
+    private DcMotor armAnglerDrive;
+    private Servo intakeAngler;
+    private Servo lid;
 
-    static Arm initialize(HardwareMap map, String sliderDriveName, String sliderYawName, String sliderPitchName, String leftGripName, String rightGripName) {
+    static Arm initialize(HardwareMap map, String sliderDriveName, String armAnglerName, String intakeAnglerName, String lidName) {
         DcMotor sliderDrive = map.get(DcMotor.class, sliderDriveName);
         sliderDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        Servo sliderYaw = map.get(Servo.class, sliderYawName);
-        Servo sliderPitch = map.get(Servo.class, sliderPitchName);
-        Servo leftGrip = map.get(Servo.class, leftGripName);
-        Servo rightGrip = map.get(Servo.class, rightGripName);
-        return new Arm(sliderDrive, sliderYaw, sliderPitch, leftGrip, rightGrip);
+        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        DcMotor armAnglerDrive = map.get(DcMotor.class, armAnglerName);
+        armAnglerDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        Servo intakeAngler = map.get(Servo.class, intakeAnglerName);
+        Servo lid = map.get(Servo.class, lidName);
+        return new Arm(sliderDrive, armAnglerDrive, intakeAngler, lid);
     }
 
-    private Arm(DcMotor sliderDrive, Servo sliderYaw, Servo sliderPitch, Servo leftGrip, Servo rightGrip) {
+    private Arm(DcMotor sliderDrive, DcMotor armAnglerDrive, Servo intakeAngler, Servo lid) {
         this.sliderDrive = sliderDrive;
-        this.sliderYaw = sliderYaw;
-        this.sliderPitch = sliderPitch;
-        this.leftGrip = leftGrip;
-        this.rightGrip = rightGrip;
+        this.armAnglerDrive = armAnglerDrive;
+        this.intakeAngler = intakeAngler;
+        this.lid = lid;
     }
 
-    void setSlidersDrive(double power) {
+    void setSliderDrive(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             sliderDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             sliderDrive.setPower(power);
         }
     }
 
-    void setSlidersDriveForRotations(double power, int rotations) {
+    void setArmAnglerDrive(double power) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            armAnglerDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            armAnglerDrive.setPower(power);
+        }
+    }
+
+    void setSliderDriveForRotations(double power, int rotations) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             sliderDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             sliderDrive.setPower(power);
@@ -45,27 +52,45 @@ final class Arm {
         }
     }
 
-    void setSlidersYaw(double position) {
-        if (HardwareInput.validate(position, InputType.FOR_SERVO)) {
-            sliderYaw.setPosition(position);
+    void setArmAnglerDriveForRotations(double power, int rotations) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            armAnglerDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armAnglerDrive.setPower(power);
+            armAnglerDrive.setTargetPosition(armAnglerDrive.getCurrentPosition() + rotations);
         }
     }
 
-    void setSlidersPitch(double position) {
-        if (HardwareInput.validate(position, InputType.FOR_SERVO)) {
-            sliderPitch.setPosition(position);
+    void setIntakeAngle(double angle) {
+        if (HardwareInput.validate(angle, InputType.FOR_SERVO)) {
+            intakeAngler.setPosition(angle);
         }
     }
 
-    void setLeftGrip(double position) {
-        if (HardwareInput.validate(position, InputType.FOR_SERVO)) {
-            leftGrip.setPosition(position);
-        }
+    void openLid() {
+        lid.setPosition(Servo.MAX_POSITION);
     }
 
-    void setRightGrip(double position) {
-        if (HardwareInput.validate(position, InputType.FOR_SERVO)) {
-            rightGrip.setPosition(position);
-        }
+    void closeLid() {
+        lid.setPosition(Servo.MIN_POSITION);
+    }
+
+    void freezeArmAngler() {
+        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armAnglerDrive.setPower(0);
+    }
+
+    void coastArmAngler() {
+        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        armAnglerDrive.setPower(0);
+    }
+
+    void freezeArmSliders() {
+        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        sliderDrive.setPower(0);
+    }
+
+    void coastArmSliders() {
+        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        sliderDrive.setPower(0);
     }
 }

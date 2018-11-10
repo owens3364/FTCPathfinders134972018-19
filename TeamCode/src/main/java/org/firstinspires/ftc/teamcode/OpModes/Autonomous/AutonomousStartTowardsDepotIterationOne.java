@@ -3,13 +3,13 @@ package org.firstinspires.ftc.teamcode.OpModes.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 import org.firstinspires.ftc.teamcode.Hardware.BotMarkI;
-import org.firstinspires.ftc.teamcode.Hardware.OpModeUsage;
+import org.firstinspires.ftc.teamcode.Hardware.StandardDriveOpModeUsage;
 
 @Autonomous(name = "AutoDepotOne", group = "Autonomous")
 
 public final class AutonomousStartTowardsDepotIterationOne extends GenericAutonomous {
 
-    private OpModeUsage bot;
+    private StandardDriveOpModeUsage bot;
 
     @Override
     public void runOpMode() {

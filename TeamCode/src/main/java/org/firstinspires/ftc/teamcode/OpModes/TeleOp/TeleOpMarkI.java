@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.DriverSetControls.Controller;
 import org.firstinspires.ftc.teamcode.Hardware.BotMarkI;
-import org.firstinspires.ftc.teamcode.Hardware.OpModeUsage;
+import org.firstinspires.ftc.teamcode.Hardware.StandardDriveOpModeUsage;
 
 
 @TeleOp(name="TeleOpOne", group="TeleOp")
 public final class TeleOpMarkI extends GenericTeleOp {
 
-    private OpModeUsage bot;
+    private StandardDriveOpModeUsage bot;
     private Controller controller1;
     private Controller controller2;
     private boolean yToggled = false;
