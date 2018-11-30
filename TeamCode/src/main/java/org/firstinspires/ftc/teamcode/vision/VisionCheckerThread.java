@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 final class VisionCheckerThread extends Thread {
     private boolean stopped = false;
-    private long checkAtIntervalsOf;
-    private CVCompatibleClass caller;
+    private final long checkAtIntervalsOf;
+    private final CVCompatibleClass caller;
     private LinkedList<VisionData[]> vuforiaDataOut = null;
     private VisionData[] vuforiaFinalData = null;
     private LinkedList<GoldMineralPosition> tfodDataOut = null;
     private GoldMineralPosition tfodFinalData = null;
-    private VisionUtils visionUtils;
+    private final VisionUtils visionUtils;
     VisionCheckerThread(VisionUtils visionUtils, long checkingInterval, CVCompatibleClass caller, VisionCheckerOutputType outputType) {
         this.checkAtIntervalsOf = checkingInterval;
         this.caller = caller;

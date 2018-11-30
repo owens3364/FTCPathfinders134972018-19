@@ -57,9 +57,6 @@ import com.qualcomm.robotcore.hardware.ServoController;
  */
 public class HardwarePushbotMatrix extends HardwarePushbot
 {
-    /* Public OpMode members. */
-    private MatrixDcMotorController matrixMotorController = null;
-    private ServoController matrixServoController = null;
 
     /* Constructor */
     public HardwarePushbotMatrix(){
@@ -94,8 +91,9 @@ public class HardwarePushbotMatrix extends HardwarePushbot
          */
 
         // Initialize Matrix Motor and Servo objects
-        matrixMotorController = ahwMap.get(MatrixDcMotorController.class, "matrix controller");
-        matrixServoController = ahwMap.get(ServoController.class, "matrix controller");
+        /* Public OpMode members. */
+        MatrixDcMotorController matrixMotorController = ahwMap.get(MatrixDcMotorController.class, "matrix controller");
+        ServoController matrixServoController = ahwMap.get(ServoController.class, "matrix controller");
 
         // Enable Servos
         matrixServoController.pwmEnable();       // Don't forget to enable Matrix Output

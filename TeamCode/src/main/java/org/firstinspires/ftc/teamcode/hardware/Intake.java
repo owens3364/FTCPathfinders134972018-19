@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class Intake {
-    private DcMotor intakeDrive;
+    private final DcMotor intakeDrive;
 
     Intake(HardwareMap map, String intakeDriveName) {
         intakeDrive = map.get(DcMotor.class, intakeDriveName);

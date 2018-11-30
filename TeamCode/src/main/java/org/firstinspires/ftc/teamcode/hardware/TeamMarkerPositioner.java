@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 final class TeamMarkerPositioner {
-    private Servo marker;
+    private final Servo marker;
 
     TeamMarkerPositioner(HardwareMap map, String markerName) {
         marker = map.get(Servo.class, markerName);

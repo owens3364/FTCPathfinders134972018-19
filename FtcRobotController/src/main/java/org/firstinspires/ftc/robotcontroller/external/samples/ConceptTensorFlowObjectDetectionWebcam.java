@@ -53,7 +53,7 @@ import java.util.List;
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
 @Disabled
-public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
+class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
@@ -96,13 +96,13 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             telemetry.addData("Sorry!", "This device is not compatible with TFOD");
         }
 
-        /** Wait for the game to begin */
+        /* Wait for the game to begin */
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
 
         if (opModeIsActive()) {
-            /** Activate Tensor Flow Object Detection. */
+            /* Activate Tensor Flow Object Detection. */
             if (tfod != null) {
                 tfod.activate();
             }

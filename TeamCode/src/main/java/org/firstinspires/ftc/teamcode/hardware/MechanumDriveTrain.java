@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class MechanumDriveTrain {
-    private DcMotor frontLeftDrive;
-    private DcMotor frontRightDrive;
-    private DcMotor rearLeftDrive;
-    private DcMotor rearRightDrive;
+    private final DcMotor frontLeftDrive;
+    private final DcMotor frontRightDrive;
+    private final DcMotor rearLeftDrive;
+    private final DcMotor rearRightDrive;
 
     MechanumDriveTrain(HardwareMap map, String frontLeftDriveName, String frontRightDriveName, String rearLeftDriveName, String rearRightDriveName) {
         frontLeftDrive = map.get(DcMotor.class, frontLeftDriveName);

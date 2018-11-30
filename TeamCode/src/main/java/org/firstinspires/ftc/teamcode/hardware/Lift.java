@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class Lift {
-    private DcMotor cableDrive;
+    private final DcMotor cableDrive;
 
     Lift(HardwareMap map, String cableDriveName) {
         cableDrive = map.get(DcMotor.class, cableDriveName);

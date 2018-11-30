@@ -1,16 +1,33 @@
 package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
 
+import java.util.HashMap;
+import java.util.Map;
+
 class GenericTeleOp extends OpMode {
     //State of this class
     private boolean setup = false;
+
+    //The Telemetry telemetry object should NEVER be accessed outside of the setData() and updateTelemetry()
+    //While the Telemetry object is accessible outside of this class...
+    //It SHOULD ONLY be accessed from this class' setData() and updateTelemetry() methods
+    //This is to keep telemetry from going crazy from all of the update() calls
+    //And all of the addData() calls
+    //When multiple objects are calling the update methods at different times on different runloops
+    //Then Telemetry goes crazy because it displays the set of data for each object before the next object calls update()
+    //The purpose of this HashMap is to store ALL of the telemetry data in one place
+    //Then this HashMap can be iterated through to show all of the telemetry KV pairs
+    private HashMap<String, String> telemetryData;
 
     //Everything in this block goes to telemetry
     //State of OpMode execution
@@ -43,7 +60,8 @@ class GenericTeleOp extends OpMode {
     boolean isStopped() {
         return stopped;
     }
-    //State of Control Schemes
+
+    //State of Control Schemes, also go to telemetry
     private String controller1Scheme;
     private String controller2Scheme;
 
@@ -60,6 +78,7 @@ class GenericTeleOp extends OpMode {
         return controller2;
     }
 
+
     boolean setup(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
         //This if statement is here to ensure the controllers are connected and initialized BEFORE TELEOP STARTS
         //It shows an onscreen alert if controllers are disconnected
@@ -68,7 +87,7 @@ class GenericTeleOp extends OpMode {
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
-        /*
+
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
             Log.d("DISCONNECTED", "GAMEPAD");
             new GamepadDisconnectedAlert().show(
@@ -78,7 +97,7 @@ class GenericTeleOp extends OpMode {
             return false;
         }
         Log.d("CONNECTED", "GAMEPAD");
-        */
+
         //This if statement is here to ensure Telemetry is connected and initialized BEFORE TELEOP STARTS
         //It shows an onscreen alert if Telemetry is disconnected
         //It doesn't stop you from running the OpMode, but the OpMode won't do anything (in this class at least)
@@ -97,9 +116,11 @@ class GenericTeleOp extends OpMode {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
         this.telemetry = telemetry;
+        this.telemetryData = new HashMap<>();
         setup = true;
         return true;
     }
+
     @Override
     public void init() {
         if (setup) {
@@ -157,16 +178,64 @@ class GenericTeleOp extends OpMode {
         }
     }
 
-    private void updateTelemetry() {
+    void updateTelemetry() {
         if (setup) {
-            telemetry.addData("Initialized", initialized);
-            telemetry.addData("Running init loop", initLoopRunning);
-            telemetry.addData("Started", started);
-            telemetry.addData("Running start loop", startLoopRunning);
-            telemetry.addData("Stopped", stopped);
-            telemetry.addData("Controller 1 Scheme", controller1Scheme);
-            telemetry.addData("Controller 2 Scheme", controller2Scheme);
+            addData("Initialized", String.valueOf(initialized));
+            addData("Running init loop", String.valueOf(initLoopRunning));
+            addData("Started", String.valueOf(started));
+            addData("Running start loop", String.valueOf(startLoopRunning));
+            addData("Stopped", String.valueOf(stopped));
+            addData("Controller 1 Scheme", controller1Scheme);
+            addData("Controller 2 Scheme", controller2Scheme);
+
+            for (Map.Entry<String, String> entry : telemetryData.entrySet()) {
+                telemetry.addData(entry.getKey(), entry.getValue());
+            }
+
             telemetry.update();
         }
+    }
+
+    void addData(String key, String value) {
+        if (setup) {
+            telemetryData.put(key, value);
+        }
+    }
+
+    void addData(String key, double value) {
+        if (setup) {
+            telemetryData.put(key, String.valueOf(value));
+        }
+    }
+
+    boolean setData(String key, String value) {
+        if (setup) {
+            telemetryData.replace(key, value);
+            return true;
+        }
+        return false;
+    }
+
+    boolean setData(String key, double value) {
+        if (setup) {
+            telemetryData.replace(key, String.valueOf(value));
+            return true;
+        }
+        return false;
+    }
+
+    String getData(String key) {
+        if (setup) {
+            return telemetryData.get(key);
+        }
+        return null;
+    }
+
+    boolean removeData(String key) {
+        if (setup) {
+            telemetryData.remove(key);
+            return true;
+        }
+        return false;
     }
 }

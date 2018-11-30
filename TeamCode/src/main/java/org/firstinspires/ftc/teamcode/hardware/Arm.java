@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 final class Arm {
-    private DcMotor sliderDrive;
-    private DcMotor armAnglerDrive;
-    private Servo intakeAngler;
-    private Servo lid;
+    private final DcMotor sliderDrive;
+    private final DcMotor armAnglerDrive;
+    private final Servo intakeAngler;
+    private final Servo lid;
 
     Arm(HardwareMap map, String sliderDriveName, String armAnglerName, String intakeAnglerName, String lidName) {
         sliderDrive = map.get(DcMotor.class, sliderDriveName);

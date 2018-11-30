@@ -53,14 +53,14 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  */
 @TeleOp(name = "Sensor: Color", group = "Sensor")
 @Disabled
-public class SensorColor extends LinearOpMode {
+class SensorColor extends LinearOpMode {
 
   /** The colorSensor field will contain a reference to our color sensor hardware object */
-  NormalizedColorSensor colorSensor;
+  private NormalizedColorSensor colorSensor;
   /** The relativeLayout field is used to aid in providing interesting visual feedback
    * in this sample application; you probably *don't* need something analogous when you
    * use a color sensor on your robot */
-  View relativeLayout;
+  private View relativeLayout;
 
   /**
    * The runOpMode() method is the root of this LinearOpMode, as it is in all linear opModes.
@@ -86,15 +86,11 @@ public class SensorColor extends LinearOpMode {
       // as pure white, but it's too much work to dig out what actually was used, and this is good
       // enough to at least make the screen reasonable again.
       // Set the panel back to the default color
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.WHITE);
-        }
-      });
+      relativeLayout.post(() -> relativeLayout.setBackgroundColor(Color.WHITE));
       }
   }
 
-  protected void runSample() throws InterruptedException {
+  private void runSample() {
 
     // values is a reference to the hsvValues array.
     float[] hsvValues = new float[3];
@@ -102,7 +98,7 @@ public class SensorColor extends LinearOpMode {
 
     // bPrevState and bCurrState keep track of the previous and current state of the button
     boolean bPrevState = false;
-    boolean bCurrState = false;
+    boolean bCurrState;
 
     // Get a reference to our sensor object.
     colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
@@ -136,10 +132,10 @@ public class SensorColor extends LinearOpMode {
       // Read the sensor
       NormalizedRGBA colors = colorSensor.getNormalizedColors();
 
-      /** Use telemetry to display feedback on the driver station. We show the conversion
-       * of the colors to hue, saturation and value, and display the the normalized values
-       * as returned from the sensor.
-       * @see <a href="http://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html">HSV</a>*/
+      /* Use telemetry to display feedback on the driver station. We show the conversion
+        of the colors to hue, saturation and value, and display the the normalized values
+        as returned from the sensor.
+        @see <a href="http://infohost.nmt.edu/tcc/help/pubs/colortheory/web/hsv.html">HSV</a>*/
 
       Color.colorToHSV(colors.toColor(), hsvValues);
       telemetry.addLine()
@@ -152,8 +148,8 @@ public class SensorColor extends LinearOpMode {
               .addData("g", "%.3f", colors.green)
               .addData("b", "%.3f", colors.blue);
 
-      /** We also display a conversion of the colors to an equivalent Android color integer.
-       * @see Color */
+      /* We also display a conversion of the colors to an equivalent Android color integer.
+        @see Color */
       int color = colors.toColor();
       telemetry.addLine("raw Android color: ")
               .addData("a", "%02x", Color.alpha(color))
@@ -190,11 +186,7 @@ public class SensorColor extends LinearOpMode {
       // change the background color to match the color detected by the RGB sensor.
       // pass a reference to the hue, saturation, and value array as an argument
       // to the HSVToColor method.
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-        }
-      });
+      relativeLayout.post(() -> relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values)));
     }
   }
 }

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.vision;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.vuforia.HINT;
 import com.vuforia.Vuforia;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
@@ -86,30 +84,25 @@ public final class VisionUtils {
     private VuforiaTrackable[]  trackables;
 
 
-    //Telemetry
-    private Telemetry telemetry;
-
     //To prevent null pointer exceptions after Vuforia and TFOD are deactivated
     private boolean vuforiaActivated;
     private boolean tfodActivated;
-    private HardwareMap map;
+    private final HardwareMap map;
 
     //To ensure there aren't multiple instances of visionUtils
     private static boolean alreadyInitialized = false;
     private static VisionUtils activeInstance = null;
 
     //Methods for public use
-    public static VisionUtils getInstance(HardwareMap map, Telemetry telemetry) {
+    public static VisionUtils getInstance(HardwareMap map) {
         if (!alreadyInitialized) {
-            activeInstance = new VisionUtils(map, telemetry);
+            activeInstance = new VisionUtils(map);
             alreadyInitialized = true;
         }
         return activeInstance;
     }
 
-    private VisionUtils(HardwareMap map, Telemetry telemetry) {
-        //Get the telemetry object so target and robot visibility and location data can be added to it
-        this.telemetry = telemetry;
+    private VisionUtils(HardwareMap map) {
         this.map = map;
         vuforiaActivated = activateVuforia();
         //Initialize TensorFlow Object Detection
@@ -122,22 +115,15 @@ public final class VisionUtils {
         for (int i = 0; i < trackables.length; i++) {
             VuforiaTrackable trackable = trackables[i];
             if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
-                telemetry.addData(trackable.getName() + " : ", "Visible");
                 //If the robot location is the same this returns null
                 OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
                 if (robotLocationTransform != null) {
                     lastLocation = robotLocationTransform;
                 }
                 visionData[i] = new VisionData(lastLocation.getTranslation(), Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES));
-                telemetry.addData("Position of " + trackable.getName() + " (in)", "{X, Y, Z} = %.1f, %.1f, %.1f",
-                        visionData[i].position.get(0) / MM_PER_INCH, visionData[i].position.get(1) / MM_PER_INCH, visionData[i].position.get(2) / MM_PER_INCH);
-                telemetry.addData("Rotation of " + trackable.getName() + " (deg)", "{Roll, Pitch, Heading} = %.0f, %.0f, %.0f", visionData[i].orientation.firstAngle, visionData[i].orientation.secondAngle, visionData[i].orientation.thirdAngle);
-
             }
-            telemetry.addData(trackable.getName() + " : ", "Invisible");
             visionData[i] = null;
         }
-        telemetry.update();
         return visionData;
     }
 
@@ -160,7 +146,6 @@ public final class VisionUtils {
         if (tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
-                telemetry.addData("Objects detected: ", updatedRecognitions.size());
                 if (updatedRecognitions.size() == 3) {
                     int goldMineralX = -1;
                     int silverMineral1X = -1;
@@ -186,7 +171,6 @@ public final class VisionUtils {
                 }
             }
         }
-        telemetry.update();
         return goldMineralPosition;
     }
 

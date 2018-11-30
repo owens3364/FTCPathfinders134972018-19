@@ -6,10 +6,10 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class LimitedDrive {
-    private DcMotor drive;
+    private final DcMotor drive;
     //Limit switches
-    private DigitalChannel driveMin;
-    private DigitalChannel driveMax;
+    private final DigitalChannel driveMin;
+    private final DigitalChannel driveMax;
 
     LimitedDrive(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
         drive = map.get(DcMotor.class, driveName);

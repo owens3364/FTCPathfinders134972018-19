@@ -69,14 +69,14 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  */
 @TeleOp(name = "Sensor: AdafruitRGB", group = "Sensor")
 @Disabled                            // Comment this out to add to the opmode list
-public class SensorAdafruitRGB extends LinearOpMode {
+class SensorAdafruitRGB extends LinearOpMode {
 
-  ColorSensor sensorRGB;
-  DeviceInterfaceModule cdim;
+  private ColorSensor sensorRGB;
+  private DeviceInterfaceModule cdim;
 
   // we assume that the LED pin of the RGB sensor is connected to
   // digital port 5 (zero indexed).
-  static final int LED_CHANNEL = 5;
+  private static final int LED_CHANNEL = 5;
 
   @Override
   public void runOpMode() {
@@ -94,7 +94,7 @@ public class SensorAdafruitRGB extends LinearOpMode {
 
     // bPrevState and bCurrState represent the previous and current state of the button.
     boolean bPrevState = false;
-    boolean bCurrState = false;
+    boolean bCurrState;
 
     // bLedOn represents the state of the LED.
     boolean bLedOn = true;
@@ -111,7 +111,7 @@ public class SensorAdafruitRGB extends LinearOpMode {
     sensorRGB = hardwareMap.colorSensor.get("sensor_color");
 
     // turn the LED on in the beginning, just so user will know that the sensor is active.
-    cdim.setDigitalChannelState(LED_CHANNEL, bLedOn);
+    cdim.setDigitalChannelState(LED_CHANNEL, true);
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -124,7 +124,7 @@ public class SensorAdafruitRGB extends LinearOpMode {
       bCurrState = gamepad1.x;
 
       // check for button-press state transitions.
-      if ((bCurrState == true) && (bCurrState != bPrevState))  {
+      if ((bCurrState) && (true != bPrevState))  {
 
         // button is transitioning to a pressed state. Toggle the LED.
         bLedOn = !bLedOn;
@@ -148,20 +148,12 @@ public class SensorAdafruitRGB extends LinearOpMode {
       // change the background color to match the color detected by the RGB sensor.
       // pass a reference to the hue, saturation, and value array as an argument
       // to the HSVToColor method.
-      relativeLayout.post(new Runnable() {
-        public void run() {
-          relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values));
-        }
-      });
+      relativeLayout.post(() -> relativeLayout.setBackgroundColor(Color.HSVToColor(0xff, values)));
 
       telemetry.update();
     }
 
     // Set the panel back to the default color
-    relativeLayout.post(new Runnable() {
-      public void run() {
-        relativeLayout.setBackgroundColor(Color.WHITE);
-      }
-    });
+    relativeLayout.post(() -> relativeLayout.setBackgroundColor(Color.WHITE));
   }
 }

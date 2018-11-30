@@ -89,14 +89,4 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
             updateTelemetry();
         }
     }
-
-    private void updateTelemetry() {
-        if (super.isSetup()) {
-            //Controller input values
-
-            //Robot output values
-
-            telemetry.update();
-        }
-    }
 }

@@ -132,14 +132,4 @@ public final class TeleOpMarkI extends GenericTeleOp {
             updateTelemetry();
         }
     }
-
-    private void updateTelemetry() {
-        if (super.isSetup()) {
-            //Controller input values
-
-            //Robot output values
-
-            telemetry.update();
-        }
-    }
 }

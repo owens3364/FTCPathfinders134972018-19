@@ -52,7 +52,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 @TeleOp(name = "Sensor: KL navX Micro", group = "Sensor")
 @Disabled
-public class SensorKLNavxMicro extends LinearOpMode {
+class SensorKLNavxMicro extends LinearOpMode {
 
     /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
      * That's likely atypical: you'll probably use one or the other in any given situation,
@@ -61,17 +61,17 @@ public class SensorKLNavxMicro extends LinearOpMode {
      * implementations. {@link NavxMicroNavigationSensor}, by contrast, provides functionality that
      * is unique to the navX Micro sensor.
      */
-    IntegratingGyroscope gyro;
-    NavxMicroNavigationSensor navxMicro;
+    private IntegratingGyroscope gyro;
+    private NavxMicroNavigationSensor navxMicro;
 
     // A timer helps provide feedback while calibration is taking place
-    ElapsedTime timer = new ElapsedTime();
+    private final ElapsedTime timer = new ElapsedTime();
 
     @Override public void runOpMode() throws InterruptedException {
         // Get a reference to a Modern Robotics GyroSensor object. We use several interfaces
         // on this object to illustrate which interfaces support which functionality.
         navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
-        gyro = (IntegratingGyroscope)navxMicro;
+        gyro = navxMicro;
         // If you're only interested int the IntegratingGyroscope interface, the following will suffice.
         // gyro = hardwareMap.get(IntegratingGyroscope.class, "navx");
 
@@ -115,15 +115,15 @@ public class SensorKLNavxMicro extends LinearOpMode {
         }
     }
 
-    String formatRate(float rate) {
+    private String formatRate(float rate) {
         return String.format("%.3f", rate);
     }
 
-    String formatAngle(AngleUnit angleUnit, double angle) {
+    private String formatAngle(AngleUnit angleUnit, double angle) {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
-    String formatDegrees(double degrees){
+    private String formatDegrees(double degrees){
         return String.format("%.1f", AngleUnit.DEGREES.normalize(degrees));
     }
 }

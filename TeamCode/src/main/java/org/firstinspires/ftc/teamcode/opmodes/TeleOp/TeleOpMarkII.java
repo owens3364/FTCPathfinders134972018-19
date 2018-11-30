@@ -59,17 +59,17 @@ public final class TeleOpMarkII extends GenericTeleOp {
             //Mechanum wheel code
             double leftX = controller1.leftStickX();
             double triggerY = evalTriggers();
-            telemetry.addData("LeftStickX", leftX);
-            telemetry.addData("LeftStickY", leftX);
-            telemetry.addData("RightStickX", controller1.rightStickX());
+            addData("LeftStickX", leftX);
+            addData("LeftStickY", leftX);
+            addData("RightStickX", controller1.rightStickX());
             double magnitude = Math.hypot(leftX, triggerY);
             double direction = Math.atan2(triggerY, leftX) - Math.PI / 4;
-            telemetry.addData("Magnitude", magnitude);
-            telemetry.addData("Direction", direction);
-            telemetry.addData("FrontLeftPower", magnitude * Math.cos(direction) + -controller1.rightStickX());
-            telemetry.addData("FrontRightPower", magnitude * Math.sin(direction) - -controller1.rightStickX());
-            telemetry.addData("RearLeftPower", magnitude * Math.sin(direction) + -controller1.rightStickX());
-            telemetry.addData("RearRightPower", magnitude * Math.cos(direction) - -controller1.rightStickX());
+            addData("Magnitude", magnitude);
+            addData("Direction", direction);
+            addData("FrontLeftPower", magnitude * Math.cos(direction) + -controller1.rightStickX());
+            addData("FrontRightPower", magnitude * Math.sin(direction) - -controller1.rightStickX());
+            addData("RearLeftPower", magnitude * Math.sin(direction) + -controller1.rightStickX());
+            addData("RearRightPower", magnitude * Math.cos(direction) - -controller1.rightStickX());
             bot.setFrontLeftDrive(magnitude * Math.cos(direction) + controller1.rightStickX());
             bot.setFrontRightDrive(magnitude * Math.sin(direction) - controller1.rightStickX());
             bot.setRearLeftDrive(magnitude * Math.sin(direction) + controller1.rightStickX());
@@ -132,16 +132,6 @@ public final class TeleOpMarkII extends GenericTeleOp {
 
             //ANY ADDITIONAL CODE HERE
             updateTelemetry();
-        }
-    }
-
-    private void updateTelemetry() {
-        if (super.isSetup()) {
-            //Controller input values
-
-            //Robot output values
-
-            telemetry.update();
         }
     }
 

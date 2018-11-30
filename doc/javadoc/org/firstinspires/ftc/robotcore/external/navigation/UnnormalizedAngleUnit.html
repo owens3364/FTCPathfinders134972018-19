@@ -128,13 +128,12 @@ extends java.lang.Enum&lt;<a href="../../../../../../org/firstinspires/ftc/robot
       <li>the fundamental unit (radians vs degrees)</li>
       <li>whether the angular quantity is normalized or not to the range of [-180,+180) degrees</li>
   </ol>
-  Normalized angles are of most utility when dealing with physical angles, as normalization
-  removes ambiguity of representation. In particular, two angles can be compared for equality
-  by subtracting them, normalizing, and testing whether the absolute value of the result is
-  smaller than some tolerance threshold. This approach neatly handles all cases of cyclical
-  wrapping without unexpected discontinuities.
- </p>
- <p>
+    Normalized angles are of most utility when dealing with physical angles, as normalization
+    removes ambiguity of representation. In particular, two angles can be compared for equality
+    by subtracting them, normalizing, and testing whether the absolute value of the result is
+    smaller than some tolerance threshold. This approach neatly handles all cases of cyclical
+    wrapping without unexpected discontinuities.
+    <p>
   Unnormalized angles can be handy when the angular quantity is not a physical angle but some
   related quantity such as an angular <em>velocity</em> or <em>acceleration</em>, where the
   quantity in question lacks the 360-degree cyclical equivalence of a physical angle.

@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 */
 @TeleOp(name = "Sensor: MR Gyro", group = "Sensor")
 @Disabled
-public class SensorMRGyro extends LinearOpMode {
+class SensorMRGyro extends LinearOpMode {
 
   /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
    * That's likely atypical: you'll probably use one or the other in any given situation,
@@ -62,22 +62,22 @@ public class SensorMRGyro extends LinearOpMode {
    * implementations. {@link ModernRoboticsI2cGyro}, by contrast, provides functionality that
    * is unique to the Modern Robotics gyro sensor.
    */
-  IntegratingGyroscope gyro;
-  ModernRoboticsI2cGyro modernRoboticsI2cGyro;
+  private IntegratingGyroscope gyro;
+  private ModernRoboticsI2cGyro modernRoboticsI2cGyro;
 
   // A timer helps provide feedback while calibration is taking place
-  ElapsedTime timer = new ElapsedTime();
+  private final ElapsedTime timer = new ElapsedTime();
 
   @Override
   public void runOpMode() {
 
     boolean lastResetState = false;
-    boolean curResetState  = false;
+    boolean curResetState;
 
     // Get a reference to a Modern Robotics gyro object. We use several interfaces
     // on this object to illustrate which interfaces support which functionality.
     modernRoboticsI2cGyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
-    gyro = (IntegratingGyroscope)modernRoboticsI2cGyro;
+    gyro = modernRoboticsI2cGyro;
     // If you're only interested int the IntegratingGyroscope interface, the following will suffice.
     // gyro = hardwareMap.get(IntegratingGyroscope.class, "gyro");
     // A similar approach will work for the Gyroscope interface, if that's all you need.
@@ -147,15 +147,15 @@ public class SensorMRGyro extends LinearOpMode {
     }
   }
 
-  String formatRaw(int rawValue) {
+  private String formatRaw(int rawValue) {
     return String.format("%d", rawValue);
   }
 
-  String formatRate(float rate) {
+  private String formatRate(float rate) {
     return String.format("%.3f", rate);
   }
 
-  String formatFloat(float rate) {
+  private String formatFloat(float rate) {
     return String.format("%.3f", rate);
   }
 

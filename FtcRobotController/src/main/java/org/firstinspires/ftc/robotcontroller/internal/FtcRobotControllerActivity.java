@@ -133,7 +133,6 @@ public class FtcRobotControllerActivity extends Activity
     END STUFF I ADDED
     */
     public static final String TAG = "RCActivity";
-    public String getTag() { return TAG; }
 
     private static final int REQUEST_CONFIG_WIFI_CHANNEL = 1;
     private static final int NUM_GAMEPADS = 2;
@@ -147,8 +146,8 @@ public class FtcRobotControllerActivity extends Activity
     protected UpdateUI.Callback callback;
     protected Context context;
     protected Utility utility;
-    protected StartResult prefRemoterStartResult = new StartResult();
-    protected StartResult deviceNameStartResult = new StartResult();
+    protected final StartResult prefRemoterStartResult = new StartResult();
+    protected final StartResult deviceNameStartResult = new StartResult();
     protected PreferencesHelper preferencesHelper;
     protected final SharedPreferencesListener sharedPreferencesListener = new SharedPreferencesListener();
 
@@ -156,7 +155,7 @@ public class FtcRobotControllerActivity extends Activity
     protected TextView textDeviceName;
     protected TextView textNetworkConnectionStatus;
     protected TextView textRobotStatus;
-    protected TextView[] textGamepad = new TextView[NUM_GAMEPADS];
+    protected final TextView[] textGamepad = new TextView[NUM_GAMEPADS];
     protected TextView textOpMode;
     protected TextView textErrorMessage;
     protected ImmersiveMode immersion;
@@ -182,7 +181,7 @@ public class FtcRobotControllerActivity extends Activity
 
     }
 
-    protected ServiceConnection connection = new ServiceConnection() {
+    protected final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             FtcRobotControllerBinder binder = (FtcRobotControllerBinder) service;
@@ -244,7 +243,7 @@ public class FtcRobotControllerActivity extends Activity
         */
         RobotLog.onApplicationStart();  // robustify against onCreate() following onDestroy() but using the same app instance, which apparently does happen
         RobotLog.vv(TAG, "onCreate()");
-        ThemedActivity.appAppThemeToActivity(getTag(), this); // do this way instead of inherit to help AppInventor
+        ThemedActivity.appAppThemeToActivity(TAG, this); // do this way instead of inherit to help AppInventor
 
         // Oddly, sometimes after a crash & restart the root activity will be something unexpected, like from the before crash? We don't yet understand
         RobotLog.vv(TAG, "rootActivity is of class %s", AppUtil.getInstance().getRootActivity().getClass().getSimpleName());
@@ -692,7 +691,7 @@ public class FtcRobotControllerActivity extends Activity
     protected class SharedPreferencesListener implements SharedPreferences.OnSharedPreferenceChangeListener {
         @Override public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             if (key.equals(context.getString(R.string.pref_app_theme))) {
-                ThemedActivity.restartForAppThemeChange(getTag(), getString(R.string.appThemeChangeRestartNotifyRC));
+                ThemedActivity.restartForAppThemeChange(TAG, getString(R.string.appThemeChangeRestartNotifyRC));
             } else if (key.equals(context.getString(R.string.pref_wifi_automute))) {
                 if (preferencesHelper.readBoolean(context.getString(R.string.pref_wifi_automute), false)) {
                     initWifiMute(true);

@@ -8,8 +8,8 @@ public final class VisionData {
         this.position = pos;
         this.orientation = ori;
     }
-    public VectorF position;
-    public Orientation orientation;
+    public final VectorF position;
+    public final Orientation orientation;
 
     @Override
     public String toString() {

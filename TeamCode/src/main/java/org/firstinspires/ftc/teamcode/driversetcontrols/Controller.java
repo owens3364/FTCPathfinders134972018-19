@@ -6,7 +6,7 @@ public final class Controller {
     private ControlScheme controlScheme = ControlScheme.LINEAR;
     private ScaleScheme scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
 
-    private Gamepad gamepad;
+    private final Gamepad gamepad;
 
     //This is the standard scaling for all of the non boolean values of the gamepad
     //This is used by default

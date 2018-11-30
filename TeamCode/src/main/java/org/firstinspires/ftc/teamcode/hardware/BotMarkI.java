@@ -9,10 +9,10 @@ public final class BotMarkI implements StandardDriveOpModeUsage {
     private static final double MM_PER_HOOK_ROTATION = 12; //TODO: MEASURE CORRECT VALUES
     private static final double ROBOT_WEIGHT_LBS = 18; //TODO: MEASURE CORRECT VALUES
 
-    private DriveTrain driveTrain;
-    private Lift lift;
-    private Intake intake;
-    private Hook hook;
+    private final DriveTrain driveTrain;
+    private final Lift lift;
+    private final Intake intake;
+    private final Hook hook;
 
     public BotMarkI(HardwareMap map) {
         this.driveTrain = new DriveTrain(map, "LeftDrive", "RightDrive");

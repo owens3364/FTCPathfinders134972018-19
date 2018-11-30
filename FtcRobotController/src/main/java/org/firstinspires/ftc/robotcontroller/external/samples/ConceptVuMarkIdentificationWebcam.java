@@ -68,7 +68,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @TeleOp(name="Concept: VuMark Id Webcam", group ="Concept")
 @Disabled
-public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
+class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -78,13 +78,13 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
-    VuforiaLocalizer vuforia;
+    private VuforiaLocalizer vuforia;
 
     /**
      * This is the webcam we are to use. As with other hardware devices such as motors and
      * servos, this device is identified using the robot configuration tool in the FTC application.
      */
-    WebcamName webcamName;
+    private WebcamName webcamName;
 
     @Override public void runOpMode() {
 
@@ -118,18 +118,18 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
         parameters.vuforiaLicenseKey = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
 
 
-        /**
-         * We also indicate which camera on the RC we wish to use. For pedagogical purposes,
-         * we use the same logic as in {@link ConceptVuforiaNavigationWebcam}.
+        /*
+          We also indicate which camera on the RC we wish to use. For pedagogical purposes,
+          we use the same logic as in {@link ConceptVuforiaNavigationWebcam}.
          */
         parameters.cameraName = webcamName;
         this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        /**
-         * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
-         * in this data set: all three of the VuMarks in the game were created from this one template,
-         * but differ in their instance id information.
-         * @see VuMarkInstanceId
+        /*
+          Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
+          in this data set: all three of the VuMarks in the game were created from this one template,
+          but differ in their instance id information.
+          @see VuMarkInstanceId
          */
         VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
         VuforiaTrackable relicTemplate = relicTrackables.get(0);
@@ -143,11 +143,11 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            /**
-             * See if any of the instances of {@link relicTemplate} are currently visible.
-             * {@link RelicRecoveryVuMark} is an enum which can have the following values:
-             * UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
-             * UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
+            /*
+              See if any of the instances of {@link relicTemplate} are currently visible.
+              {@link RelicRecoveryVuMark} is an enum which can have the following values:
+              UNKNOWN, LEFT, CENTER, and RIGHT. When a VuMark is visible, something other than
+              UNKNOWN will be returned by {@link RelicRecoveryVuMark#from(VuforiaTrackable)}.
              */
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
@@ -188,7 +188,7 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
         }
     }
 
-    String format(OpenGLMatrix transformationMatrix) {
+    private String format(OpenGLMatrix transformationMatrix) {
         return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }

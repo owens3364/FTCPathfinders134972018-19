@@ -47,7 +47,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  */
 @TeleOp(name = "Sensor: HT Gyro", group = "Sensor")
 @Disabled
-public class SensorHTGyro extends LinearOpMode {
+class SensorHTGyro extends LinearOpMode {
 
     /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
      * That's likely atypical: you'll probably use one or the other in any given situation,
@@ -56,10 +56,10 @@ public class SensorHTGyro extends LinearOpMode {
      * implementations. {@link HiTechnicNxtGyroSensor}, by contrast, provides functionality that
      * is unique to the HiTechnic gyro sensor.
      */
-    Gyroscope gyroscope;
-    HiTechnicNxtGyroSensor hiTechnicNxtGyroSensor;
+    private Gyroscope gyroscope;
+    private HiTechnicNxtGyroSensor hiTechnicNxtGyroSensor;
 
-    @Override public void runOpMode() throws InterruptedException {
+    @Override public void runOpMode() {
 
         // Get a reference to the gyroscope from the hardware map
         gyroscope = hardwareMap.get(Gyroscope.class, "gyro");

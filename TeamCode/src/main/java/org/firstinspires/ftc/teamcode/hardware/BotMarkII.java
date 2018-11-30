@@ -9,9 +9,9 @@ public final class BotMarkII implements MechanumDriveOpModeUsage {
     private static final double MM_PER_SLIDER_ANGLER_ROTATION = 0; //TODO: MEASURE CORRECT VALUES
     private static final double ROBOT_WEIGHT_LBS = 15.6; //TODO: MEASURE CORRECT VALUES
 
-    private MechanumDriveTrain driveTrain;
-    private Lift lift;
-    private Arm arm;
+    private final MechanumDriveTrain driveTrain;
+    private final Lift lift;
+    private final Arm arm;
 
     public BotMarkII(HardwareMap map) {
         this.driveTrain = new MechanumDriveTrain(map, "FrontLeftDrive", "FrontRightDrive", "RearLeftDrive", "RearRightDrive");

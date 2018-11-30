@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 final class Hook {
-    private DcMotor hookDrive;
-    private Servo hookServo;
+    private final DcMotor hookDrive;
+    private final Servo hookServo;
 
     Hook(HardwareMap map, String hookDriveName, String hookServoName) {
         hookDrive = map.get(DcMotor.class, hookDriveName);

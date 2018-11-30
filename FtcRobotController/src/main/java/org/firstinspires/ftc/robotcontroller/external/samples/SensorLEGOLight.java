@@ -47,16 +47,16 @@ import com.qualcomm.robotcore.hardware.LightSensor;
  */
 @TeleOp(name = "Sensor: LEGO light", group = "Sensor")
 @Disabled
-public class SensorLEGOLight extends LinearOpMode {
+class SensorLEGOLight extends LinearOpMode {
 
-  LightSensor lightSensor;  // Hardware Device Object
+  private LightSensor lightSensor;  // Hardware Device Object
 
   @Override
   public void runOpMode() {
 
     // bPrevState and bCurrState represent the previous and current state of the button.
     boolean bPrevState = false;
-    boolean bCurrState = false;
+    boolean bCurrState;
 
     // bLedOn represents the state of the LED.
     boolean bLedOn = true;
@@ -65,7 +65,7 @@ public class SensorLEGOLight extends LinearOpMode {
     lightSensor = hardwareMap.get(LightSensor.class, "sensor_light");
 
     // Set the LED state in the beginning.
-    lightSensor.enableLed(bLedOn);
+    lightSensor.enableLed(true);
 
     // wait for the start button to be pressed.
     waitForStart();
@@ -78,7 +78,7 @@ public class SensorLEGOLight extends LinearOpMode {
       bCurrState = gamepad1.x;
 
       // check for button state transitions.
-      if ((bCurrState == true) && (bCurrState != bPrevState))  {
+      if ((bCurrState) && (true != bPrevState))  {
 
         // button is transitioning to a pressed state.  Toggle LED
         bLedOn = !bLedOn;
