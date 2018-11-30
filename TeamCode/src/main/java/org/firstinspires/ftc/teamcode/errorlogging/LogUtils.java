@@ -48,7 +48,9 @@ public final class LogUtils {
                 if (state != null) {
                     for (Map.Entry<String, String> entry : state.entrySet()) {
                         if (entry != null) {
-                            output.append(entry.getKey()).append(": ").append(entry.getValue()).append(NEW_LINE_CHARACTER);
+                            if (entry.getKey() != null) {
+                                output.append(entry.getKey()).append(": ").append((entry.getValue() == null) ? "":entry.getValue()).append(NEW_LINE_CHARACTER);
+                            }
                         }
                     }
                     output.append(NEW_LINE_CHARACTER).append(NEW_LINE_CHARACTER);

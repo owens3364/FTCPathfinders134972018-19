@@ -197,44 +197,56 @@ class GenericTeleOp extends OpMode {
     }
 
     void addData(String key, String value) {
-        if (setup) {
-            telemetryData.put(key, value);
+        if (key != null && value != null) {
+            if (setup) {
+                telemetryData.put(key, value);
+            }
         }
     }
 
     void addData(String key, double value) {
-        if (setup) {
-            telemetryData.put(key, String.valueOf(value));
+        if (key != null) {
+            if (setup) {
+                telemetryData.put(key, String.valueOf(value));
+            }
         }
     }
 
     boolean setData(String key, String value) {
-        if (setup) {
-            telemetryData.replace(key, value);
-            return true;
+        if (key != null && value != null) {
+            if (setup) {
+                telemetryData.replace(key, value);
+                return true;
+            }
         }
         return false;
     }
 
     boolean setData(String key, double value) {
-        if (setup) {
-            telemetryData.replace(key, String.valueOf(value));
-            return true;
+        if (key != null) {
+            if (setup) {
+                telemetryData.replace(key, String.valueOf(value));
+                return true;
+            }
         }
         return false;
     }
 
     String getData(String key) {
-        if (setup) {
-            return telemetryData.get(key);
+        if (key != null) {
+            if (setup) {
+                return telemetryData.get(key);
+            }
         }
         return null;
     }
 
     boolean removeData(String key) {
-        if (setup) {
-            telemetryData.remove(key);
-            return true;
+        if (key != null) {
+            if (setup) {
+                telemetryData.remove(key);
+                return true;
+            }
         }
         return false;
     }
