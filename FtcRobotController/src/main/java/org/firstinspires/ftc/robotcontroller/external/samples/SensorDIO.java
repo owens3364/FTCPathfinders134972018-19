@@ -57,10 +57,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 @Disabled
 class SensorDIO extends LinearOpMode {
 
-private final int BLUE_LED_CHANNEL = 0;
-private final int RED_LED_CHANNEL = 1;
-
-  @Override
+    @Override
   public void runOpMode() {
 
     boolean               inputPin;             // Input State
@@ -89,6 +86,8 @@ private final int RED_LED_CHANNEL = 1;
         inputPin = digIn.getState();    //  Read the input pin
 
         // Display input pin state on LEDs
+        int RED_LED_CHANNEL = 1;
+        int BLUE_LED_CHANNEL = 0;
         if (inputPin) {
             dim.setLED(RED_LED_CHANNEL, true);
             dim.setLED(BLUE_LED_CHANNEL, false);

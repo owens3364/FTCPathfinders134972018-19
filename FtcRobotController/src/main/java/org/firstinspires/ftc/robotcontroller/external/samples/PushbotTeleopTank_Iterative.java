@@ -56,7 +56,6 @@ class PushbotTeleopTank_Iterative extends OpMode{
     /* Declare OpMode members. */
     private final HardwarePushbot robot       = new HardwarePushbot(); // use the class created to define a Pushbot's hardware
     private double          clawOffset  = 0.0 ;                  // Servo mid position
-    private final double    CLAW_SPEED  = 0.02 ;                 // sets rate to move servo
 
     /*
      * Code to run ONCE when the driver hits INIT
@@ -102,6 +101,8 @@ class PushbotTeleopTank_Iterative extends OpMode{
         robot.rightDrive.setPower(right);
 
         // Use gamepad left & right Bumpers to open and close the claw
+        // sets rate to move servo
+        double CLAW_SPEED = 0.02;
         if (gamepad1.right_bumper)
             clawOffset += CLAW_SPEED;
         else if (gamepad1.left_bumper)

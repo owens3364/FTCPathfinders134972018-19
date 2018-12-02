@@ -4,10 +4,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-final class Intake {
+final class IntakeMarkI {
     private final DcMotor intakeDrive;
 
-    Intake(HardwareMap map, String intakeDriveName) {
+    IntakeMarkI(HardwareMap map, String intakeDriveName) {
         intakeDrive = map.get(DcMotor.class, intakeDriveName);
         intakeDrive.setDirection(DcMotorSimple.Direction.FORWARD);
     }

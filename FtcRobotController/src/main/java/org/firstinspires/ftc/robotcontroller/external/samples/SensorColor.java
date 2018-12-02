@@ -55,9 +55,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
 @Disabled
 class SensorColor extends LinearOpMode {
 
-  /** The colorSensor field will contain a reference to our color sensor hardware object */
-  private NormalizedColorSensor colorSensor;
-  /** The relativeLayout field is used to aid in providing interesting visual feedback
+    /** The relativeLayout field is used to aid in providing interesting visual feedback
    * in this sample application; you probably *don't* need something analogous when you
    * use a color sensor on your robot */
   private View relativeLayout;
@@ -72,7 +70,7 @@ class SensorColor extends LinearOpMode {
    * block around the main, core logic, and an easy way to make that all clear was to separate
    * the former from the latter in separate methods.
    */
-  @Override public void runOpMode() throws InterruptedException {
+  @Override public void runOpMode() {
 
     // Get a reference to the RelativeLayout so we can later change the background
     // color of the Robot Controller app to match the hue detected by the RGB sensor.
@@ -101,12 +99,13 @@ class SensorColor extends LinearOpMode {
     boolean bCurrState;
 
     // Get a reference to our sensor object.
-    colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
+      /* The colorSensor field will contain a reference to our color sensor hardware object */ /* The colorSensor field will contain a reference to our color sensor hardware object */
+      NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "sensor_color");
 
     // If possible, turn the light on in the beginning (it might already be on anyway,
     // we just make sure it is if we can).
     if (colorSensor instanceof SwitchableLight) {
-      ((SwitchableLight)colorSensor).enableLight(true);
+      ((SwitchableLight) colorSensor).enableLight(true);
     }
 
     // Wait for the start button to be pressed.
@@ -122,7 +121,7 @@ class SensorColor extends LinearOpMode {
         // If the button is (now) down, then toggle the light
         if (bCurrState) {
           if (colorSensor instanceof SwitchableLight) {
-            SwitchableLight light = (SwitchableLight)colorSensor;
+            SwitchableLight light = (SwitchableLight) colorSensor;
             light.enableLight(!light.isLightOn());
           }
         }

@@ -4,11 +4,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-final class DriveTrain {
+final class DriveTrainMarkI {
     private final DcMotor leftDrive;
     private final DcMotor rightDrive;
 
-    DriveTrain(HardwareMap map, String leftDriveName, String rightDriveName) {
+    DriveTrainMarkI(HardwareMap map, String leftDriveName, String rightDriveName) {
         leftDrive = map.get(DcMotor.class, leftDriveName);
         leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         rightDrive = map.get(DcMotor.class, rightDriveName);

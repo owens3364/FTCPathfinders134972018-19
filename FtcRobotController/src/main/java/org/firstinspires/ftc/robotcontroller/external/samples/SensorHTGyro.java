@@ -34,7 +34,6 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
@@ -49,25 +48,28 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 @Disabled
 class SensorHTGyro extends LinearOpMode {
 
-    /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
-     * That's likely atypical: you'll probably use one or the other in any given situation,
-     * depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
-     * {@link Gyroscope}) are common interfaces supported by possibly several different gyro
-     * implementations. {@link HiTechnicNxtGyroSensor}, by contrast, provides functionality that
-     * is unique to the HiTechnic gyro sensor.
-     */
-    private Gyroscope gyroscope;
-    private HiTechnicNxtGyroSensor hiTechnicNxtGyroSensor;
-
     @Override public void runOpMode() {
 
         // Get a reference to the gyroscope from the hardware map
-        gyroscope = hardwareMap.get(Gyroscope.class, "gyro");
+        /* In this sample, for illustration purposes we use two interfaces on the one gyro object.
+      That's likely atypical: you'll probably use one or the other in any given situation,
+      depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
+      {@link Gyroscope}) are common interfaces supported by possibly several different gyro
+      implementations. {@link HiTechnicNxtGyroSensor}, by contrast, provides functionality that
+      is unique to the HiTechnic gyro sensor.
+     */ /* In this sample, for illustration purposes we use two interfaces on the one gyro object.
+          That's likely atypical: you'll probably use one or the other in any given situation,
+          depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
+          {@link Gyroscope}) are common interfaces supported by possibly several different gyro
+          implementations. {@link HiTechnicNxtGyroSensor}, by contrast, provides functionality that
+          is unique to the HiTechnic gyro sensor.
+         */
+        Gyroscope gyroscope = hardwareMap.get(Gyroscope.class, "gyro");
 
         // Get a reference to the *implementation* of the gyroscope on the HiTechnic sensor.
         // Usually, you won't need to examine internal implementation details in this way, but
         // we do so to illustrate aspects of what is going on inside the sensor.
-        hiTechnicNxtGyroSensor = hardwareMap.get(HiTechnicNxtGyroSensor.class, "gyro");
+        HiTechnicNxtGyroSensor hiTechnicNxtGyroSensor = hardwareMap.get(HiTechnicNxtGyroSensor.class, "gyro");
         // Alternately, we could have cast: hiTechnicNxtGyroSensor = (HiTechnicNxtGyroSensor)gyro;
 
         // Optionally, calibrate the gyro to establish a good value for its "zero deg/s" bias

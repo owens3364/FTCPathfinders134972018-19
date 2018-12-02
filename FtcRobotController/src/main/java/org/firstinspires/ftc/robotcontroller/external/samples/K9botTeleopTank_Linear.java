@@ -59,8 +59,6 @@ class K9botTeleopTank_Linear extends LinearOpMode {
     private final HardwareK9bot   robot           = new HardwareK9bot();              // Use a K9'shardware
     private double          armPosition     = HardwareK9bot.ARM_HOME;                   // Servo safe position
     private double          clawPosition    = HardwareK9bot.CLAW_HOME;                  // Servo safe position
-    private final double    CLAW_SPEED      = 0.01 ;                            // sets rate to move servo
-    private final double    ARM_SPEED       = 0.01 ;                            // sets rate to move servo
 
     @Override
     public void runOpMode() {
@@ -89,12 +87,16 @@ class K9botTeleopTank_Linear extends LinearOpMode {
             robot.rightDrive.setPower(right);
 
             // Use gamepad Y & A raise and lower the arm
+            // sets rate to move servo
+            double ARM_SPEED = 0.01;
             if (gamepad1.a)
                 armPosition += ARM_SPEED;
             else if (gamepad1.y)
                 armPosition -= ARM_SPEED;
 
             // Use gamepad X & B to open and close the claw
+            // sets rate to move servo
+            double CLAW_SPEED = 0.01;
             if (gamepad1.x)
                 clawPosition += CLAW_SPEED;
             else if (gamepad1.b)

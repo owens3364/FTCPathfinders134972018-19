@@ -2,23 +2,23 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public final class BotMarkI implements StandardDriveOpModeUsage {
-    private static final double MM_PER_DRIVE_ROTATION = 168; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_INTAKE_ROTATION = 300; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_LIFT_ROTATION = 12; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_HOOK_ROTATION = 12; //TODO: MEASURE CORRECT VALUES
-    private static final double ROBOT_WEIGHT_LBS = 18; //TODO: MEASURE CORRECT VALUES
+public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
+    private static final double MM_PER_DRIVE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
+    private static final double MM_PER_INTAKE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
+    private static final double MM_PER_LIFT_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
+    private static final double MM_PER_HOOK_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
+    private static final double ROBOT_WEIGHT_LBS = 1; //TODO: MEASURE CORRECT VALUES
 
-    private final DriveTrain driveTrain;
-    private final Lift lift;
-    private final Intake intake;
-    private final Hook hook;
+    private final DriveTrainMarkI driveTrain;
+    private final LiftMarkI lift;
+    private final IntakeMarkI intake;
+    private final HookMarkI hook;
 
     public BotMarkI(HardwareMap map) {
-        this.driveTrain = new DriveTrain(map, "LeftDrive", "RightDrive");
-        this.lift = new Lift(map, "CableDrive");
-        this.intake = new Intake(map, "IntakeDrive");
-        this.hook = new Hook(map, "HookDrive", "HookServo");
+        this.driveTrain = new DriveTrainMarkI(map, "LeftDrive", "RightDrive");
+        this.lift = new LiftMarkI(map, "CableDrive");
+        this.intake = new IntakeMarkI(map, "IntakeDrive");
+        this.hook = new HookMarkI(map, "HookDrive", "HookServo");
     }
 
     @Override

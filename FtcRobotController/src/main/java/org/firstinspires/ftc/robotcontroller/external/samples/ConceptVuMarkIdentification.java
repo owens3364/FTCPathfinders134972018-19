@@ -40,7 +40,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -77,6 +76,7 @@ class ConceptVuMarkIdentification extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
+    @SuppressWarnings("JavaDoc")
     private VuforiaLocalizer vuforia;
 
     @Override public void runOpMode() {

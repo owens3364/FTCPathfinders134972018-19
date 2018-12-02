@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAle
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 class GenericTeleOp extends OpMode {
     //State of this class
     private boolean setup = false;
@@ -196,20 +197,34 @@ class GenericTeleOp extends OpMode {
         }
     }
 
-    void addData(String key, String value) {
+    boolean addData(String key, String value) {
         if (key != null && value != null) {
             if (setup) {
                 telemetryData.put(key, value);
+                return true;
             }
         }
+        return false;
     }
 
-    void addData(String key, double value) {
+    boolean addData(String key, double value) {
         if (key != null) {
             if (setup) {
                 telemetryData.put(key, String.valueOf(value));
+                return true;
             }
         }
+        return false;
+    }
+
+    boolean addData(String key, boolean value) {
+        if (key != null) {
+            if (setup) {
+                telemetryData.put(key, String.valueOf(value));
+                return true;
+            }
+        }
+        return false;
     }
 
     boolean setData(String key, String value) {
@@ -223,6 +238,16 @@ class GenericTeleOp extends OpMode {
     }
 
     boolean setData(String key, double value) {
+        if (key != null) {
+            if (setup) {
+                telemetryData.replace(key, String.valueOf(value));
+                return true;
+            }
+        }
+        return false;
+    }
+
+    boolean setData(String key, boolean value) {
         if (key != null) {
             if (setup) {
                 telemetryData.replace(key, String.valueOf(value));

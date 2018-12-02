@@ -5,20 +5,20 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-final class Arm {
+final class ArmMarkI {
     private final DcMotor sliderDrive;
-    private final DcMotor armAnglerDrive;
-    private final Servo intakeAngler;
+    private final DcMotor armAngularDrive;
+    private final Servo intakeAngular;
     private final Servo lid;
 
-    Arm(HardwareMap map, String sliderDriveName, String armAnglerName, String intakeAnglerName, String lidName) {
+    ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularName, String intakeAngularName, String lidName) {
         sliderDrive = map.get(DcMotor.class, sliderDriveName);
         sliderDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armAnglerDrive = map.get(DcMotor.class, armAnglerName);
-        armAnglerDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        intakeAngler = map.get(Servo.class, intakeAnglerName);
+        armAngularDrive = map.get(DcMotor.class, armAngularName);
+        armAngularDrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeAngular = map.get(Servo.class, intakeAngularName);
         lid = map.get(Servo.class, lidName);
     }
 
@@ -29,10 +29,10 @@ final class Arm {
         }
     }
 
-    void setArmAnglerDrive(double power) {
+    void setArmAngularDrive(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            armAnglerDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            armAnglerDrive.setPower(power);
+            armAngularDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            armAngularDrive.setPower(power);
         }
     }
 
@@ -44,17 +44,17 @@ final class Arm {
         }
     }
 
-    void setArmAnglerDriveForRotations(double power, int rotations) {
+    void setArmAngularDriveForRotations(double power, int rotations) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            armAnglerDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            armAnglerDrive.setPower(power);
-            armAnglerDrive.setTargetPosition(armAnglerDrive.getCurrentPosition() + rotations);
+            armAngularDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armAngularDrive.setPower(power);
+            armAngularDrive.setTargetPosition(armAngularDrive.getCurrentPosition() + rotations);
         }
     }
 
     void setIntakeAngle(double angle) {
         if (HardwareInput.validate(angle, InputType.FOR_SERVO)) {
-            intakeAngler.setPosition(angle);
+            intakeAngular.setPosition(angle);
         }
     }
 
@@ -66,14 +66,14 @@ final class Arm {
         lid.setPosition(Servo.MIN_POSITION);
     }
 
-    void freezeArmAngler() {
-        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armAnglerDrive.setPower(0);
+    void freezeArmAngular() {
+        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        armAngularDrive.setPower(0);
     }
 
-    void coastArmAngler() {
-        armAnglerDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        armAnglerDrive.setPower(0);
+    void coastArmAngular() {
+        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+        armAngularDrive.setPower(0);
     }
 
     void freezeArmSliders() {

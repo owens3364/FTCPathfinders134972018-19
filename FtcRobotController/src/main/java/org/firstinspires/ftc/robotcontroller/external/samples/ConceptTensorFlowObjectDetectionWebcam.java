@@ -51,6 +51,7 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
+@SuppressWarnings("JavaDoc")
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
 @Disabled
 class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
@@ -76,6 +77,7 @@ class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
+    @SuppressWarnings("JavaDoc")
     private VuforiaLocalizer vuforia;
 
     /**

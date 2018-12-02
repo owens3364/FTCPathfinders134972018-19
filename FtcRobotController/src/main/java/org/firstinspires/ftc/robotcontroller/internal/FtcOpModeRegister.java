@@ -61,6 +61,7 @@ public class FtcOpModeRegister implements OpModeRegister {
      * @see com.qualcomm.robotcore.eventloop.opmode.TeleOp
      * @see com.qualcomm.robotcore.eventloop.opmode.Autonomous
      */
+    @SuppressWarnings("JavaDoc")
     public void register(OpModeManager manager) {
 
     }

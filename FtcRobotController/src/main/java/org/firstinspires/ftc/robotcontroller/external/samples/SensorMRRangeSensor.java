@@ -51,12 +51,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @Disabled   // comment out or remove this line to enable this opmode
 class SensorMRRangeSensor extends LinearOpMode {
 
-    private ModernRoboticsI2cRangeSensor rangeSensor;
-
     @Override public void runOpMode() {
 
         // get a reference to our compass
-        rangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
+        ModernRoboticsI2cRangeSensor rangeSensor = hardwareMap.get(ModernRoboticsI2cRangeSensor.class, "sensor_range");
 
         // wait for the start button to be pressed
         waitForStart();

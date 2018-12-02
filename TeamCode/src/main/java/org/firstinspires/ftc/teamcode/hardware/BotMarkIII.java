@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
+public final class BotMarkIII implements MechanumDriveOpModeUsageMarkII {
     private static final double MM_PER_DRIVE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
     private static final double MM_PER_LIFT_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
     private static final double MM_PER_SLIDER_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
@@ -11,12 +11,12 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
 
     private final MechanumDriveTrainMarkI driveTrain;
     private final LiftMarkI lift;
-    private final ArmMarkI arm;
+    private final ArmMarkII arm;
 
-    public BotMarkII(HardwareMap map) {
+    public BotMarkIII(HardwareMap map) {
         this.driveTrain = new MechanumDriveTrainMarkI(map, "FrontLeftDrive", "FrontRightDrive", "RearLeftDrive", "RearRightDrive");
         this.lift = new LiftMarkI(map, "LiftMarkI");
-        this.arm = new ArmMarkI(map, "SlidersDrive", "ArmAngularDrive", "IntakeAngular", "IntakeLid");
+        this.arm = new ArmMarkII(map, "SlidersDrive", "ArmAngularDrive", "IntakeAngular");
     }
 
     @Override
@@ -25,8 +25,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
+        driveTrain.driveMotorsBySticks(leftRight, forwardBackward, turn);
+    }
+
+    @Override
     public void setFrontLeftDrive(double power) {
         driveTrain.setFrontLeft(power);
+    }
+
+    @Override
+    public double getFrontLeftDrivePower() {
+        return driveTrain.getFrontLeft();
     }
 
     @Override
@@ -35,8 +45,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public double getFrontRightDrivePower() {
+        return driveTrain.getFrontRight();
+    }
+
+    @Override
     public void setRearLeftDrive(double power) {
         driveTrain.setRearLeft(power);
+    }
+
+    @Override
+    public double getRearLeftDrivePower() {
+        return driveTrain.getRearLeft();
     }
 
     @Override
@@ -45,8 +65,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public double getRearRightDrivePower() {
+        return driveTrain.getRearRight();
+    }
+
+    @Override
     public void setArmSliderDrive(double power) {
         arm.setSliderDrive(power);
+    }
+
+    @Override
+    public double getArmSliderDrivePower() {
+        return arm.getSliderDrive();
     }
 
     @Override
@@ -55,13 +85,28 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public double getArmAngularDrivePower() {
+        return arm.getArmAngularDrive();
+    }
+
+    @Override
     public void setIntakeAngle(double angle) {
         arm.setIntakeAngle(angle);
     }
 
     @Override
+    public double getIntakeAnglePosition() {
+        return arm.getIntakeAngle();
+    }
+
+    @Override
     public void setLiftDrive(double power) {
         lift.setCableDrive(power);
+    }
+
+    @Override
+    public double getLiftDrivePower() {
+        return lift.getCableDrive();
     }
 
     @Override
@@ -140,8 +185,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public boolean getLiftFrozen() {
+        return lift.liftFrozen();
+    }
+
+    @Override
     public void coastLift() {
         lift.coast();
+    }
+
+    @Override
+    public boolean getLiftCoasting() {
+        return lift.liftCoasting();
     }
 
     @Override
@@ -150,8 +205,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public boolean getArmAngularFrozen() {
+        return arm.getArmAngularFrozen();
+    }
+
+    @Override
     public void coastArmAngular() {
         arm.coastArmAngular();
+    }
+
+    @Override
+    public boolean getArmAngularCoasting() {
+        return arm.getArmAngularCoasting();
     }
 
     @Override
@@ -160,18 +225,18 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public boolean getArmSlidersFrozen() {
+        return arm.getArmSlidersFrozen();
+    }
+
+    @Override
     public void coastArmSliders() {
         arm.coastArmSliders();
     }
 
     @Override
-    public void openArmLid() {
-        arm.openLid();
-    }
-
-    @Override
-    public void closeArmLid() {
-        arm.closeLid();
+    public boolean getArmSlidersCoasting() {
+        return arm.getArmSlidersCoasting();
     }
 
     @Override

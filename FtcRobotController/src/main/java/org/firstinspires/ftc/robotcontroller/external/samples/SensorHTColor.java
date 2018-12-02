@@ -53,10 +53,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 @Disabled
 class SensorHTColor extends LinearOpMode {
 
-  private ColorSensor colorSensor;  // Hardware Device Object
 
-
-  @Override
+    @Override
   public void runOpMode() {
 
     // hsvValues is an array that will hold the hue, saturation, and value information.
@@ -78,7 +76,8 @@ class SensorHTColor extends LinearOpMode {
     boolean bLedOn = true;
 
     // get a reference to our ColorSensor object.
-    colorSensor = hardwareMap.colorSensor.get("sensor_color");
+        // Hardware Device Object
+        ColorSensor colorSensor = hardwareMap.colorSensor.get("sensor_color");
 
     // turn the LED on in the beginning, just so user will know that the sensor is active.
     colorSensor.enableLed(true);
@@ -94,7 +93,7 @@ class SensorHTColor extends LinearOpMode {
       bCurrState = gamepad1.x;
 
       // check for button state transitions.
-      if (bCurrState && (true != bPrevState))  {
+      if (bCurrState && (!bPrevState))  {
 
         // button is transitioning to a pressed state.  Toggle LED.
         // on button press, enable the LED.

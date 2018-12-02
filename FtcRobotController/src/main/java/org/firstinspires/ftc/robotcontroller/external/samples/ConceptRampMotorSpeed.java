@@ -55,8 +55,6 @@ class ConceptRampMotorSpeed extends LinearOpMode {
     private static final double MAX_FWD     =  1.0;     // Maximum FWD power applied to motor
     private static final double MAX_REV     = -1.0;     // Maximum REV power applied to motor
 
-    // Define class members
-    private DcMotor motor;
     private double  power   = 0;
     private boolean rampUp  = true;
 
@@ -66,7 +64,8 @@ class ConceptRampMotorSpeed extends LinearOpMode {
 
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
-        motor = hardwareMap.get(DcMotor.class, "left_drive");
+        // Define class members
+        DcMotor motor = hardwareMap.get(DcMotor.class, "left_drive");
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to run Motors." );

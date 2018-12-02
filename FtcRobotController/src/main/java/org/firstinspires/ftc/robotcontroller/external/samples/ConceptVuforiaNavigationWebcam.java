@@ -36,13 +36,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.qualcomm.robotcore.util.ThreadPool;
-import com.vuforia.Frame;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
 import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.MatrixF;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -110,20 +107,22 @@ class ConceptVuforiaNavigationWebcam extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
+    @SuppressWarnings("JavaDoc")
     private VuforiaLocalizer vuforia;
-
-    /**
-     * This is the webcam we are to use. As with other hardware devices such as motors and
-     * servos, this device is identified using the robot configuration tool in the FTC application.
-     */
-    private WebcamName webcamName;
 
     @Override public void runOpMode() {
 
         /*
          * Retrieve the camera we are to use.
          */
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        /*
+      This is the webcam we are to use. As with other hardware devices such as motors and
+      servos, this device is identified using the robot configuration tool in the FTC application.
+     */ /*
+          This is the webcam we are to use. As with other hardware devices such as motors and
+          servos, this device is identified using the robot configuration tool in the FTC application.
+         */
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);

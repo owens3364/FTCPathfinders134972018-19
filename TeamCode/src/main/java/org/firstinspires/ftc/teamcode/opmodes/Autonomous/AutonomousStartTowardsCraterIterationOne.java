@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.BotMarkI;
-import org.firstinspires.ftc.teamcode.hardware.StandardDriveOpModeUsage;
+import org.firstinspires.ftc.teamcode.hardware.StandardDriveOpModeUsageMarkI;
 
 @Autonomous(name = "AutoCraterOne", group = "Autonomous")
 @Disabled
 public final class AutonomousStartTowardsCraterIterationOne extends GenericAutonomous {
 
-    private StandardDriveOpModeUsage bot;
+    private StandardDriveOpModeUsageMarkI bot;
 
     @Override
     public void runOpMode() {

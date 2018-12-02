@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-final class MechanumDriveTrain {
+final class MechanumDriveTrainMarkI {
     private final DcMotor frontLeftDrive;
     private final DcMotor frontRightDrive;
     private final DcMotor rearLeftDrive;
     private final DcMotor rearRightDrive;
 
-    MechanumDriveTrain(HardwareMap map, String frontLeftDriveName, String frontRightDriveName, String rearLeftDriveName, String rearRightDriveName) {
+    MechanumDriveTrainMarkI(HardwareMap map, String frontLeftDriveName, String frontRightDriveName, String rearLeftDriveName, String rearRightDriveName) {
         frontLeftDrive = map.get(DcMotor.class, frontLeftDriveName);
         frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         frontRightDrive = map.get(DcMotor.class, frontRightDriveName);
@@ -21,11 +21,28 @@ final class MechanumDriveTrain {
         rearRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
     }
 
+    void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
+        double targetPoint = Math.hypot(leftRight, forwardBackward);
+        double targetAngle = Math.atan2(forwardBackward, leftRight) - Math.PI / 4;
+        setFrontLeft(targetPoint * Math.cos(targetAngle) + turn);
+        setFrontRight(targetPoint * Math.sin(targetAngle) - turn);
+        setRearLeft(targetPoint * Math.sin(targetAngle) + turn);
+        setRearRight(targetPoint *Math.cos(targetAngle) - turn);
+    }
+
+    double getFrontLeft() {
+        return frontLeftDrive.getPower();
+    }
+
     void setFrontLeft(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             frontLeftDrive.setPower(power);
         }
+    }
+
+    double getFrontRight() {
+        return frontRightDrive.getPower();
     }
 
     void setFrontRight(double power) {
@@ -35,11 +52,19 @@ final class MechanumDriveTrain {
         }
     }
 
+    double getRearLeft() {
+        return rearLeftDrive.getPower();
+    }
+
     void setRearLeft(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rearLeftDrive.setPower(power);
         }
+    }
+
+    double getRearRight() {
+        return rearRightDrive.getPower();
     }
 
     void setRearRight(double power) {

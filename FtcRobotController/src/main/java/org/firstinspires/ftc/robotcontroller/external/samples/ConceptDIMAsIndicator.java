@@ -61,15 +61,13 @@ class ConceptDIMAsIndicator extends LinearOpMode {
     // Create timer to toggle LEDs
     private final ElapsedTime runtime = new ElapsedTime();
 
-    // Define class members
-    private DeviceInterfaceModule   dim;
-
     @Override
     public void runOpMode() {
 
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
-        dim = hardwareMap.get(DeviceInterfaceModule.class, "dim");
+        // Define class members
+        DeviceInterfaceModule dim = hardwareMap.get(DeviceInterfaceModule.class, "dim");
 
         // Toggle LEDs while Waiting for the start button
         telemetry.addData(">", "Press Play to test LEDs." );

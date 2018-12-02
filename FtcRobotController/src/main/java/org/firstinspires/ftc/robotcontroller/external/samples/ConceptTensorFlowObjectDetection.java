@@ -51,6 +51,7 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
+@SuppressWarnings("JavaDoc")
 @TeleOp(name = "Concept: TensorFlow Object Detection", group = "Concept")
 @Disabled
 class ConceptTensorFlowObjectDetection extends LinearOpMode {
@@ -82,6 +83,7 @@ class ConceptTensorFlowObjectDetection extends LinearOpMode {
      * {@link #tfod} is the variable we will use to store our instance of the Tensor Flow Object
      * Detection engine.
      */
+    @SuppressWarnings("JavaDoc")
     private TFObjectDetector tfod;
 
     @Override

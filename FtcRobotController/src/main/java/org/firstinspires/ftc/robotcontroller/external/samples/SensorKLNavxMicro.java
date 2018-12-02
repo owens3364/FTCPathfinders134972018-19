@@ -29,12 +29,12 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.hardware.kauailabs.NavxMicroNavigationSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -54,24 +54,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 @Disabled
 class SensorKLNavxMicro extends LinearOpMode {
 
-    /** In this sample, for illustration purposes we use two interfaces on the one gyro object.
-     * That's likely atypical: you'll probably use one or the other in any given situation,
-     * depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
-     * {@link Gyroscope}) are common interfaces supported by possibly several different gyro
-     * implementations. {@link NavxMicroNavigationSensor}, by contrast, provides functionality that
-     * is unique to the navX Micro sensor.
-     */
-    private IntegratingGyroscope gyro;
-    private NavxMicroNavigationSensor navxMicro;
-
     // A timer helps provide feedback while calibration is taking place
     private final ElapsedTime timer = new ElapsedTime();
 
     @Override public void runOpMode() throws InterruptedException {
         // Get a reference to a Modern Robotics GyroSensor object. We use several interfaces
         // on this object to illustrate which interfaces support which functionality.
-        navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
-        gyro = navxMicro;
+        NavxMicroNavigationSensor navxMicro = hardwareMap.get(NavxMicroNavigationSensor.class, "navx");
+        /* In this sample, for illustration purposes we use two interfaces on the one gyro object.
+      That's likely atypical: you'll probably use one or the other in any given situation,
+      depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
+      {@link Gyroscope}) are common interfaces supported by possibly several different gyro
+      implementations. {@link NavxMicroNavigationSensor}, by contrast, provides functionality that
+      is unique to the navX Micro sensor.
+     */ /* In this sample, for illustration purposes we use two interfaces on the one gyro object.
+          That's likely atypical: you'll probably use one or the other in any given situation,
+          depending on what you're trying to do. {@link IntegratingGyroscope} (and it's base interface,
+          {@link Gyroscope}) are common interfaces supported by possibly several different gyro
+          implementations. {@link NavxMicroNavigationSensor}, by contrast, provides functionality that
+          is unique to the navX Micro sensor.
+         */
         // If you're only interested int the IntegratingGyroscope interface, the following will suffice.
         // gyro = hardwareMap.get(IntegratingGyroscope.class, "navx");
 
@@ -97,8 +99,8 @@ class SensorKLNavxMicro extends LinearOpMode {
             // Read dimensionalized data from the gyro. This gyro can report angular velocities
             // about all three axes. Additionally, it internally integrates the Z axis to
             // be able to report an absolute angular Z orientation.
-            AngularVelocity rates = gyro.getAngularVelocity(AngleUnit.DEGREES);
-            Orientation angles = gyro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            AngularVelocity rates = navxMicro.getAngularVelocity(AngleUnit.DEGREES);
+            Orientation angles = navxMicro.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
             telemetry.addLine()
                 .addData("dx", formatRate(rates.xRotationRate))
@@ -115,6 +117,7 @@ class SensorKLNavxMicro extends LinearOpMode {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private String formatRate(float rate) {
         return String.format("%.3f", rate);
     }
@@ -123,6 +126,7 @@ class SensorKLNavxMicro extends LinearOpMode {
         return formatDegrees(AngleUnit.DEGREES.fromUnit(angleUnit, angle));
     }
 
+    @SuppressLint("DefaultLocale")
     private String formatDegrees(double degrees){
         return String.format("%.1f", AngleUnit.DEGREES.normalize(degrees));
     }

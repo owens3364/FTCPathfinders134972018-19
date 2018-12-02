@@ -6,6 +6,8 @@
 
 <!-- The package name here determines the package for your R class and your BuildConfig class -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.firstinspires.ftc.teamcode">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.firstinspires.ftc.teamcode"
+    tools:ignore="GoogleAppIndexingWarning">
     <application android:fullBackupContent="@xml/backup_descriptor" />
 </manifest>

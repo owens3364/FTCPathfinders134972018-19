@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkI;
-import org.firstinspires.ftc.teamcode.hardware.StandardDriveOpModeUsage;
+import org.firstinspires.ftc.teamcode.hardware.StandardDriveOpModeUsageMarkI;
 
 
 @TeleOp(name="TeleOpOne", group="TeleOp")
 public final class TeleOpMarkI extends GenericTeleOp {
 
-    private StandardDriveOpModeUsage bot;
+    private StandardDriveOpModeUsageMarkI bot;
     private Controller controller1;
     private Controller controller2;
     private boolean yToggled = false;
@@ -61,11 +61,11 @@ public final class TeleOpMarkI extends GenericTeleOp {
             //Controller2/Bot io
             //Run Intake forwards/clockwise with the left trigger
             if (controller2.leftTrigger() != 0) {
-                bot.setIntakeDrive(-controller2.leftTrigger() / 2); //TODO: Manage this with superclass
+                bot.setIntakeDrive(-controller2.leftTrigger() / 2);
             }
             //Run Intake backwards/counter-clockwise with the right trigger
             else if (controller2.rightTrigger() != 0) {
-                bot.setIntakeDrive(controller2.rightTrigger() / 2); //TODO: Manage this with superclass
+                bot.setIntakeDrive(controller2.rightTrigger() / 2);
             }
             //Run Intake forwards/clockwise for a quarter of a second with left bumper
             if (controller2.leftBumper()) {

@@ -26,19 +26,25 @@ public final class VisionUtils {
     // ///XXX***DO NOT CHANGE***XXX\\\
     //Constants for navigation
     private static final float MM_PER_INCH = 25.4f;
-    private static final float MM_FTC_FIELD_WIDTH = (12*6) * MM_PER_INCH; //Length/Height not necessary, field is square
-    private static final float MM_TARGET_HEIGHT = (6) * MM_PER_INCH; //Height of center of VuMark targets (Blue-Rover, Red-Footprint, Front-Craters, Back-Space
+    //Length/Height not necessary, field is square
+    private static final float MM_FTC_FIELD_WIDTH = (12*6) * MM_PER_INCH;
+    //Height of center of VuMark targets (Blue-Rover, Red-Footprint, Front-Craters, Back-Space
+    private static final float MM_TARGET_HEIGHT = (6) * MM_PER_INCH;
 
     /**
      * Create a transformation matrix describing where the phone is on the robot.
      *
      * The coordinate frame for the robot looks the same as the field.
-     * The robot's "forward" direction is facing out along X axis, with the LEFT side facing out along the Y axis.
+     * The robot's "forward" direction is facing out along X axis,
+     * with the LEFT side facing out along the Y axis.
      * Z is UP on the robot.  This equates to a bearing angle of Zero degrees.
      *
-     * The phone starts out lying flat, with the screen facing Up and with the physical top of the phone
-     * pointing to the LEFT side of the Robot.  It's very important when you test this code that the top of the
-     * camera is pointing to the left side of the  robot.  The rotation angles don't work if you flip the phone.
+     * The phone starts out lying flat, with the screen facing
+     * up and with the physical top of the phone
+     * pointing to the LEFT side of the Robot.
+     * It's very important when you test this code that the top of the
+     * camera is pointing to the left side of the  robot.
+     * The rotation angles don't work if you flip the phone.
      *
      * If using the rear (High Res) camera:
      * We need to rotate the camera around it's long axis to bring the rear camera forward.
@@ -49,13 +55,17 @@ public final class VisionUtils {
      * This requires a Positive 90 degree rotation on the Y axis
      *
      * Next, translate the camera lens to where it is on the robot.
-     * In this example, it is centered (left to right), but 110 mm forward of the middle of the robot, and 200 mm above ground level.
+     * In this example, it is centered (left to right),
+     * but 110 mm forward of the middle of the robot, and 200 mm above ground level.
      */
 
     //TODO: MODIFY FOR PHONE'S POSITION
-    private static final int CAMERA_FORWARD_DISPLACEMENT = 110; // eg: Camera is 110 mm in front of robot center
-    private static final int CAMERA_VERTICAL_DISPLACEMENT = 200; // eg: Camera is 200 mm above ground
-    private static final int CAMERA_LEFT_DISPLACEMENT = 0; // eg: Camera is ON the robot's center line
+    // eg: Camera is 110 mm in front of robot center
+    private static final int CAMERA_FORWARD_DISPLACEMENT = 110;
+    // eg: Camera is 200 mm above ground
+    private static final int CAMERA_VERTICAL_DISPLACEMENT = 200;
+    // eg: Camera is ON the robot's center line
+    private static final int CAMERA_LEFT_DISPLACEMENT = 0;
 
     //Constants for TensorFlow Object Detection
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
@@ -64,7 +74,11 @@ public final class VisionUtils {
     //Constants for Vuforia
     // ///XXX***DO NOT CHANGE***XXX\\\
     //Vuforia Development Key
-    private static final String VUFORIA_KEY = "AYkrQsv/////AAABmdvvwseKyUaBtmMB68LAeOcSWZgNWbDYYjuWtsW0qGDzLQT/QqFCU8yfFXAYA9EzKAEvDrkzq4CYzUh0VmKXOSRsBxYVyum41hbPswQ918OcsByS7YvGpvHfRsKKR5GMIEUF0WPwmby0cqdJSeBqP4xX5BrolZIFSqBnOw0bboUdP44uoj7ZvBPeX7fWpFH5VGgYD4dPq1SrqC2kC30YGdwKp7vWtXjBRtEXa8jbQz4nztQCPvXvicsjqeVPkTkp8WWaTwasosQ/dQwlEoBN8dNImdQEshWXOnrHy3k4YhdW2FBwHsYdCi4vRZhJX5gBSEB9+Aao3fPe0vNkMcz0HzKszJYiUcbGN+aFcRKdN9q7";
+    private static final String VUFORIA_KEY = "AYkrQsv/////AAABmdvvwseKyUaBtmMB68LAeOcSWZgNWbDYY" +
+            "juWtsW0qGDzLQT/QqFCU8yfFXAYA9EzKAEvDrkzq4CYzUh0VmKXOSRsBxYVyum41hbPswQ918OcsByS7YvG" +
+            "pvHfRsKKR5GMIEUF0WPwmby0cqdJSeBqP4xX5BrolZIFSqBnOw0bboUdP44uoj7ZvBPeX7fWpFH5VGgYD4d" +
+            "Pq1SrqC2kC30YGdwKp7vWtXjBRtEXa8jbQz4nztQCPvXvicsjqeVPkTkp8WWaTwasosQ/dQwlEoBN8dNImd" +
+            "QEshWXOnrHy3k4YhdW2FBwHsYdCi4vRZhJX5gBSEB9+Aao3fPe0vNkMcz0HzKszJYiUcbGN+aFcRKdN9q7";
 
 
     //Last robot location
@@ -226,14 +240,20 @@ public final class VisionUtils {
 
     //Private helper methods
     private VuforiaLocalizer generateVuforiaEngine(HardwareMap map) {
-        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.Parameters(map.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", map.appContext.getPackageName()));
+        VuforiaLocalizer.Parameters params = new VuforiaLocalizer.
+                Parameters(map
+                .appContext
+                .getResources()
+                .getIdentifier("cameraMonitorViewId", "id",
+                        map.appContext.getPackageName()));
         params.vuforiaLicenseKey = VUFORIA_KEY;
         params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         return ClassFactory.getInstance().createVuforia(params);
     }
 
     private void initializeTrackables() {
-        VuforiaTrackables roverRuckusTargets = vuforia.loadTrackablesFromAsset("RoverRuckus");
+        VuforiaTrackables roverRuckusTargets = vuforia.
+                loadTrackablesFromAsset("RoverRuckus");
         blueRover = roverRuckusTargets.get(0);
         blueRover.setName("Blue-Rover");
         redFootprint = roverRuckusTargets.get(1);
@@ -246,26 +266,66 @@ public final class VisionUtils {
     }
 
     private void locateTrackables() {
-        blueRover.setLocation(OpenGLMatrix.translation(0, MM_FTC_FIELD_WIDTH, MM_TARGET_HEIGHT).multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 0)));
-        redFootprint.setLocation(OpenGLMatrix.translation(0, -MM_FTC_FIELD_WIDTH, MM_TARGET_HEIGHT).multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, 180)));
-        frontCraters.setLocation(OpenGLMatrix.translation(-MM_FTC_FIELD_WIDTH, 0, MM_TARGET_HEIGHT).multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0 , 90)));
-        backSpace.setLocation(OpenGLMatrix.translation(MM_FTC_FIELD_WIDTH, 0, MM_TARGET_HEIGHT).multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
+        blueRover.setLocation(
+                OpenGLMatrix.translation(
+                        0, MM_FTC_FIELD_WIDTH, MM_TARGET_HEIGHT)
+                        .multiplied(Orientation.getRotationMatrix(EXTRINSIC,
+                                XYZ,
+                                DEGREES,
+                                90, 0, 0)));
+        redFootprint.setLocation(
+                OpenGLMatrix.translation(
+                        0, -MM_FTC_FIELD_WIDTH, MM_TARGET_HEIGHT)
+                        .multiplied(Orientation.getRotationMatrix(EXTRINSIC,
+                                XYZ,
+                                DEGREES,
+                                90, 0, 180)));
+        frontCraters.setLocation(
+                OpenGLMatrix.translation(
+                        -MM_FTC_FIELD_WIDTH, 0, MM_TARGET_HEIGHT)
+                        .multiplied(Orientation.getRotationMatrix(EXTRINSIC,
+                                XYZ,
+                                DEGREES,
+                                90, 0 , 90)));
+        backSpace.setLocation(
+                OpenGLMatrix.translation(
+                        MM_FTC_FIELD_WIDTH, 0, MM_TARGET_HEIGHT)
+                        .multiplied(Orientation.getRotationMatrix(EXTRINSIC,
+                                XYZ,
+                                DEGREES,
+                                90, 0, -90)));
     }
 
     private OpenGLMatrix locateCamera() {
-        return OpenGLMatrix.translation(CAMERA_FORWARD_DISPLACEMENT, CAMERA_LEFT_DISPLACEMENT, CAMERA_VERTICAL_DISPLACEMENT).multiplied(Orientation.getRotationMatrix(EXTRINSIC, YZX, DEGREES,-90, 0, 0)); //TODO: MODIFY FOR PHONE'S ORIENTATION
+        return OpenGLMatrix
+                .translation(CAMERA_FORWARD_DISPLACEMENT,
+                        CAMERA_LEFT_DISPLACEMENT,
+                        CAMERA_VERTICAL_DISPLACEMENT)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC,
+                        YZX,
+                        DEGREES,
+                        -90,
+                        0,
+                        0)); //TODO: MODIFY FOR PHONE'S ORIENTATION
     }
 
     private void alertTrackablesToCameraLocation(OpenGLMatrix cameraLocation) {
         for (VuforiaTrackable trackable : trackables)
         {
-            ((VuforiaTrackableDefaultListener)trackable.getListener()).setPhoneInformation(cameraLocation, VuforiaLocalizer.CameraDirection.BACK);
+            ((VuforiaTrackableDefaultListener)trackable.getListener())
+                    .setPhoneInformation(cameraLocation, VuforiaLocalizer.CameraDirection.BACK);
         }
     }
 
     private TFObjectDetector generateTFODEngine(HardwareMap map) {
-        TFObjectDetector.Parameters parameters = new TFObjectDetector.Parameters(map.appContext.getResources().getIdentifier("tfodMonitorViewId", "id", map.appContext.getPackageName()));
-        TFObjectDetector tfod = ClassFactory.getInstance().createTFObjectDetector(parameters, vuforia);
+        TFObjectDetector.Parameters parameters = new TFObjectDetector
+                .Parameters(map
+                .appContext
+                .getResources()
+                .getIdentifier("tfodMonitorViewId", "id",
+                        map.appContext.getPackageName()));
+        TFObjectDetector tfod = ClassFactory.getInstance()
+                .createTFObjectDetector(parameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
         tfod.activate();
         return tfod;

@@ -35,8 +35,6 @@
 
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
-
 /**
  * This class demonstrates how to manually register opmodes.
  *
@@ -51,12 +49,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpModeRegistrar;
  *
  * Note:
  * Even though you are performing a manual Registration, you should set the Annotations on your classes so they
- * can be placed into the correct Driver Station OpMode list...  eg:
- *
- * @Autonomous(name="DriveAndScoreRed", group ="Red")
- * or
- * @TeleOp(name="FastDrive", group ="A-Team")
- *
+ * can be placed into the correct Driver Station OpMode list
  * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
  * Then uncomment and copy the manager.register() call to register as many of your OpModes as you like.
  * You can even use it to temporarily register samples directly from the robotController/external/samples folder.

@@ -5,13 +5,13 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
-import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsage;
+import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
 
 
 @TeleOp(name = "TeleOpTwo", group = "TeleOp")
 public final class TeleOpMarkII extends GenericTeleOp {
 
-    private MechanumDriveOpModeUsage bot;
+    private MechanumDriveOpModeUsageMarkI bot;
     private Controller controller1;
     private Controller controller2;
     private boolean yToggled = false;
@@ -95,13 +95,13 @@ public final class TeleOpMarkII extends GenericTeleOp {
             if (controller2.a()) {
                 bot.freezeArmSliders();
             }
-            //Run the slider angler drive with the right stick
-            bot.setArmAnglerDrive(controller2.rightStickY());
+            //Run the slider angular drive with the right stick
+            bot.setArmAngularDrive(controller2.rightStickY());
             //And freeze it when B is pressed
             if (controller2.b()) {
-                bot.freezeArmAngler();
+                bot.freezeArmAngular();
             }
-            //Run the intake angler off the up and down dpad buttons
+            //Run the intake angular off the up and down dpad buttons
             if (controller2.dpadUp()) {
                 intakeAngle += 0.01;
             }
@@ -109,6 +109,8 @@ public final class TeleOpMarkII extends GenericTeleOp {
             if (controller2.dpadDown()) {
                 intakeAngle -= 0.01;
             }
+            bot.setIntakeAngle(intakeAngle);
+
             //Open and close the intake lid by toggling Y
             if (controller2.y()) {
                 yToggled = !yToggled;

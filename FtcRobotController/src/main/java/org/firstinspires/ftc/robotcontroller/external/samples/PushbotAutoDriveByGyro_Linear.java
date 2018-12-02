@@ -138,13 +138,13 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         // Put a hold after each turn
         gyroDrive(DRIVE_SPEED, 48.0, 0.0);    // Drive FWD 48 inches
-        gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
+        gyroTurn(-45.0);         // Turn  CCW to -45 Degrees
+        gyroHold(-45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
         gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
-        gyroTurn( TURN_SPEED,  45.0);         // Turn  CW  to  45 Degrees
-        gyroHold( TURN_SPEED,  45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
-        gyroTurn( TURN_SPEED,   0.0);         // Turn  CW  to   0 Degrees
-        gyroHold( TURN_SPEED,   0.0, 1.0);    // Hold  0 Deg heading for a 1 second
+        gyroTurn(45.0);         // Turn  CW  to  45 Degrees
+        gyroHold(45.0, 0.5);    // Hold  45 Deg heading for a 1/2 second
+        gyroTurn(0.0);         // Turn  CW  to   0 Degrees
+        gyroHold(0.0, 1.0);    // Hold  0 Deg heading for a 1 second
         gyroDrive(DRIVE_SPEED,-48.0, 0.0);    // Drive REV 48 inches
 
         telemetry.addData("Path", "Complete");
@@ -248,15 +248,14 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
      *  1) Move gets to the heading (angle)
      *  2) Driver stops the opmode running.
      *
-     * @param speed Desired speed of turn.
      * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from current heading.
      */
-    private void gyroTurn(double speed, double angle) {
+    private void gyroTurn(double angle) {
 
         // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && !onHeading(speed, angle)) {
+        while (opModeIsActive() && !onHeading(angle)) {
             // Update telemetry & Allow time for other processes to run.
             telemetry.update();
         }
@@ -265,14 +264,12 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
     /**
      *  Method to obtain & hold a heading for a finite amount of time
      *  Move will stop once the requested time has elapsed
-     *
-     * @param speed      Desired speed of turn.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
+     *  @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
      *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                   If a relative angle is required, add/subtract from current heading.
      * @param holdTime   Length of time (in seconds) to hold the specified heading.
      */
-    private void gyroHold(double speed, double angle, double holdTime) {
+    private void gyroHold(double angle, double holdTime) {
 
         ElapsedTime holdTimer = new ElapsedTime();
 
@@ -280,7 +277,7 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
         holdTimer.reset();
         while (opModeIsActive() && (holdTimer.time() < holdTime)) {
             // Update telemetry & Allow time for other processes to run.
-            onHeading(speed, angle);
+            onHeading(angle);
             telemetry.update();
         }
 
@@ -292,13 +289,12 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
     /**
      * Perform one cycle of closed loop heading control.
      *
-     * @param speed     Desired speed of turn.
      * @param angle     Absolute Angle (in Degrees) relative to last gyro reset.
      *                  0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
      *                  If a relative angle is required, add/subtract from current heading.
-     * @return
+     * @return boolean indicating if the robot (per the gyro) is on the proper heading
      */
-    private boolean onHeading(double speed, double angle) {
+    private boolean onHeading(double angle) {
         double   error ;
         double   steer ;
         boolean  onTarget = false ;
@@ -316,7 +312,7 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
         }
         else {
             steer = getSteer(error, PushbotAutoDriveByGyro_Linear.P_TURN_COEFF);
-            rightSpeed  = speed * steer;
+            rightSpeed  = PushbotAutoDriveByGyro_Linear.TURN_SPEED * steer;
             leftSpeed   = -rightSpeed;
         }
 
@@ -353,7 +349,7 @@ class PushbotAutoDriveByGyro_Linear extends LinearOpMode {
      * returns desired steering force.  +/- 1 range.  +ve = steer left
      * @param error   Error angle in robot relative degrees
      * @param PCoeff  Proportional Gain Coefficient
-     * @return
+     * @return desired steering force
      */
     private double getSteer(double error, double PCoeff) {
         return Range.clip(error * PCoeff, -1, 1);

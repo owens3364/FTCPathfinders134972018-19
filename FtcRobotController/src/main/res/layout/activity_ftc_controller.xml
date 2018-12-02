@@ -53,7 +53,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       android:layout_width="wrap_content"
       android:layout_height="fill_parent"
       android:adjustViewBounds="true"
-      android:layout_margin="1dp"/>
+      android:layout_margin="1dp"
+        tools:ignore="ContentDescription" />
 
     <TextView
       android:id="@+id/textDeviceName"
@@ -63,7 +64,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       android:textColor="?attr/textWhite"
       android:textAppearance="?android:attr/textAppearanceMedium"
       android:padding="8dp"
-      android:textStyle="bold"/>
+      android:textStyle="bold"
+        tools:ignore="RelativeOverlap" />
 
     <ImageButton
       android:id="@+id/menu_buttons"
@@ -77,7 +79,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
       android:layout_alignParentEnd="true"
       android:layout_centerInParent="true"
       android:layout_centerHorizontal="true"
-      android:layout_margin="10dp"/>
+      android:layout_margin="10dp"
+        tools:ignore="ContentDescription" />
 
   </RelativeLayout>
   <!-- end of black bar -->

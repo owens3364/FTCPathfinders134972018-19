@@ -32,6 +32,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 package org.firstinspires.ftc.robotcontroller.external.samples;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -55,6 +57,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @Disabled
 class SensorREV2mDistance extends LinearOpMode {
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void runOpMode() {
         // you can use this as a regular DistanceSensor.

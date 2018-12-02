@@ -60,7 +60,6 @@ class PushbotAutoDriveToLine_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
     private final HardwarePushbot         robot   = new HardwarePushbot();   // Use a Pushbot's hardware
-    private LightSensor             lightSensor;      // Primary LEGO Light sensor,
     // OpticalDistanceSensor   lightSensor;   // Alternative MR ODS sensor
 
     private static final double     WHITE_THRESHOLD = 0.2;  // spans between 0.1 - 0.5 from dark to light
@@ -79,7 +78,8 @@ class PushbotAutoDriveToLine_Linear extends LinearOpMode {
         // robot.rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // get a reference to our Light Sensor object.
-        lightSensor = hardwareMap.lightSensor.get("sensor_light");                // Primary LEGO Light Sensor
+        // Primary LEGO Light sensor,
+        LightSensor lightSensor = hardwareMap.lightSensor.get("sensor_light");
         //  lightSensor = hardwareMap.opticalDistanceSensor.get("sensor_ods");  // Alternative MR ODS sensor.
 
         // turn on LED of light sensor.

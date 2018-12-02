@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-final class TeamMarkerPositioner {
+final class TeamMarkerPositionerMarkI {
     private final Servo marker;
 
-    TeamMarkerPositioner(HardwareMap map, String markerName) {
+    TeamMarkerPositionerMarkI(HardwareMap map, String markerName) {
         marker = map.get(Servo.class, markerName);
     }
 

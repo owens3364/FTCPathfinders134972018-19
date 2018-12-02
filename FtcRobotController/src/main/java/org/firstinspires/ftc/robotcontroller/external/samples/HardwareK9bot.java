@@ -67,8 +67,6 @@ class HardwareK9bot
     public final static double CLAW_MIN_RANGE  = 0.20;
     public final static double CLAW_MAX_RANGE  = 0.7;
 
-    /* Local OpMode members. */
-    private HardwareMap hwMap  = null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
@@ -78,11 +76,11 @@ class HardwareK9bot
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // save reference to HW Map
-        hwMap = ahwMap;
+        /* Local OpMode members. */
 
         // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        rightDrive = hwMap.get(DcMotor.class, "right_drive");
+        leftDrive  = ahwMap.get(DcMotor.class, "left_drive");
+        rightDrive = ahwMap.get(DcMotor.class, "right_drive");
         leftDrive.setDirection(DcMotor.Direction.REVERSE);
 
         // Set all motors to zero power
@@ -95,8 +93,8 @@ class HardwareK9bot
         rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        arm  = hwMap.get(Servo.class, "arm");
-        claw = hwMap.get(Servo.class, "claw");
+        arm  = ahwMap.get(Servo.class, "arm");
+        claw = ahwMap.get(Servo.class, "claw");
         arm.setPosition(ARM_HOME);
         claw.setPosition(CLAW_HOME);
     }

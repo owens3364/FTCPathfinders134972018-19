@@ -63,8 +63,6 @@ class HardwarePushbot
     public static final double ARM_UP_POWER    =  0.45 ;
     public static final double ARM_DOWN_POWER  = -0.45 ;
 
-    /* local OpMode members. */
-    private HardwareMap hwMap           =  null;
     private ElapsedTime period  = new ElapsedTime();
 
     /* Constructor */
@@ -75,12 +73,12 @@ class HardwarePushbot
     /* Initialize standard Hardware interfaces */
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
-        hwMap = ahwMap;
+        /* local OpMode members. */
 
         // Define and Initialize Motors
-        leftDrive  = hwMap.get(DcMotor.class, "left_drive");
-        rightDrive = hwMap.get(DcMotor.class, "right_drive");
-        leftArm    = hwMap.get(DcMotor.class, "left_arm");
+        leftDrive  = ahwMap.get(DcMotor.class, "left_drive");
+        rightDrive = ahwMap.get(DcMotor.class, "right_drive");
+        leftArm    = ahwMap.get(DcMotor.class, "left_arm");
         leftDrive.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDrive.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
@@ -96,8 +94,8 @@ class HardwarePushbot
         leftArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        leftClaw  = hwMap.get(Servo.class, "left_hand");
-        rightClaw = hwMap.get(Servo.class, "right_hand");
+        leftClaw  = ahwMap.get(Servo.class, "left_hand");
+        rightClaw = ahwMap.get(Servo.class, "right_hand");
         leftClaw.setPosition(MID_SERVO);
         rightClaw.setPosition(MID_SERVO);
     }

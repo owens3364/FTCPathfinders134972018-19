@@ -71,10 +71,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 @Disabled                            // Comment this out to add to the opmode list
 class SensorAdafruitRGB extends LinearOpMode {
 
-  private ColorSensor sensorRGB;
-  private DeviceInterfaceModule cdim;
-
-  // we assume that the LED pin of the RGB sensor is connected to
+    // we assume that the LED pin of the RGB sensor is connected to
   // digital port 5 (zero indexed).
   private static final int LED_CHANNEL = 5;
 
@@ -100,7 +97,7 @@ class SensorAdafruitRGB extends LinearOpMode {
     boolean bLedOn = true;
 
     // get a reference to our DeviceInterfaceModule object.
-    cdim = hardwareMap.deviceInterfaceModule.get("dim");
+      DeviceInterfaceModule cdim = hardwareMap.deviceInterfaceModule.get("dim");
 
     // set the digital channel to output mode.
     // remember, the Adafruit sensor is actually two devices.
@@ -108,7 +105,7 @@ class SensorAdafruitRGB extends LinearOpMode {
     cdim.setDigitalChannelMode(LED_CHANNEL, DigitalChannel.Mode.OUTPUT);
 
     // get a reference to our ColorSensor object.
-    sensorRGB = hardwareMap.colorSensor.get("sensor_color");
+      ColorSensor sensorRGB = hardwareMap.colorSensor.get("sensor_color");
 
     // turn the LED on in the beginning, just so user will know that the sensor is active.
     cdim.setDigitalChannelState(LED_CHANNEL, true);
@@ -124,7 +121,7 @@ class SensorAdafruitRGB extends LinearOpMode {
       bCurrState = gamepad1.x;
 
       // check for button-press state transitions.
-      if ((bCurrState) && (true != bPrevState))  {
+      if ((bCurrState) && (!bPrevState))  {
 
         // button is transitioning to a pressed state. Toggle the LED.
         bLedOn = !bLedOn;

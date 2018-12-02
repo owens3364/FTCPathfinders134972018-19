@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-public interface StandardDriveOpModeUsage {
+public interface StandardDriveOpModeUsageMarkI {
     //Any data all bots should have is listed here and implemented by class names starting with "Bot"
     double getMMPerDriveRotation();
     void setLeftDrive(double power);

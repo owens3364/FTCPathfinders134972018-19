@@ -46,13 +46,12 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 @Disabled
 class SensorLEGOTouch extends LinearOpMode {
 
-  private TouchSensor touchSensor;  // Hardware Device Object
-
-  @Override
+    @Override
   public void runOpMode() {
 
     // get a reference to our Light Sensor object.
-    touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
+        // Hardware Device Object
+        TouchSensor touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
     int counter = 0;
 
     // wait for the start button to be pressed.

@@ -5,13 +5,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-final class LimitedDrive {
+final class LimitedDriveMarkI {
     private final DcMotor drive;
     //Limit switches
     private final DigitalChannel driveMin;
     private final DigitalChannel driveMax;
 
-    LimitedDrive(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
+    LimitedDriveMarkI(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
         drive = map.get(DcMotor.class, driveName);
         drive.setDirection(DcMotorSimple.Direction.FORWARD);
         driveMin = map.get(DigitalChannel.class, minLimitName);
@@ -20,7 +20,7 @@ final class LimitedDrive {
         driveMax.setMode(DigitalChannel.Mode.INPUT);
     }
 
-    //Safely sets the power of the LimitedDrive, ensures it does not go past minimum or maximum limits
+    //Safely sets the power of the LimitedDriveMarkI, ensures it does not go past minimum or maximum limits
     void set(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             //Ensure the actuator is not at its limit

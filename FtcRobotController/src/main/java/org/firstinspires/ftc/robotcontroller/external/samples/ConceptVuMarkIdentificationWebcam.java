@@ -41,7 +41,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
-import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
@@ -78,20 +77,22 @@ class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
+    @SuppressWarnings("JavaDoc")
     private VuforiaLocalizer vuforia;
-
-    /**
-     * This is the webcam we are to use. As with other hardware devices such as motors and
-     * servos, this device is identified using the robot configuration tool in the FTC application.
-     */
-    private WebcamName webcamName;
 
     @Override public void runOpMode() {
 
         /*
          * Retrieve the camera we are to use.
          */
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        /*
+      This is the webcam we are to use. As with other hardware devices such as motors and
+      servos, this device is identified using the robot configuration tool in the FTC application.
+     */ /*
+          This is the webcam we are to use. As with other hardware devices such as motors and
+          servos, this device is identified using the robot configuration tool in the FTC application.
+         */
+        WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);

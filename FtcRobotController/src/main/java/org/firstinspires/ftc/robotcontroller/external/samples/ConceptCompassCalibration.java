@@ -59,7 +59,6 @@ class ConceptCompassCalibration extends LinearOpMode {
     /* Declare OpMode members. */
     private final HardwarePushbot     robot   = new HardwarePushbot();   // Use a Pushbot's hardware
     private final ElapsedTime runtime = new ElapsedTime();
-    private CompassSensor       compass;
 
     private final static double     MOTOR_POWER   = 0.2; // scale from 0 to 1
     private static final long       HOLD_TIME_MS  = 3000;
@@ -74,7 +73,7 @@ class ConceptCompassCalibration extends LinearOpMode {
         robot.init(hardwareMap);
 
         // get a reference to our Compass Sensor object.
-        compass = hardwareMap.get(CompassSensor.class, "compass");
+        CompassSensor compass = hardwareMap.get(CompassSensor.class, "compass");
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Ready to cal");    //
