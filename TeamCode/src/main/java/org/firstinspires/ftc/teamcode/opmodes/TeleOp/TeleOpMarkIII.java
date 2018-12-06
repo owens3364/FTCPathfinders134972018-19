@@ -11,6 +11,23 @@ import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
 @TeleOp(name = "TeleOpThree", group = "TeleOp")
 public final class TeleOpMarkIII extends GenericTeleOp {
 
+    private static final String[] BASIC_TELEMETRY_DATA_KEYS = {
+            "Front Left Power",
+            "Front Right Power",
+            "Rear Left Power",
+            "Rear Right Power",
+            "Lift Power",
+            "Lift Frozen",
+            "Lift Coasting",
+            "Arm Slider Power",
+            "Arm Sliders Frozen",
+            "Arm Sliders Coasting",
+            "Arm Angular Power",
+            "Arm Angular Frozen",
+            "Arm Angular Coasting",
+            "Intake Angle Position"
+    };
+
     private MechanumDriveOpModeUsageMarkII bot;
     private Controller controller1;
     private Controller controller2;
@@ -24,70 +41,65 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             controller1 = super.getController1();
             controller2 = super.getController2();
             bot = new BotMarkIII(hardwareMap);
+            bot.zeroAll();
+
+            bot.freezeLift();
+            bot.freezeArmSliders();
+            bot.freezeArmAngular();
+            bot.setIntakeAngle(0.5);
 
             //ANY ADDITIONAL CODE HERE
             controller2.setControlScheme(ControlScheme.SQUARED);
-            addData("Front Left Power", 0);
-            addData("Front Right Power", 0);
-            addData("Rear Left Power", 0);
-            addData("Rear Right Power", 0);
-            addData("Lift Power", 0);
-            addData("Lift Frozen", true);
-            addData("Lift Coasting", false);
-            addData("Arm Slider Power", 0);
-            addData("Arm Sliders Frozen", true);
-            addData("Arm Sliders Coasting", false);
-            addData("Arm Angular Power", 0);
-            addData("Arm Angular Frozen", true);
-            addData("Arm Angular Coasting", false);
-            addData("Intake Angle Position", Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180));
+            telemetryOperation(super::addData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
             updateTelemetry();
         }
     }
 
     @Override
     public void init_loop() {
-        if (super.isInitialized()) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
+            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
             updateTelemetry();
         }
     }
 
     @Override
     public void start() {
-        if (super.isInitLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.start();
             controller2.setControlScheme(ControlScheme.CUBED);
 
             //ANY ADDITIONAL CODE HERE
+            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
             updateTelemetry();
         }
     }
 
     @Override
     public void loop() {
-        if (super.isStarted()) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED) {
             super.loop();
 
             //Controller1/Bot io
             bot.driveMotorsBySticks(controller1.leftStickX(), controller1.leftStickY(), controller1.rightStickX());
 
-            //Controller2/Bot io
             //Dpad up moves the lift up
-            bot.setLiftDrive(controller2.dpadUp() ? 1.0 : 0.0);
+            bot.setLiftDrive(controller1.dpadUp() ? 1.0 : 0.0);
             //Dpad down moves the lift down
-            bot.setLiftDrive(controller2.dpadDown() ? -1.0 : 0.0);
+            bot.setLiftDrive(controller1.dpadDown() ? -1.0 : 0.0);
             //b freezes the lift where it's at
             if (controller2.b()) {
                 bot.freezeLift();
             }
 
-            //Dpad left moves the arm angular drive counter clockwise
-            bot.setArmAngularDrive(controller2.dpadLeft() ? 1.0 : 0.0);
-            //Dpad right moves the arm angular drive clockwise
-            bot.setArmAngularDrive(controller2.dpadRight() ? -1.0 : 0.0);
+            //Controller2/Bot io
+            //Dpad left moves the arm angular drive clockwise
+            bot.setArmAngularDrive(controller2.dpadUp() ? 1.0 : 0.0);
+            //Dpad right moves the arm angular drive counter clockwise
+            bot.setArmAngularDrive(controller2.dpadDown() ? -1.0 : 0.0);
             //x freezes the arm angular drive where it's at
             if (controller2.x()) {
                 bot.freezeArmAngular();
@@ -150,31 +162,39 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             bot.setIntakeAngle(intakeAngle);
 
             //Telemetry updates
-            setData("Front Left Power", bot.getFrontLeftDrivePower());
-            setData("Front Right Power", bot.getFrontRightDrivePower());
-            setData("Rear Left Power", bot.getRearLeftDrivePower());
-            setData("Rear Right Power", bot.getRearRightDrivePower());
-            setData("Lift Power", bot.getLiftDrivePower());
-            setData("Lift Frozen", bot.getLiftFrozen());
-            setData("Lift Coasting", bot.getLiftCoasting());
-            setData("Arm Slider Power", bot.getArmSliderDrivePower());
-            setData("Arm Sliders Frozen", bot.getArmSlidersFrozen());
-            setData("Arm Sliders Coasting", bot.getArmSlidersCoasting());
-            setData("Arm Angular Power", bot.getArmAngularDrivePower());
-            setData("Arm Angular Frozen", bot.getArmAngularFrozen());
-            setData("Arm Angular Coasting", bot.getArmAngularCoasting());
-            setData("Intake Angle Position", Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180));
+            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
+            updateTelemetry();
         }
     }
 
     @Override
     public void stop() {
-        if (super.isInitLoopRunning() || super.isStartLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
             bot.zeroAll();
 
             //ANY ADDITIONAL CODE HERE
             updateTelemetry();
+            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
+    }
+
+    private String[] getBasicDataValues() {
+        return new String[] {
+                String.valueOf(bot.getFrontLeftDrivePower()),
+                String.valueOf(bot.getFrontRightDrivePower()),
+                String.valueOf(bot.getRearLeftDrivePower()),
+                String.valueOf(bot.getRearRightDrivePower()),
+                String.valueOf(bot.getLiftDrivePower()),
+                String.valueOf(bot.getLiftFrozen()),
+                String.valueOf(bot.getLiftCoasting()),
+                String.valueOf(bot.getArmSliderDrivePower()),
+                String.valueOf(bot.getArmSlidersFrozen()),
+                String.valueOf(bot.getArmSlidersCoasting()),
+                String.valueOf(bot.getArmAngularDrivePower()),
+                String.valueOf(bot.getArmAngularFrozen()),
+                String.valueOf(bot.getArmAngularCoasting()),
+                String.valueOf(Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180))
+        };
     }
 }

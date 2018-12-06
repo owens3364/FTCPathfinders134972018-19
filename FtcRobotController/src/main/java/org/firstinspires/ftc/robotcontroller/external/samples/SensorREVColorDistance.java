@@ -54,7 +54,7 @@ import java.util.Locale;
  */
 @TeleOp(name = "Sensor: REVColorDistance", group = "Sensor")
 @Disabled                            // Comment this out to add to the opmode list
-class SensorREVColorDistance extends LinearOpMode {
+public class SensorREVColorDistance extends LinearOpMode {
 
     @Override
     public void runOpMode() {

@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.hardware.SwitchableLight;
  */
 @TeleOp(name = "Sensor: Color", group = "Sensor")
 @Disabled
-class SensorColor extends LinearOpMode {
+public class SensorColor extends LinearOpMode {
 
     /** The relativeLayout field is used to aid in providing interesting visual feedback
    * in this sample application; you probably *don't* need something analogous when you

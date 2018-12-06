@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp(name="Concept: Compass Calibration", group="Concept")
 @Disabled
-class ConceptCompassCalibration extends LinearOpMode {
+public class ConceptCompassCalibration extends LinearOpMode {
 
     /* Declare OpMode members. */
     private final HardwarePushbot     robot   = new HardwarePushbot();   // Use a Pushbot's hardware

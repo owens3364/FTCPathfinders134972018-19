@@ -44,7 +44,7 @@ import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
  */
 @TeleOp(name = "Sensor: MR ODS", group = "Sensor")
 @Disabled
-class SensorMROpticalDistance extends LinearOpMode {
+public class SensorMROpticalDistance extends LinearOpMode {
 
     @Override
   public void runOpMode() {

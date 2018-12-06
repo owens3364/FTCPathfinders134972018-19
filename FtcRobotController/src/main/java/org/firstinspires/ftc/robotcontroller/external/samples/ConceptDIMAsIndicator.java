@@ -53,7 +53,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  */
 @TeleOp(name = "Concept: DIM As Indicator", group = "Concept")
 @Disabled
-class ConceptDIMAsIndicator extends LinearOpMode {
+public class ConceptDIMAsIndicator extends LinearOpMode {
 
     private static final int    BLUE_LED    = 0;     // Blue LED channel on DIM
     private static final int    RED_LED     = 1;     // Red LED Channel on DIM

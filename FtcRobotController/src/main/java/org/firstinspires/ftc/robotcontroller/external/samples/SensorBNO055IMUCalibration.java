@@ -99,7 +99,7 @@ import java.util.Locale;
  */
 @TeleOp(name = "Sensor: BNO055 IMU Calibration", group = "Sensor")
 @Disabled                            // Uncomment this to add to the opmode list
-class SensorBNO055IMUCalibration extends LinearOpMode
+public class SensorBNO055IMUCalibration extends LinearOpMode
     {
     //----------------------------------------------------------------------------------------------
     // State

@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp(name="REV SPARK Mini Simple Drive Example", group="Concept")
 @Disabled
-class ConceptRevSPARKMini extends LinearOpMode {
+public class ConceptRevSPARKMini extends LinearOpMode {
 
     // Declare OpMode members.
     private final ElapsedTime runtime = new ElapsedTime();

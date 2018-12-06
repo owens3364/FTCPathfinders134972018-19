@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.hardware.IrSeekerSensor;
  */
 @TeleOp(name = "Sensor: MR IR Seeker", group = "Sensor")
 @Disabled
-class SensorMRIrSeeker extends LinearOpMode {
+public class SensorMRIrSeeker extends LinearOpMode {
 
   @Override
   public void runOpMode() {

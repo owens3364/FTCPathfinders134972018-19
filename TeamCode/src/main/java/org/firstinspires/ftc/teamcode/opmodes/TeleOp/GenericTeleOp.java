@@ -10,14 +10,21 @@ import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
+import org.firstinspires.ftc.teamcode.opmodes.DataRemovalHashMapOperation;
+import org.firstinspires.ftc.teamcode.opmodes.DataRetrievalHashMapOperation;
+import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedList;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 class GenericTeleOp extends OpMode {
     //State of this class
     private boolean setup = false;
+
+    boolean isSetup() {
+        return setup;
+    }
 
     //The Telemetry telemetry object should NEVER be accessed outside of the setData() and updateTelemetry()
     //While the Telemetry object is accessible outside of this class...
@@ -32,34 +39,11 @@ class GenericTeleOp extends OpMode {
 
     //Everything in this block goes to telemetry
     //State of OpMode execution
-    private boolean initialized = false;
-    private boolean initLoopRunning = false;
-    private boolean started = false;
-    private boolean startLoopRunning = false;
-    private boolean stopped = false;
 
-    boolean isSetup() {
-        return setup;
-    }
+    private StateOfExecution stateOfExecution = StateOfExecution.NOT_YET_INITIALIZED;
 
-    boolean isInitialized() {
-        return initialized;
-    }
-
-    boolean isInitLoopRunning() {
-        return initLoopRunning;
-    }
-
-    boolean isStarted() {
-        return started;
-    }
-
-    boolean isStartLoopRunning() {
-        return startLoopRunning;
-    }
-
-    boolean isStopped() {
-        return stopped;
+    StateOfExecution getStateOfExecution() {
+        return stateOfExecution;
     }
 
     //State of Control Schemes, also go to telemetry
@@ -88,7 +72,7 @@ class GenericTeleOp extends OpMode {
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
-
+/*
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
             Log.d("DISCONNECTED", "GAMEPAD");
             new GamepadDisconnectedAlert().show(
@@ -99,6 +83,8 @@ class GenericTeleOp extends OpMode {
         }
         Log.d("CONNECTED", "GAMEPAD");
 
+
+*/
         //This if statement is here to ensure Telemetry is connected and initialized BEFORE TELEOP STARTS
         //It shows an onscreen alert if Telemetry is disconnected
         //It doesn't stop you from running the OpMode, but the OpMode won't do anything (in this class at least)
@@ -131,15 +117,51 @@ class GenericTeleOp extends OpMode {
             controller2 = new Controller(gamepad2);
             controller2.setDefaultScheme();
             controller2Scheme = controller2.getControlScheme().name();
-            initialized = true;
+            stateOfExecution = StateOfExecution.INITIALIZED;
             updateTelemetry();
         }
     }
 
     @Override
     public void init_loop() {
-        if (initialized) {
-            initLoopRunning = true;
+        if (stateOfExecution == StateOfExecution.INITIALIZED) {
+            stateOfExecution = StateOfExecution.INIT_LOOP_RUNNING;
+        }
+        if (stateOfExecution == StateOfExecution.INIT_LOOP_RUNNING) {
+            adjustControlScheme();
+            updateTelemetry();
+        }
+    }
+
+    @Override
+    public void start() {
+        if (stateOfExecution == StateOfExecution.INIT_LOOP_RUNNING) {
+            stateOfExecution = StateOfExecution.STARTED;
+            updateTelemetry();
+        }
+    }
+
+    @Override
+    public void loop() {
+        if (stateOfExecution == StateOfExecution.STARTED) {
+            stateOfExecution = StateOfExecution.START_LOOP_RUNNING;
+        }
+        if (stateOfExecution == StateOfExecution.START_LOOP_RUNNING) {
+            adjustControlScheme();
+            updateTelemetry();
+        }
+    }
+
+    @Override
+    public void stop() {
+        if (stateOfExecution == StateOfExecution.INIT_LOOP_RUNNING || stateOfExecution == StateOfExecution.START_LOOP_RUNNING) {
+            stateOfExecution = StateOfExecution.STOPPED;
+            updateTelemetry();
+        }
+    }
+
+    private void adjustControlScheme() {
+        if (setup) {
             if (controller1.dpadRight()) {
                 controller1.incrScheme();
             } else if (controller1.dpadLeft()) {
@@ -149,47 +171,16 @@ class GenericTeleOp extends OpMode {
             } else if (controller2.dpadLeft()) {
                 controller2.decrScheme();
             }
-            updateTelemetry();
-        }
-    }
-
-    @Override
-    public void start() {
-        if (initLoopRunning) {
-            initLoopRunning = false;
-            started = true;
-            updateTelemetry();
-        }
-    }
-
-    @Override
-    public void loop() {
-        if (started) {
-            startLoopRunning = true;
-            updateTelemetry();
-        }
-    }
-
-    @Override
-    public void stop() {
-        if (initLoopRunning || startLoopRunning) {
-            startLoopRunning = false;
-            stopped = true;
-            updateTelemetry();
         }
     }
 
     void updateTelemetry() {
         if (setup) {
-            addData("Initialized", String.valueOf(initialized));
-            addData("Running init loop", String.valueOf(initLoopRunning));
-            addData("Started", String.valueOf(started));
-            addData("Running start loop", String.valueOf(startLoopRunning));
-            addData("Stopped", String.valueOf(stopped));
+            addData("State of Execution", stateOfExecution.name());
             addData("Controller 1 Scheme", controller1Scheme);
             addData("Controller 2 Scheme", controller2Scheme);
 
-            for (Map.Entry<String, String> entry : telemetryData.entrySet()) {
+            for (HashMap.Entry<String, String> entry : telemetryData.entrySet()) {
                 telemetry.addData(entry.getKey(), entry.getValue());
             }
 
@@ -275,4 +266,49 @@ class GenericTeleOp extends OpMode {
         }
         return false;
     }
+
+    LinkedList<Boolean> telemetryOperation(DataSetHashMapOperation<String, String, Boolean> operation, String[] keys, String[] values) {
+        if (validateOperation(operation, keys, values)) {
+            LinkedList<Boolean> operationCompletions = new LinkedList<>();
+            for (int i = 0; i < keys.length; i++) {
+                operationCompletions.add(operation.apply(keys[i], values[i]));
+            }
+            return operationCompletions;
+        }
+        return null;
+    }
+
+    LinkedList<String> telemetryOperation(DataRetrievalHashMapOperation<String, String> operation, String[] keys) {
+        if (validateOperation(operation, keys)) {
+            LinkedList<String> operationCompletions = new LinkedList<>();
+            for (String key : keys) {
+                operationCompletions.add(operation.apply(key));
+            }
+            return operationCompletions;
+        }
+        return null;
+    }
+
+    LinkedList<Boolean> telemetryOperation(DataRemovalHashMapOperation<String, Boolean> operation, String[] keys) {
+        if (validateOperation(operation, keys)) {
+            LinkedList<Boolean> operationCompletions = new LinkedList<>();
+            for (String key : keys) {
+                operationCompletions.add(operation.apply(key));
+            }
+            return operationCompletions;
+        }
+        return null;
+    }
+
+    private boolean validateOperation(Object operation, String[] keys, Object[] values) {
+        if (operation == null || keys == null || values == null) {
+            return false;
+        }
+        return keys.length == values.length;
+    }
+
+    private boolean validateOperation(Object operation, String[] keys) {
+        return operation != null && keys != null;
+    }
+
 }

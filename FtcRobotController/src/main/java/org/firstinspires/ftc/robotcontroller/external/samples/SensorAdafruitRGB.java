@@ -69,7 +69,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
  */
 @TeleOp(name = "Sensor: AdafruitRGB", group = "Sensor")
 @Disabled                            // Comment this out to add to the opmode list
-class SensorAdafruitRGB extends LinearOpMode {
+public class SensorAdafruitRGB extends LinearOpMode {
 
     // we assume that the LED pin of the RGB sensor is connected to
   // digital port 5 (zero indexed).

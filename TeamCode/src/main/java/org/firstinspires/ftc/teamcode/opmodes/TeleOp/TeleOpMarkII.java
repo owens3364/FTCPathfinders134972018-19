@@ -32,7 +32,7 @@ public final class TeleOpMarkII extends GenericTeleOp {
 
     @Override
     public void init_loop() {
-        if (super.isInitialized()) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
@@ -42,7 +42,7 @@ public final class TeleOpMarkII extends GenericTeleOp {
 
     @Override
     public void start() {
-        if (super.isInitLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.start();
             controller2.setControlScheme(ControlScheme.CUBED);
             //ANY ADDITIONAL CODE HERE
@@ -52,28 +52,18 @@ public final class TeleOpMarkII extends GenericTeleOp {
 
     @Override
     public void loop() {
-        if (super.isStarted()) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED) {
             super.loop();
 
             //Controller1/Bot io
             //Mechanum wheel code
-            double leftX = controller1.leftStickX();
             double triggerY = evalTriggers();
-            addData("LeftStickX", leftX);
-            addData("LeftStickY", leftX);
-            addData("RightStickX", controller1.rightStickX());
-            double magnitude = Math.hypot(leftX, triggerY);
-            double direction = Math.atan2(triggerY, leftX) - Math.PI / 4;
-            addData("Magnitude", magnitude);
-            addData("Direction", direction);
-            addData("FrontLeftPower", magnitude * Math.cos(direction) + -controller1.rightStickX());
-            addData("FrontRightPower", magnitude * Math.sin(direction) - -controller1.rightStickX());
-            addData("RearLeftPower", magnitude * Math.sin(direction) + -controller1.rightStickX());
-            addData("RearRightPower", magnitude * Math.cos(direction) - -controller1.rightStickX());
-            bot.setFrontLeftDrive(magnitude * Math.cos(direction) + controller1.rightStickX());
-            bot.setFrontRightDrive(magnitude * Math.sin(direction) - controller1.rightStickX());
-            bot.setRearLeftDrive(magnitude * Math.sin(direction) + controller1.rightStickX());
-            bot.setRearRightDrive(magnitude * Math.cos(direction) - controller1.rightStickX());
+            double targetPoint = Math.hypot(controller1.leftStickX(), triggerY);
+            double targetAngle = Math.atan2(triggerY, controller1.leftStickX()) - Math.PI / 4;
+            bot.setFrontLeftDrive(targetPoint * Math.cos(targetAngle) + controller1.rightStickX());
+            bot.setFrontRightDrive(targetPoint * Math.sin(targetAngle) - controller1.rightStickX());
+            bot.setRearLeftDrive(targetPoint * Math.sin(targetAngle) + controller1.rightStickX());
+            bot.setRearRightDrive(targetPoint * Math.cos(targetAngle) - controller1.rightStickX());
 
             //Controller2/Bot io
             //Lift code
@@ -128,7 +118,7 @@ public final class TeleOpMarkII extends GenericTeleOp {
 
     @Override
     public void stop() {
-        if (super.isInitLoopRunning() || super.isStartLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
             bot.zeroAll();
 

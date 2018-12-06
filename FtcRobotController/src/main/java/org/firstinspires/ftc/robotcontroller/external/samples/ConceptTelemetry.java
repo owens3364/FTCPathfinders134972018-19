@@ -48,7 +48,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
  */
 @TeleOp(name = "Concept: Telemetry", group = "Concept")
 @Disabled
-class ConceptTelemetry extends LinearOpMode  {
+public class ConceptTelemetry extends LinearOpMode  {
     /** keeps track of the line of the poem which is to be emitted next */
     private int poemLine = 0;
 

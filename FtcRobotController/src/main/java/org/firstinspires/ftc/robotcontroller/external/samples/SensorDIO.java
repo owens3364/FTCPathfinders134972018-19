@@ -55,7 +55,7 @@ import com.qualcomm.robotcore.hardware.DigitalChannel;
 */
 @TeleOp(name = "Sensor: DIM DIO", group = "Sensor")
 @Disabled
-class SensorDIO extends LinearOpMode {
+public class SensorDIO extends LinearOpMode {
 
     @Override
   public void runOpMode() {

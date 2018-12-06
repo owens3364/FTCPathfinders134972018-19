@@ -55,7 +55,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  */
 @TeleOp(name = "Sensor: REV2mDistance", group = "Sensor")
 @Disabled
-class SensorREV2mDistance extends LinearOpMode {
+public class SensorREV2mDistance extends LinearOpMode {
 
     @SuppressLint("DefaultLocale")
     @Override

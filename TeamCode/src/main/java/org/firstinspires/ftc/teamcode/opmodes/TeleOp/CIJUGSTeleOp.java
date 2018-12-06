@@ -37,7 +37,7 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void init_loop() {
-        if (super.isInitialized()) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
@@ -47,7 +47,7 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void start() {
-        if (super.isInitLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.start();
             //ANY ADDITIONAL CODE HERE
             updateTelemetry();
@@ -56,7 +56,7 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void loop() {
-        if (super.isStarted()) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED) {
             super.loop();
             double r = Math.hypot(controller1.leftStickX(), controller1.leftStickY());
             double rightX = controller1.rightStickX();
@@ -82,7 +82,7 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void stop() {
-        if (super.isInitLoopRunning() || super.isStartLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
 
             //ANY ADDITIONAL CODE HERE

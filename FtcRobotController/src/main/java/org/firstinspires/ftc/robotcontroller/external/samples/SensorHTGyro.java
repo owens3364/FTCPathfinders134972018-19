@@ -46,7 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
  */
 @TeleOp(name = "Sensor: HT Gyro", group = "Sensor")
 @Disabled
-class SensorHTGyro extends LinearOpMode {
+public class SensorHTGyro extends LinearOpMode {
 
     @Override public void runOpMode() {
 

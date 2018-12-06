@@ -52,7 +52,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  */
 @TeleOp(name = "Sensor: KL navX Micro", group = "Sensor")
 @Disabled
-class SensorKLNavxMicro extends LinearOpMode {
+public class SensorKLNavxMicro extends LinearOpMode {
 
     // A timer helps provide feedback while calibration is taking place
     private final ElapsedTime timer = new ElapsedTime();

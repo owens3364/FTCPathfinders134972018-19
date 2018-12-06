@@ -30,7 +30,7 @@ public final class TeleOpMarkI extends GenericTeleOp {
 
     @Override
     public void init_loop() {
-        if (super.isInitialized()) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
@@ -40,7 +40,7 @@ public final class TeleOpMarkI extends GenericTeleOp {
 
     @Override
     public void start() {
-        if (super.isInitLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.start();
 
             //ANY ADDITIONAL CODE HERE
@@ -50,7 +50,7 @@ public final class TeleOpMarkI extends GenericTeleOp {
 
     @Override
     public void loop() {
-        if (super.isStarted()) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED) {
             super.loop();
             //Controller1/Bot io
             //Tank steering
@@ -124,7 +124,7 @@ public final class TeleOpMarkI extends GenericTeleOp {
 
     @Override
     public void stop() {
-        if (super.isInitLoopRunning() || super.isStartLoopRunning()) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
             bot.zeroAll();
 

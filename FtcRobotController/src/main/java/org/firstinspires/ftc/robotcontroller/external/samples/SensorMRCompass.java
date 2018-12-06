@@ -51,7 +51,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
  */
 @TeleOp(name = "Sensor: MR compass", group = "Sensor")
 @Disabled   // comment out or remove this line to enable this opmode
-class SensorMRCompass extends LinearOpMode {
+public class SensorMRCompass extends LinearOpMode {
 
     private ModernRoboticsI2cCompassSensor compass;
     private final ElapsedTime                    timer = new ElapsedTime();

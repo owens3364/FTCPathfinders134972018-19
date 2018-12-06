@@ -64,7 +64,7 @@ import java.io.File;
 
 @TeleOp(name="Concept: Sound Files", group="Concept")
 @Disabled
-class ConceptSoundsOnBotJava extends LinearOpMode {
+public class ConceptSoundsOnBotJava extends LinearOpMode {
 
     // Point to sound files on the phone's drive
     private final String soundPath = "/FIRST/blocks/sounds";

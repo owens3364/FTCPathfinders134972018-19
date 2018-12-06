@@ -69,7 +69,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp(name="Concept: Sound Resources", group="Concept")
 @Disabled
-class ConceptSoundsASJava extends LinearOpMode {
+public class ConceptSoundsASJava extends LinearOpMode {
 
     // Declare OpMode members.
     private boolean goldFound;      // Sound file present flags

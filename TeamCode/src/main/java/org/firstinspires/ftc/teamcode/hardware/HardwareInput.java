@@ -5,6 +5,7 @@ final class HardwareInput {
         if (inputType == InputType.FOR_SERVO) {
             return (0 <= input && input <= 1);
         }
+
         return (-1 <= input && input <= 1);
     }
 }

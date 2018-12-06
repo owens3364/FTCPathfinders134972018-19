@@ -93,7 +93,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
 
 @TeleOp(name="Concept: Vuforia Rover Nav", group ="Concept")
 @Disabled
-class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
+public class ConceptVuforiaNavRoverRuckus extends LinearOpMode {
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which

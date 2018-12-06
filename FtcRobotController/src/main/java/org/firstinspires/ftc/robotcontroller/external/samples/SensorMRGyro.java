@@ -53,7 +53,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 */
 @TeleOp(name = "Sensor: MR Gyro", group = "Sensor")
 @Disabled
-class SensorMRGyro extends LinearOpMode {
+public class SensorMRGyro extends LinearOpMode {
 
     // A timer helps provide feedback while calibration is taking place
   private final ElapsedTime timer = new ElapsedTime();
