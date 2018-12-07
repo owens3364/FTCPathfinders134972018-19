@@ -7,6 +7,6 @@ public final class Scaler {
         if (startMin >= startMax || endMin >= endMax || startVal < startMin || startVal > startMax) {
             return 0;
         }
-        return ((endMax - endMin) * (startVal - startMin) / (startMax - startMin)) + endMax;
+        return ((endMax - endMin) * (startVal - startMin) / (startMax - startMin)) + endMin;
     }
 }

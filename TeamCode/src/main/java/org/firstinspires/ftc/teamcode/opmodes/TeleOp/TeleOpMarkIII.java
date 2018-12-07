@@ -25,7 +25,8 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             "Arm Angular Power",
             "Arm Angular Frozen",
             "Arm Angular Coasting",
-            "Intake Angle Position"
+            "Intake Angle Position Unscaled",
+            "Intake Angle Position Scaled"
     };
 
     private MechanumDriveOpModeUsageMarkII bot;
@@ -57,7 +58,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
     @Override
     public void init_loop() {
-        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED || super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
@@ -80,7 +81,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
     @Override
     public void loop() {
-        if (super.getStateOfExecution() == StateOfExecution.STARTED) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.loop();
 
             //Controller1/Bot io
@@ -96,9 +97,9 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             }
 
             //Controller2/Bot io
-            //Dpad left moves the arm angular drive clockwise
+            //Dpad up moves the arm angular drive clockwise
             bot.setArmAngularDrive(controller2.dpadUp() ? 1.0 : 0.0);
-            //Dpad right moves the arm angular drive counter clockwise
+            //Dpad down moves the arm angular drive counter clockwise
             bot.setArmAngularDrive(controller2.dpadDown() ? -1.0 : 0.0);
             //x freezes the arm angular drive where it's at
             if (controller2.x()) {
@@ -194,6 +195,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
                 String.valueOf(bot.getArmAngularDrivePower()),
                 String.valueOf(bot.getArmAngularFrozen()),
                 String.valueOf(bot.getArmAngularCoasting()),
+                String.valueOf(bot.getIntakeAnglePosition()),
                 String.valueOf(Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180))
         };
     }

@@ -1,12 +1,9 @@
 package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
 
-import android.util.Log;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
@@ -15,6 +12,7 @@ import org.firstinspires.ftc.teamcode.opmodes.DataRetrievalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
@@ -35,7 +33,7 @@ class GenericTeleOp extends OpMode {
     //Then Telemetry goes crazy because it displays the set of data for each object before the next object calls update()
     //The purpose of this HashMap is to store ALL of the telemetry data in one place
     //Then this HashMap can be iterated through to show all of the telemetry KV pairs
-    private HashMap<String, String> telemetryData;
+    private LinkedHashMap<String, String> telemetryData;
 
     //Everything in this block goes to telemetry
     //State of OpMode execution
@@ -79,7 +77,7 @@ class GenericTeleOp extends OpMode {
                     FragmentDeploymentHelper.prepareForFragmentDeployment(
                             GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG),
                     GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG);
-            return false;
+            return setup;
         }
         Log.d("CONNECTED", "GAMEPAD");
 
@@ -97,15 +95,15 @@ class GenericTeleOp extends OpMode {
                     FragmentDeploymentHelper.prepareForFragmentDeployment(
                             TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG),
                     TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG);
-            return false;
+            return setup;
         }
 
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
         this.telemetry = telemetry;
-        this.telemetryData = new HashMap<>();
+        this.telemetryData = new LinkedHashMap<>();
         setup = true;
-        return true;
+        return setup;
     }
 
     @Override

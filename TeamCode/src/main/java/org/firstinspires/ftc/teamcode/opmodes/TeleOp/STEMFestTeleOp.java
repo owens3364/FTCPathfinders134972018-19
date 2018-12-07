@@ -17,12 +17,15 @@ public final class STEMFestTeleOp extends OpMode {
         left = hardwareMap.get(DcMotor.class, "RIGHT");
         left.setDirection(DcMotorSimple.Direction.REVERSE);
     }
+
     @Override
     public void init_loop() {
+
     }
 
     @Override
     public void start() {
+
     }
 
     @Override
@@ -33,5 +36,6 @@ public final class STEMFestTeleOp extends OpMode {
 
     @Override
     public void stop() {
+
     }
 }
