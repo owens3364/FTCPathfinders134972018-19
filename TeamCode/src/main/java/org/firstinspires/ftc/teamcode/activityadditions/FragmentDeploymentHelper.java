@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.activityadditions;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
@@ -16,5 +17,13 @@ public final class FragmentDeploymentHelper {
         }
         ft.addToBackStack(null);
         return ft;
+    }
+
+    static AlertDialog generateAlertDialog(String title, String message, String positiveButton) {
+        Alexa.playDespacito();
+        return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton(positiveButton, (dialog, which) -> Alexa.killDespacito()).create();
     }
 }

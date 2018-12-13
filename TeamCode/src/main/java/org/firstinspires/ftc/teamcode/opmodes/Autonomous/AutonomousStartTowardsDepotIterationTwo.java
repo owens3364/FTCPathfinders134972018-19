@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
 
+@Disabled
 @Autonomous(name = "AutoDepotTwo", group = "Autonomous")
 public final class AutonomousStartTowardsDepotIterationTwo extends GenericAutonomous {
 

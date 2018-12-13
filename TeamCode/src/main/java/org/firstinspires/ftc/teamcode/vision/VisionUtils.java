@@ -71,8 +71,9 @@ public final class VisionUtils {
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+    private static final String TFOD_MONITOR_VIEW_ID = "tfodMonitorViewId";
     //Constants for Vuforia
-    // ///XXX***DO NOT CHANGE***XXX\\\
+    /////XXX***DO NOT CHANGE***XXX\\\\\
     //Vuforia Development Key
     private static final String VUFORIA_KEY = "AYkrQsv/////AAABmdvvwseKyUaBtmMB68LAeOcSWZgNWbDYY" +
             "juWtsW0qGDzLQT/QqFCU8yfFXAYA9EzKAEvDrkzq4CYzUh0VmKXOSRsBxYVyum41hbPswQ918OcsByS7YvG" +
@@ -80,6 +81,14 @@ public final class VisionUtils {
             "Pq1SrqC2kC30YGdwKp7vWtXjBRtEXa8jbQz4nztQCPvXvicsjqeVPkTkp8WWaTwasosQ/dQwlEoBN8dNImd" +
             "QEshWXOnrHy3k4YhdW2FBwHsYdCi4vRZhJX5gBSEB9+Aao3fPe0vNkMcz0HzKszJYiUcbGN+aFcRKdN9q7";
 
+    private static final String VUFORIA_MONITOR_VIEW_ID = "cameraMonitorViewId";
+    private static final String roverRuckusTargetsFilename = "RoverRuckus";
+    private static final String blueRoverName = "Blue-Rover";
+    private static final String redFootprintName = "Red-Footprint";
+    private static final String frontCratersName = "Front-Craters";
+    private static final String backSpaceName = "Back-Space";
+    //Constants for both
+    private static final String ID_TYPE = "id";
 
     //Last robot location
     private static OpenGLMatrix lastLocation = null;
@@ -149,7 +158,9 @@ public final class VisionUtils {
     //at a regular interval and writes the data to a List
     //OR returns a Thread that calls getGoldMineralPosition()
     //and writes the data to a GoldMineralPosition object
-    public VisionCheckerThread getRegularTargetChecker(long checkingInterval, VisionCheckerOutputType outputType, CVCompatibleClass caller) {
+    public VisionCheckerThread getRegularTargetChecker(long checkingInterval,
+                                                       VisionCheckerOutputType outputType,
+                                                       CVCompatibleClass caller) {
         return new VisionCheckerThread(this, checkingInterval, caller, outputType);
     }
 
@@ -176,7 +187,8 @@ public final class VisionUtils {
                     if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
                         if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             goldMineralPosition = GoldMineralPosition.LEFT;
-                        } else if (goldMineralX > silverMineral1X && goldMineralX > silverMineral2X) {
+                        } else if (goldMineralX > silverMineral1X
+                                && goldMineralX > silverMineral2X) {
                             goldMineralPosition = GoldMineralPosition.RIGHT;
                         } else {
                             goldMineralPosition = GoldMineralPosition.CENTER;
@@ -244,7 +256,7 @@ public final class VisionUtils {
                 Parameters(map
                 .appContext
                 .getResources()
-                .getIdentifier("cameraMonitorViewId", "id",
+                .getIdentifier(VUFORIA_MONITOR_VIEW_ID, ID_TYPE,
                         map.appContext.getPackageName()));
         params.vuforiaLicenseKey = VUFORIA_KEY;
         params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
@@ -253,15 +265,15 @@ public final class VisionUtils {
 
     private void initializeTrackables() {
         VuforiaTrackables roverRuckusTargets = vuforia.
-                loadTrackablesFromAsset("RoverRuckus");
+                loadTrackablesFromAsset(roverRuckusTargetsFilename);
         blueRover = roverRuckusTargets.get(0);
-        blueRover.setName("Blue-Rover");
+        blueRover.setName(blueRoverName);
         redFootprint = roverRuckusTargets.get(1);
-        redFootprint.setName("Red-Footprint");
+        redFootprint.setName(redFootprintName);
         frontCraters = roverRuckusTargets.get(2);
-        frontCraters.setName("Front-Craters");
+        frontCraters.setName(frontCratersName);
         backSpace = roverRuckusTargets.get(3);
-        backSpace.setName("Back-Space");
+        backSpace.setName(backSpaceName);
         trackables = new VuforiaTrackable[] {blueRover, redFootprint, frontCraters, backSpace};
     }
 
@@ -322,7 +334,7 @@ public final class VisionUtils {
                 .Parameters(map
                 .appContext
                 .getResources()
-                .getIdentifier("tfodMonitorViewId", "id",
+                .getIdentifier(TFOD_MONITOR_VIEW_ID, ID_TYPE,
                         map.appContext.getPackageName()));
         TFObjectDetector tfod = ClassFactory.getInstance()
                 .createTFObjectDetector(parameters, vuforia);

@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
@@ -17,6 +20,15 @@ import java.util.LinkedList;
 
 @SuppressWarnings("BooleanMethodIsAlwaysInverted")
 class GenericTeleOp extends OpMode {
+
+    private static final String LOG_CONNECTED = "CONNECTED";
+    private static final String LOG_DISCONNECTED = "DISCONNECTED";
+    private static final String GAMEPAD = "GAMEPAD";
+
+    private static final String TELEMETRY_STATE_OF_EXECUTION = "State of Execution";
+    private static final String TELEMETRY_CONTROLLER_1_SCHEME = "Controller 1 Scheme";
+    private static final String TELEMETRY_CONTROLLER_2_SCHEME = "Controller 2 Scheme";
+
     //State of this class
     private boolean setup = false;
 
@@ -70,19 +82,19 @@ class GenericTeleOp extends OpMode {
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
-/*
+
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
-            Log.d("DISCONNECTED", "GAMEPAD");
+            Log.d(LOG_DISCONNECTED, GAMEPAD);
             new GamepadDisconnectedAlert().show(
                     FragmentDeploymentHelper.prepareForFragmentDeployment(
                             GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG),
                     GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG);
             return setup;
         }
-        Log.d("CONNECTED", "GAMEPAD");
+        Log.d(LOG_CONNECTED, GAMEPAD);
 
 
-*/
+
         //This if statement is here to ensure Telemetry is connected and initialized BEFORE TELEOP STARTS
         //It shows an onscreen alert if Telemetry is disconnected
         //It doesn't stop you from running the OpMode, but the OpMode won't do anything (in this class at least)
@@ -174,9 +186,9 @@ class GenericTeleOp extends OpMode {
 
     void updateTelemetry() {
         if (setup) {
-            addData("State of Execution", stateOfExecution.name());
-            addData("Controller 1 Scheme", controller1Scheme);
-            addData("Controller 2 Scheme", controller2Scheme);
+            addData(TELEMETRY_STATE_OF_EXECUTION, stateOfExecution.name());
+            addData(TELEMETRY_CONTROLLER_1_SCHEME, controller1Scheme);
+            addData(TELEMETRY_CONTROLLER_2_SCHEME, controller2Scheme);
 
             for (HashMap.Entry<String, String> entry : telemetryData.entrySet()) {
                 telemetry.addData(entry.getKey(), entry.getValue());

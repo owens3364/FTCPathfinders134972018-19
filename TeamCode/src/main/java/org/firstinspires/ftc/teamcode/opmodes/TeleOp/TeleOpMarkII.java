@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
 
+@Disabled
 @TeleOp(name = "TeleOpTwo", group = "TeleOp")
 public final class TeleOpMarkII extends GenericTeleOp {
 

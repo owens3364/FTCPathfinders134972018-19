@@ -4,12 +4,23 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public final class VisionData {
+
+
     VisionData(VectorF pos, Orientation ori) {
         this.position = pos;
         this.orientation = ori;
     }
-    public final VectorF position;
-    public final Orientation orientation;
+
+    private final VectorF position;
+    private final Orientation orientation;
+
+    public VectorF getPosition() {
+        return position;
+    }
+
+    public Orientation getOrientation() {
+        return orientation;
+    }
 
     @Override
     public String toString() {

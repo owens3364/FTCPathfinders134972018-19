@@ -9,7 +9,7 @@ final class LiftMarkI {
 
     LiftMarkI(HardwareMap map, String cableDriveName) {
         cableDrive = map.get(DcMotor.class, cableDriveName);
-        cableDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        cableDrive.setDirection(DcMotorSimple.Direction.FORWARD);
         cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 

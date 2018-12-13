@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.driversetcontrols;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public final class Controller {
+    private static final double[] defaultScale = {-1, 1, -1, 1};
+
     private ControlScheme controlScheme = ControlScheme.LINEAR;
     private ScaleScheme scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
 
@@ -17,17 +19,17 @@ public final class Controller {
 
     //These are for custom scaling for individual non boolean values of the gamepad
     //These are set to their default values, the same as the standard scaling
-    private double[] leftStickXScale = {-1, 1, -1, 1};
+    private double[] leftStickXScale = defaultScale;
 
-    private double[] leftStickYScale = {-1, 1, -1, 1};
+    private double[] leftStickYScale = defaultScale;
 
-    private double[] leftTriggerScale = {-1, 1, -1, 1};
+    private double[] leftTriggerScale = defaultScale;
 
-    private double[] rightStickXScale = {-1, 1, -1, 1};
+    private double[] rightStickXScale = defaultScale;
 
-    private double[] rightStickYScale = {-1, 1, -1, 1};
+    private double[] rightStickYScale = defaultScale;
 
-    private double[] rightTriggerScale = {-1, 1, -1, 1};
+    private double[] rightTriggerScale = defaultScale;
 
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;

@@ -8,8 +8,8 @@ import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkIII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
 
-@Disabled
 @TeleOp(name = "TeleOpThree", group = "TeleOp")
 public final class TeleOpMarkIII extends GenericTeleOp {
 
@@ -31,6 +31,26 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             "Intake Angle Position Scaled"
     };
 
+    private String[] getBasicDataValues() {
+        return new String[] {
+                String.valueOf(bot.getFrontLeftDrivePower()),
+                String.valueOf(bot.getFrontRightDrivePower()),
+                String.valueOf(bot.getRearLeftDrivePower()),
+                String.valueOf(bot.getRearRightDrivePower()),
+                String.valueOf(bot.getLiftDrivePower()),
+                String.valueOf(bot.getLiftFrozen()),
+                String.valueOf(bot.getLiftCoasting()),
+                String.valueOf(bot.getArmSliderDrivePower()),
+                String.valueOf(bot.getArmSlidersFrozen()),
+                String.valueOf(bot.getArmSlidersCoasting()),
+                String.valueOf(bot.getArmAngularDrivePower()),
+                String.valueOf(bot.getArmAngularFrozen()),
+                String.valueOf(bot.getArmAngularCoasting()),
+                String.valueOf(bot.getIntakeAnglePosition()),
+                String.valueOf(Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180))
+        };
+    }
+
     private MechanumDriveOpModeUsageMarkII bot;
     private Controller controller1;
     private Controller controller2;
@@ -49,12 +69,11 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             bot.freezeLift();
             bot.freezeArmSliders();
             bot.freezeArmAngular();
-            bot.setIntakeAngle(0.5);
+            bot.setIntakeAngle(0.0);
 
             //ANY ADDITIONAL CODE HERE
             controller2.setControlScheme(ControlScheme.SQUARED);
-            telemetryOperation(super::addData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
-            updateTelemetry();
+            cycleTelemetry(super::addData);
         }
     }
 
@@ -64,8 +83,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
-            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
-            updateTelemetry();
+            cycleTelemetry(super::setData);
         }
     }
 
@@ -76,8 +94,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             controller2.setControlScheme(ControlScheme.CUBED);
 
             //ANY ADDITIONAL CODE HERE
-            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
-            updateTelemetry();
+            cycleTelemetry(super::setData);
         }
     }
 
@@ -100,9 +117,9 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
             //Controller2/Bot io
             //Dpad up moves the arm angular drive clockwise
-            bot.setArmAngularDrive(controller2.dpadUp() ? 1.0 : 0.0);
+            bot.setArmAngularDrive(controller2.dpadUp() ? .25 : 0.0);
             //Dpad down moves the arm angular drive counter clockwise
-            bot.setArmAngularDrive(controller2.dpadDown() ? -1.0 : 0.0);
+            bot.setArmAngularDrive(controller2.dpadDown() ? -.25 : 0.0);
             //x freezes the arm angular drive where it's at
             if (controller2.x()) {
                 bot.freezeArmAngular();
@@ -112,9 +129,9 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             //Right trigger extends the arm linear sliders
             //a freezes the sliders where they're at
             if (controller2.leftTrigger() != 0) {
-                bot.setArmSliderDrive(-controller2.leftTrigger());
+                bot.setArmSliderDrive(-controller2.leftTrigger() / 3);
             } else if (controller2.rightTrigger() != 0) {
-                bot.setArmSliderDrive(controller2.rightTrigger());
+                bot.setArmSliderDrive(controller2.rightTrigger() / 3);
             } else if (controller2.a()) {
                 bot.freezeArmSliders();
             }
@@ -156,17 +173,16 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             ternary expression in the else block does.
             */
 
-            if (0 <= (intakeAngle + (controller2.leftStickX()) / 4) &&
-                    (intakeAngle + (controller2.leftStickX()) / 4) <= 1) {
-                intakeAngle += (controller2.leftStickX() / 4);
+            if (0 <= (intakeAngle + (controller2.leftStickX()) / 40) &&
+                    (intakeAngle + (controller2.leftStickX()) / 40) <= 1) {
+                intakeAngle += (controller2.leftStickX() / 40);
             } else {
-                intakeAngle = intakeAngle < 0 ? -1 : 1;
+                intakeAngle = intakeAngle < 0.5 ? 0 : 1;
             }
             bot.setIntakeAngle(intakeAngle);
 
             //Telemetry updates
-            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
-            updateTelemetry();
+            cycleTelemetry(super::setData);
         }
     }
 
@@ -177,28 +193,12 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             bot.zeroAll();
 
             //ANY ADDITIONAL CODE HERE
-            updateTelemetry();
-            telemetryOperation(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
+            cycleTelemetry(super::setData);
         }
     }
 
-    private String[] getBasicDataValues() {
-        return new String[] {
-                String.valueOf(bot.getFrontLeftDrivePower()),
-                String.valueOf(bot.getFrontRightDrivePower()),
-                String.valueOf(bot.getRearLeftDrivePower()),
-                String.valueOf(bot.getRearRightDrivePower()),
-                String.valueOf(bot.getLiftDrivePower()),
-                String.valueOf(bot.getLiftFrozen()),
-                String.valueOf(bot.getLiftCoasting()),
-                String.valueOf(bot.getArmSliderDrivePower()),
-                String.valueOf(bot.getArmSlidersFrozen()),
-                String.valueOf(bot.getArmSlidersCoasting()),
-                String.valueOf(bot.getArmAngularDrivePower()),
-                String.valueOf(bot.getArmAngularFrozen()),
-                String.valueOf(bot.getArmAngularCoasting()),
-                String.valueOf(bot.getIntakeAnglePosition()),
-                String.valueOf(Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180))
-        };
+    private void cycleTelemetry(DataSetHashMapOperation<String, String, Boolean> operation) {
+        telemetryOperation(operation, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
+        updateTelemetry();
     }
 }

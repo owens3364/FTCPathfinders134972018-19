@@ -6,6 +6,9 @@ import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity
 import org.firstinspires.ftc.teamcode.R;
 
 final class Alexa {
+
+    private static final float MAX_VOLUME = 1.0f;
+
     private static MediaPlayer player;
 
     static void playDespacito() {
@@ -13,7 +16,7 @@ final class Alexa {
             killDespacito();
             player = MediaPlayer.create(FtcRobotControllerActivity.soloInstance(),
                     R.raw.despacito);
-            player.setVolume(1, 1);
+            player.setVolume(MAX_VOLUME, MAX_VOLUME);
             player.setLooping(true);
             player.start();
         }).start();

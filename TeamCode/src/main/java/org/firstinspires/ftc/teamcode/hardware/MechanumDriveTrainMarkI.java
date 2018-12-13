@@ -22,12 +22,12 @@ final class MechanumDriveTrainMarkI {
     }
 
     void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
-        double targetPoint = Math.hypot(leftRight, forwardBackward);
-        double targetAngle = Math.atan2(forwardBackward, leftRight) - Math.PI / 4;
-        setFrontLeft(targetPoint * Math.cos(targetAngle) + turn);
-        setFrontRight(targetPoint * Math.sin(targetAngle) - turn);
-        setRearLeft(targetPoint * Math.sin(targetAngle) + turn);
-        setRearRight(targetPoint *Math.cos(targetAngle) - turn);
+        double targetPoint = Math.hypot(-leftRight, forwardBackward);
+        double targetAngle = Math.atan2(forwardBackward, -leftRight) - Math.PI / 4;
+        setFrontLeft(targetPoint * Math.cos(targetAngle) - turn);
+        setFrontRight(targetPoint * Math.sin(targetAngle) + turn);
+        setRearLeft(targetPoint * Math.sin(targetAngle) - turn);
+        setRearRight(targetPoint *Math.cos(targetAngle) + turn);
     }
 
     double getFrontLeft() {

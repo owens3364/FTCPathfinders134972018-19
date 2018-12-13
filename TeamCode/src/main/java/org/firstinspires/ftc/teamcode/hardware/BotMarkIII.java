@@ -13,10 +13,19 @@ public final class BotMarkIII implements MechanumDriveOpModeUsageMarkII {
     private final LiftMarkI lift;
     private final ArmMarkII arm;
 
+    private static final String FRONT_LEFT_DRIVE_NAME = "FrontLeftDrive";
+    private static final String FRONT_RIGHT_DRIVE_NAME = "FrontRightDrive";
+    private static final String REAR_LEFT_DRIVE_NAME = "RearLeftDrive";
+    private static final String REAR_RIGHT_DRIVE_NAME = "RearRightDrive";
+    private static final String LIFT_DRIVE_NAME = "LiftMarkI";
+    private static final String ARM_SLIDERS_DRIVE_NAME = "SlidersDrive";
+    private static final String ARM_ANGULAR_DRIVE_NAME = "ArmAngularDrive";
+    private static final String INTAKE_ANGULAR_SERVO_NAME = "IntakeAngular";
+
     public BotMarkIII(HardwareMap map) {
-        this.driveTrain = new MechanumDriveTrainMarkI(map, "FrontLeftDrive", "FrontRightDrive", "RearLeftDrive", "RearRightDrive");
-        this.lift = new LiftMarkI(map, "LiftMarkI");
-        this.arm = new ArmMarkII(map, "SlidersDrive", "ArmAngularDrive", "IntakeAngular");
+        this.driveTrain = new MechanumDriveTrainMarkI(map, FRONT_LEFT_DRIVE_NAME, FRONT_RIGHT_DRIVE_NAME, REAR_LEFT_DRIVE_NAME, REAR_RIGHT_DRIVE_NAME);
+        this.lift = new LiftMarkI(map, LIFT_DRIVE_NAME);
+        this.arm = new ArmMarkII(map, ARM_SLIDERS_DRIVE_NAME, ARM_ANGULAR_DRIVE_NAME, INTAKE_ANGULAR_SERVO_NAME);
     }
 
     @Override

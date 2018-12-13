@@ -14,11 +14,18 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
     private final IntakeMarkI intake;
     private final HookMarkI hook;
 
+    private static final String driveTrainLeftDriveName = "LeftDrive";
+    private static final String driveTrainRightDriveName = "RightDrive";
+    private static final String liftDriveName = "CableDrive";
+    private static final String intakeDriveName = "IntakeDrive";
+    private static final String hookDriveName = "hookDrive";
+    private static final String hookServoName = "hookServo";
+
     public BotMarkI(HardwareMap map) {
-        this.driveTrain = new DriveTrainMarkI(map, "LeftDrive", "RightDrive");
-        this.lift = new LiftMarkI(map, "CableDrive");
-        this.intake = new IntakeMarkI(map, "IntakeDrive");
-        this.hook = new HookMarkI(map, "HookDrive", "HookServo");
+        this.driveTrain = new DriveTrainMarkI(map, driveTrainLeftDriveName, driveTrainRightDriveName);
+        this.lift = new LiftMarkI(map, liftDriveName);
+        this.intake = new IntakeMarkI(map, intakeDriveName);
+        this.hook = new HookMarkI(map, hookDriveName, hookServoName);
     }
 
     @Override

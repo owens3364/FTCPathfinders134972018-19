@@ -1,13 +1,20 @@
 package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 
+@Disabled
 @TeleOp(name="CIJUGS TELEOP", group="TeleOp")
 public final class CIJUGSTeleOp extends GenericTeleOp {
+
+    private static final String FRONT_LEFT_DRIVE_NAME = "FrontLeftDrive";
+    private static final String FRONT_RIGHT_DRIVE_NAME = "FrontRightDrive";
+    private static final String REAR_LEFT_DRIVE_NAME = "RearLeftDrive";
+    private static final String REAR_RIGHT_DRIVE_NAME = "RearRightDrive";
 
     private DcMotor frontLeftDrive;
     private DcMotor frontRightDrive;
@@ -23,11 +30,11 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
             super.init();
             controller1 = super.getController1();
             controller2 = super.getController2();
-            frontLeftDrive = hardwareMap.get(DcMotor.class, "FrontLeftDrive");
-            frontRightDrive = hardwareMap.get(DcMotor.class, "FrontRightDrive");
+            frontLeftDrive = hardwareMap.get(DcMotor.class, FRONT_LEFT_DRIVE_NAME);
+            frontRightDrive = hardwareMap.get(DcMotor.class, FRONT_RIGHT_DRIVE_NAME);
             frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-            rearLeftDrive = hardwareMap.get(DcMotor.class, "RearLeftDrive");
-            rearRightDrive = hardwareMap.get(DcMotor.class, "RearRightDrive");
+            rearLeftDrive = hardwareMap.get(DcMotor.class, REAR_LEFT_DRIVE_NAME);
+            rearRightDrive = hardwareMap.get(DcMotor.class, REAR_RIGHT_DRIVE_NAME);
             rearRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
             //ANY ADDITIONAL CODE HERE
