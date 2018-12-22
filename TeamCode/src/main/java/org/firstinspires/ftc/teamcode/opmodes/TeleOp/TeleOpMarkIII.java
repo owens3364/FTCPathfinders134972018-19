@@ -117,9 +117,9 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
             //Controller2/Bot io
             //Dpad up moves the arm angular drive clockwise
-            bot.setArmAngularDrive(controller2.dpadUp() ? .25 : 0.0);
+            bot.setArmAngularDrive(controller2.dpadUp() ? 1 : 0.0);
             //Dpad down moves the arm angular drive counter clockwise
-            bot.setArmAngularDrive(controller2.dpadDown() ? -.25 : 0.0);
+            bot.setArmAngularDrive(controller2.dpadDown() ? -1 : 0.0);
             //x freezes the arm angular drive where it's at
             if (controller2.x()) {
                 bot.freezeArmAngular();

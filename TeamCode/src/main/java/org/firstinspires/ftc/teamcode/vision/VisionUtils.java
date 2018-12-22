@@ -143,7 +143,7 @@ public final class VisionUtils {
                 if (robotLocationTransform != null) {
                     lastLocation = robotLocationTransform;
                 }
-                visionData[i] = new VisionData(lastLocation.getTranslation(), Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES));
+                visionData[i] = new VisionData(lastLocation.getTranslation(), Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES), getVuMarkType(i));
             }
             visionData[i] = null;
         }
@@ -341,5 +341,19 @@ public final class VisionUtils {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
         tfod.activate();
         return tfod;
+    }
+
+    private VuMarkType getVuMarkType(int vuMarkType) {
+        switch (vuMarkType) {
+            case 0:
+                return VuMarkType.BLUE_ROVER;
+            case 1:
+                return VuMarkType.RED_FOOTPRINT;
+            case 2:
+                return VuMarkType.FRONT_CRATERS;
+            case 3:
+                return VuMarkType.BACK_SPACE;
+        }
+        return null;
     }
 }

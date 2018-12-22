@@ -1,5 +1,5 @@
 package org.firstinspires.ftc.teamcode.vision;
 
-enum GoldMineralPosition {
+public enum GoldMineralPosition {
     LEFT, CENTER, RIGHT
 }
