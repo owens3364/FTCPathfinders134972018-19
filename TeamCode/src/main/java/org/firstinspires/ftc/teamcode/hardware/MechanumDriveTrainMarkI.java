@@ -1,24 +1,25 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-final class MechanumDriveTrainMarkI {
-    private final DcMotor frontLeftDrive;
-    private final DcMotor frontRightDrive;
-    private final DcMotor rearLeftDrive;
-    private final DcMotor rearRightDrive;
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
+import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
-    MechanumDriveTrainMarkI(HardwareMap map, String frontLeftDriveName, String frontRightDriveName, String rearLeftDriveName, String rearRightDriveName) {
-        frontLeftDrive = map.get(DcMotor.class, frontLeftDriveName);
-        frontLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        frontRightDrive = map.get(DcMotor.class, frontRightDriveName);
-        frontRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        rearLeftDrive = map.get(DcMotor.class, rearLeftDriveName);
-        rearLeftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        rearRightDrive = map.get(DcMotor.class, rearRightDriveName);
-        rearRightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+final class MechanumDriveTrainMarkI {
+    private final DcMotorWrapper frontLeftDrive;
+    private final DcMotorWrapper frontRightDrive;
+    private final DcMotorWrapper rearLeftDrive;
+    private final DcMotorWrapper rearRightDrive;
+
+    MechanumDriveTrainMarkI(HardwareMap map,
+                            String frontLeftDriveName,
+                            String frontRightDriveName,
+                            String rearLeftDriveName,
+                            String rearRightDriveName) {
+        frontLeftDrive = new DcMotorWrapper(map, frontLeftDriveName, FORWARD, MotorType.NEVEREST_60);
+        frontRightDrive = new DcMotorWrapper(map, frontRightDriveName, REVERSE, MotorType.NEVEREST_60);
+        rearLeftDrive = new DcMotorWrapper(map, rearLeftDriveName, FORWARD, MotorType.NEVEREST_60);
+        rearRightDrive = new DcMotorWrapper(map, rearRightDriveName, REVERSE, MotorType.NEVEREST_60);
     }
 
     void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
@@ -35,10 +36,7 @@ final class MechanumDriveTrainMarkI {
     }
 
     void setFrontLeft(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            frontLeftDrive.setPower(power);
-        }
+        frontLeftDrive.set(power);
     }
 
     double getFrontRight() {
@@ -46,10 +44,7 @@ final class MechanumDriveTrainMarkI {
     }
 
     void setFrontRight(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            frontRightDrive.setPower(power);
-        }
+        frontRightDrive.set(power);
     }
 
     double getRearLeft() {
@@ -57,10 +52,7 @@ final class MechanumDriveTrainMarkI {
     }
 
     void setRearLeft(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rearLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rearLeftDrive.setPower(power);
-        }
+        rearLeftDrive.set(power);
     }
 
     double getRearRight() {
@@ -68,41 +60,38 @@ final class MechanumDriveTrainMarkI {
     }
 
     void setRearRight(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rearRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rearRightDrive.setPower(power);
-        }
+        rearRightDrive.set(power);
     }
 
-    void setFrontLeftForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            frontLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            frontLeftDrive.setPower(power);
-            frontLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + rotations);
-        }
+    void setFrontLeftForRotations(double power, double rotations) {
+        frontLeftDrive.driveForRotations(power, rotations);
     }
 
-    void setFrontRightForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            frontRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            frontRightDrive.setPower(power);
-            frontRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + rotations);
-        }
+    void setFrontRightForRotations(double power, double rotations) {
+        frontRightDrive.driveForRotations(power, rotations);
     }
 
-    void setRearLeftForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rearLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rearLeftDrive.setPower(power);
-            rearLeftDrive.setTargetPosition(frontLeftDrive.getCurrentPosition() + rotations);
-        }
+    void setRearLeftForRotations(double power, double rotations) {
+        rearLeftDrive.driveForRotations(power, rotations);
     }
 
-    void setRearRightForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rearRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rearRightDrive.setPower(power);
-            rearRightDrive.setTargetPosition(frontRightDrive.getCurrentPosition() + rotations);
-        }
+    void setRearRightForRotations(double power, double rotations) {
+        rearRightDrive.driveForRotations(power, rotations);
+    }
+
+    void setFrontLeftForMM(double power, int mm) {
+        frontLeftDrive.set(power, mm);
+    }
+
+    void setFrontRightForMM(double power, int mm) {
+        frontRightDrive.set(power, mm);
+    }
+
+    void setRearLeftForMM(double power, int mm) {
+        rearLeftDrive.set(power, mm);
+    }
+
+    void setRearRightForMM(double power, int mm) {
+        rearRightDrive.set(power, mm);
     }
 }

@@ -1,55 +1,49 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 final class ArmMarkI {
-    private final DcMotor sliderDrive;
-    private final DcMotor armAngularDrive;
+    private final DcMotorWrapper sliderDrive;
+    private final DcMotorWrapper armAngularDrive;
     private final Servo intakeAngular;
     private final Servo lid;
 
-    ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularName, String intakeAngularName, String lidName) {
-        sliderDrive = map.get(DcMotor.class, sliderDriveName);
-        sliderDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armAngularDrive = map.get(DcMotor.class, armAngularName);
-        armAngularDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+    ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularDriveName,
+             String intakeAngularName, String lidName) {
+        sliderDrive = new DcMotorWrapper(map, sliderDriveName, DcMotorSimple.Direction.FORWARD,
+                MotorType.TETRIX_MAX);
+        sliderDrive.freezeAtZeroPower();
+        armAngularDrive = new DcMotorWrapper(map, armAngularDriveName, DcMotorSimple.Direction.FORWARD,
+                MotorType.TETRIX_MAX);
+        armAngularDrive.freezeAtZeroPower();
         intakeAngular = map.get(Servo.class, intakeAngularName);
         lid = map.get(Servo.class, lidName);
     }
 
     void setSliderDrive(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            sliderDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            sliderDrive.setPower(power);
-        }
+        sliderDrive.set(power);
     }
 
     void setArmAngularDrive(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            armAngularDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            armAngularDrive.setPower(power);
-        }
+        armAngularDrive.set(power);
     }
 
-    void setSliderDriveForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            sliderDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            sliderDrive.setPower(power);
-            sliderDrive.setTargetPosition(sliderDrive.getCurrentPosition() + rotations);
-        }
+    void setSliderDriveForRotations(double power, double rotations) {
+        sliderDrive.driveForRotations(power, rotations);
     }
 
-    void setArmAngularDriveForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            armAngularDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            armAngularDrive.setPower(power);
-            armAngularDrive.setTargetPosition(armAngularDrive.getCurrentPosition() + rotations);
-        }
+    void setArmAngularDriveForRotations(double power, double rotations) {
+        armAngularDrive.driveForRotations(power, rotations);
+    }
+
+    void setSliderDriveForMM(double power, int mm) {
+        sliderDrive.set(power, mm);
+    }
+
+    void setArmAngularDriveForMM(double power, int mm) {
+        sliderDrive.set(power, mm);
     }
 
     void setIntakeAngle(double angle) {
@@ -67,22 +61,22 @@ final class ArmMarkI {
     }
 
     void freezeArmAngular() {
-        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        armAngularDrive.setPower(0);
+        armAngularDrive.freezeAtZeroPower();
+        armAngularDrive.set(0);
     }
 
     void coastArmAngular() {
-        armAngularDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        armAngularDrive.setPower(0);
+        armAngularDrive.coastAtZeroPower();
+        armAngularDrive.set(0);
     }
 
     void freezeArmSliders() {
-        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        sliderDrive.setPower(0);
+        sliderDrive.coastAtZeroPower();
+        sliderDrive.set(0);
     }
 
     void coastArmSliders() {
-        sliderDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        sliderDrive.setPower(0);
+        sliderDrive.coastAtZeroPower();
+        sliderDrive.set(0);
     }
 }

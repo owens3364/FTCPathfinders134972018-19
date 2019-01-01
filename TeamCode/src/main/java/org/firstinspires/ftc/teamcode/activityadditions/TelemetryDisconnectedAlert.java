@@ -8,7 +8,8 @@ public final class TelemetryDisconnectedAlert extends DialogFragment {
     public static final String TELEMETRY_DISCONNECTED_DIALOG = "Disconnected Telemetry Dialog";
 
     private static final String TITLE = "Oh no! Telemetry is disconnected!";
-    private static final String MESSAGE = "Please PRESS STOP, RESTART the robot, QUIT BOTH the Robot Controller and Driver Station, and try again.";
+    private static final String MESSAGE = "Please PRESS STOP, RESTART the robot, QUIT BOTH the " +
+            "Robot Controller and Driver Station, and try again.";
     private static final String POSITIVE_BUTTON = "OK";
 
     @Override

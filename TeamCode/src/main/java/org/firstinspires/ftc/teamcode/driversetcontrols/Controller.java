@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.driversetcontrols;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 public final class Controller {
-    private static final double[] defaultScale = {-1, 1, -1, 1};
+    private static final double[] defaultStickScale = {-1, 1, -1, 1};
+    private static final double[] defaultTriggerScale = {0, 1, 0, 1};
 
     private ControlScheme controlScheme = ControlScheme.LINEAR;
     private ScaleScheme scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
@@ -12,24 +13,29 @@ public final class Controller {
 
     //This is the standard scaling for all of the non boolean values of the gamepad
     //This is used by default
-    private double startMin = -1;
-    private double startMax = 1;
-    private double endMin = -1;
-    private double endMax = 1;
+    private double stickStartMin = -1;
+    private double stickStartMax = 1;
+    private double stickEndMin = -1;
+    private double stickEndMax = 1;
+
+    private double triggerStartMin = 0;
+    private double triggerStartMax = 1;
+    private double triggerEndMin = 0;
+    private double triggerEndMax = 1;
 
     //These are for custom scaling for individual non boolean values of the gamepad
     //These are set to their default values, the same as the standard scaling
-    private double[] leftStickXScale = defaultScale;
+    private double[] leftStickXScale = defaultStickScale;
 
-    private double[] leftStickYScale = defaultScale;
+    private double[] leftStickYScale = defaultStickScale;
 
-    private double[] leftTriggerScale = defaultScale;
+    private double[] leftTriggerScale = defaultTriggerScale;
 
-    private double[] rightStickXScale = defaultScale;
+    private double[] rightStickXScale = defaultStickScale;
 
-    private double[] rightStickYScale = defaultScale;
+    private double[] rightStickYScale = defaultStickScale;
 
-    private double[] rightTriggerScale = defaultScale;
+    private double[] rightTriggerScale = defaultTriggerScale;
 
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
@@ -96,10 +102,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.left_stick_x, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme),
+                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme), leftStickXScale[0], leftStickXScale[1],
-                        leftStickXScale[2], leftStickXScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, controlScheme),
+                        leftStickXScale[0],
+                        leftStickXScale[1],
+                        leftStickXScale[2],
+                        leftStickXScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_stick_x, controlScheme);
     }
@@ -109,9 +119,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.left_stick_y, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme),
+                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme), leftStickYScale[0], leftStickYScale[1], leftStickYScale[2], leftStickYScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, controlScheme),
+                        leftStickYScale[0],
+                        leftStickYScale[1],
+                        leftStickYScale[2],
+                        leftStickYScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_stick_y, controlScheme);
     }
@@ -121,9 +136,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.left_trigger, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme),
+                        triggerStartMin, triggerStartMax, triggerEndMin, triggerEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme), leftTriggerScale[0], leftTriggerScale[1], leftTriggerScale[2], leftTriggerScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, controlScheme),
+                        leftTriggerScale[0],
+                        leftTriggerScale[1],
+                        leftTriggerScale[2],
+                        leftTriggerScale[3]);
         }
         return Schemer.schemeValue(gamepad.left_trigger, controlScheme);
     }
@@ -133,9 +153,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.right_stick_x, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme),
+                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme), rightStickXScale[0], rightStickXScale[1], rightStickXScale[2], rightStickXScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, controlScheme),
+                        rightStickXScale[0],
+                        rightStickXScale[1],
+                        rightStickXScale[2],
+                        rightStickXScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_stick_x, controlScheme);
     }
@@ -145,9 +170,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.right_stick_y, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme),
+                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme), rightStickYScale[0], rightStickYScale[1], rightStickYScale[2], rightStickYScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, controlScheme),
+                        rightStickYScale[0],
+                        rightStickYScale[1],
+                        rightStickYScale[2],
+                        rightStickYScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_stick_y, controlScheme);
     }
@@ -157,9 +187,14 @@ public final class Controller {
             case STANDARD_SCALE_FOR_ALL:
                 return Schemer.schemeValue(gamepad.right_trigger, controlScheme);
             case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), startMin, startMax, endMin, endMax);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme),
+                        triggerStartMin, triggerStartMax, triggerEndMin, triggerEndMax);
             case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme), rightTriggerScale[0],rightTriggerScale[1], rightTriggerScale[2], rightTriggerScale[3]);
+                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, controlScheme),
+                        rightTriggerScale[0],
+                        rightTriggerScale[1],
+                        rightTriggerScale[2],
+                        rightTriggerScale[3]);
         }
         return Schemer.schemeValue(gamepad.right_trigger, controlScheme);
     }
@@ -228,48 +263,69 @@ public final class Controller {
         return scaleScheme;
     }
 
-    public void useCustomScaleForAll(double startMin, double startMax, double endMin, double endMax) {
-        this.startMin = startMin;
-        this.startMax = startMax;
-        this.endMin = endMin;
-        this.endMax = endMax;
+    public void useCustomScaleForAll(double stickStartMin,
+                                     double stickStartMax,
+                                     double stickEndMin,
+                                     double stickEndMax,
+                                     double triggerStartMin,
+                                     double triggerStartMax,
+                                     double triggerEndMin,
+                                     double triggerEndMax) {
+        this.stickStartMin = stickStartMin;
+        this.stickStartMax = stickStartMax;
+        this.stickEndMin = stickEndMin;
+        this.stickEndMax = stickEndMax;
+        this.triggerStartMin = triggerStartMin;
+        this.triggerStartMax = triggerStartMax;
+        this.triggerEndMin = triggerEndMin;
+        this.triggerEndMax = triggerEndMax;
         scaleScheme = ScaleScheme.CUSTOM_SCALE_FOR_ALL;
     }
 
     public void revertToStandardScaleForAll() {
-        startMin = -1;
-        startMax = 1;
-        endMin = -1;
-        endMax = 1;
+        stickStartMin = -1;
+        stickStartMax = 1;
+        stickEndMin = -1;
+        stickEndMax = 1;
+        triggerStartMin = 0;
+        triggerStartMax = 1;
+        triggerEndMin = 0;
+        triggerEndMax = 1;
         scaleScheme = ScaleScheme.STANDARD_SCALE_FOR_ALL;
     }
 
-    public void setLeftStickXScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setLeftStickXScale(double startMin, double startMax, double endMin,
+                                   double endMax) {
         leftStickXScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
-    public void setLeftStickYScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setLeftStickYScale(double startMin, double startMax, double endMin,
+                                   double endMax) {
         leftStickYScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
-    public void setLeftTriggerScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setLeftTriggerScale(double startMin, double startMax, double endMin,
+                                    double endMax) {
         leftTriggerScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
-    public void setRightStickXScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setRightStickXScale(double startMin, double startMax, double endMin,
+                                    double endMax) {
         rightStickXScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
-    public void setRightStickYScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setRightStickYScale(double startMin, double startMax, double endMin,
+                                    double endMax) {
         rightStickYScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }
 
-    public void setRightTriggerScale(double startMin, double startMax, double endMin, double endMax) {
+    public void setRightTriggerScale(double startMin, double startMax, double endMin,
+                                     double endMax) {
         rightTriggerScale = new double[] {startMin, startMax, endMin, endMax};
         scaleScheme = ScaleScheme.INDIVIDUALLY_CUSTOMIZED_SCALES;
     }

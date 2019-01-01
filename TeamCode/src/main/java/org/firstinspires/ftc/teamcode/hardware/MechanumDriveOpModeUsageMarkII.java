@@ -1,57 +1,21 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-public interface MechanumDriveOpModeUsageMarkII {
-    //Any data all bots should have is listed here and implemented by class names starting with "Bot"
-    double getMMPerDriveRotation();
+public interface MechanumDriveOpModeUsageMarkII extends GenericMechanumDriveOpModeUsage {
+    //Any data all bots should have is listed here and implemented by class names starting with
+    // "Bot"
     void driveMotorsBySticks(double leftRight, double forwardBackward, double turn);
-    void setFrontLeftDrive(double power);
     double getFrontLeftDrivePower();
-    void setFrontRightDrive(double power);
     double getFrontRightDrivePower();
-    void setRearLeftDrive(double power);
     double getRearLeftDrivePower();
-    void setRearRightDrive(double power);
     double getRearRightDrivePower();
-    void setArmSliderDrive(double power);
     double  getArmSliderDrivePower();
-    void setArmAngularDrive(double power);
     double getArmAngularDrivePower();
-    void setIntakeAngle(double angle);
-    double getIntakeAnglePosition();
-    void setLiftDrive(double power);
+    double getIntakeAngle();
     double getLiftDrivePower();
-    void setFrontLeftDriveForRotations(double power, int rotations);
-    void setFrontRightDriveForRotations(double power, int rotations);
-    void setRearLeftDriveForRotations(double power, int rotations);
-    void setRearRightDriveForRotations(double power, int rotations);
-    void setArmSliderDriveForRotations(double power, int rotations);
-    void setArmAngularDriveForRotations(double power, int rotations);
-    void setLiftDriveForRotations(double power, int rotations);
-    void setFrontLeftDriveForMM(double power, int mm);
-    void setFrontRightDriveForMM(double power, int mm);
-    void setRearLeftDriveForMM(double power, int mm);
-    void setRearRightDriveForMM(double power, int mm);
-    void setArmSliderDriveForMM(double power, int mm);
-    void setArmAngularDriveForMM(double power, int mm);
-    void setLiftDriveForMM(double power, int mm);
-    void freezeLift();
     boolean getLiftFrozen();
-    void coastLift();
     boolean getLiftCoasting();
-    void freezeArmAngular();
     boolean getArmAngularFrozen();
-    void coastArmAngular();
     boolean getArmAngularCoasting();
-    void freezeArmSliders();
     boolean getArmSlidersFrozen();
-    void coastArmSliders();
     boolean getArmSlidersCoasting();
-    void forward(double power, long ms);
-    void left(double power, long ms);
-    void right(double power, long ms);
-    void backward(double power, long ms);
-    void turnLeft(double power, long ms);
-    void turnRight(double power, long ms);
-    void zeroAll();
-    Class getKindOfBot();
 }

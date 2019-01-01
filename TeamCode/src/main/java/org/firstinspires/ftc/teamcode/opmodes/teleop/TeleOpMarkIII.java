@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
@@ -8,10 +7,11 @@ import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkIII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
-import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
 
 @TeleOp(name = "TeleOpThree", group = "TeleOp")
 public final class TeleOpMarkIII extends GenericTeleOp {
+
+    private static final double SERVO_INCREMENT_DIVISOR = 40;
 
     private static final String[] BASIC_TELEMETRY_DATA_KEYS = {
             "Front Left Power",
@@ -46,8 +46,12 @@ public final class TeleOpMarkIII extends GenericTeleOp {
                 String.valueOf(bot.getArmAngularDrivePower()),
                 String.valueOf(bot.getArmAngularFrozen()),
                 String.valueOf(bot.getArmAngularCoasting()),
-                String.valueOf(bot.getIntakeAnglePosition()),
-                String.valueOf(Scaler.scale(bot.getIntakeAnglePosition(), 0, 1, 0, 180))
+                String.valueOf(bot.getIntakeAngle()),
+                String.valueOf(Scaler.scale(bot.getIntakeAngle(),
+                        0,
+                        1,
+                        0,
+                        180))
         };
     }
 
@@ -73,17 +77,18 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
             //ANY ADDITIONAL CODE HERE
             controller2.setControlScheme(ControlScheme.SQUARED);
-            cycleTelemetry(super::addData);
+            cycleTelemetry(super::addData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
 
     @Override
     public void init_loop() {
-        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED || super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED ||
+                super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
-            cycleTelemetry(super::setData);
+            cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
 
@@ -94,22 +99,28 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             controller2.setControlScheme(ControlScheme.CUBED);
 
             //ANY ADDITIONAL CODE HERE
-            cycleTelemetry(super::setData);
+            cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
 
     @Override
     public void loop() {
-        if (super.getStateOfExecution() == StateOfExecution.STARTED || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED ||
+                super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.loop();
 
             //Controller1/Bot io
-            bot.driveMotorsBySticks(controller1.leftStickX(), controller1.leftStickY(), controller1.rightStickX());
+            bot.driveMotorsBySticks(controller1.leftStickX(),
+                    controller1.leftStickY(),
+                    controller1.rightStickX());
 
             //Dpad up moves the lift up
-            bot.setLiftDrive(controller1.dpadUp() ? 1.0 : 0.0);
             //Dpad down moves the lift down
-            bot.setLiftDrive(controller1.dpadDown() ? -1.0 : 0.0);
+            if (controller1.dpadUp()) {
+                bot.setLiftDrive(1);
+            } else if (controller1.dpadDown()) {
+                bot.setLiftDrive(-1);
+            }
             //b freezes the lift where it's at
             if (controller2.b()) {
                 bot.freezeLift();
@@ -117,9 +128,12 @@ public final class TeleOpMarkIII extends GenericTeleOp {
 
             //Controller2/Bot io
             //Dpad up moves the arm angular drive clockwise
-            bot.setArmAngularDrive(controller2.dpadUp() ? 1 : 0.0);
             //Dpad down moves the arm angular drive counter clockwise
-            bot.setArmAngularDrive(controller2.dpadDown() ? -1 : 0.0);
+            if (controller2.dpadUp()) {
+                bot.setLiftDrive(1);
+            } else if (controller2.dpadDown()) {
+                bot.setLiftDrive(-1);
+            }
             //x freezes the arm angular drive where it's at
             if (controller2.x()) {
                 bot.freezeArmAngular();
@@ -173,32 +187,28 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             ternary expression in the else block does.
             */
 
-            if (0 <= (intakeAngle + (controller2.leftStickX()) / 40) &&
-                    (intakeAngle + (controller2.leftStickX()) / 40) <= 1) {
-                intakeAngle += (controller2.leftStickX() / 40);
+            if (0 <= (intakeAngle + (controller2.leftStickX()) / SERVO_INCREMENT_DIVISOR) &&
+                    (intakeAngle + (controller2.leftStickX()) / SERVO_INCREMENT_DIVISOR) <= 1) {
+                intakeAngle += (controller2.leftStickX() / SERVO_INCREMENT_DIVISOR);
             } else {
                 intakeAngle = intakeAngle < 0.5 ? 0 : 1;
             }
             bot.setIntakeAngle(intakeAngle);
 
             //Telemetry updates
-            cycleTelemetry(super::setData);
+            cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
 
     @Override
     public void stop() {
-        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING ||
+                super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
             bot.zeroAll();
 
             //ANY ADDITIONAL CODE HERE
-            cycleTelemetry(super::setData);
+            cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
-    }
-
-    private void cycleTelemetry(DataSetHashMapOperation<String, String, Boolean> operation) {
-        telemetryOperation(operation, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
-        updateTelemetry();
     }
 }

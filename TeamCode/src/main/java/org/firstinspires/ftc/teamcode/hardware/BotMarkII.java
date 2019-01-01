@@ -3,10 +3,6 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
-    private static final double MM_PER_DRIVE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_LIFT_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_SLIDER_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_SLIDER_ANGLER_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
     private static final double ROBOT_WEIGHT_LBS = 1; //TODO: MEASURE CORRECT VALUES
 
     private final MechanumDriveTrainMarkI driveTrain;
@@ -24,14 +20,17 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     private static final String INTAKE_LID_SERVO_NAME = "IntakeLid";
 
     public BotMarkII(HardwareMap map) {
-        this.driveTrain = new MechanumDriveTrainMarkI(map, FRONT_LEFT_DRIVE_NAME, FRONT_RIGHT_DRIVE_NAME, REAR_LEFT_DRIVE_NAME, REAR_RIGHT_DRIVE_NAME);
+        this.driveTrain = new MechanumDriveTrainMarkI(map,
+                FRONT_LEFT_DRIVE_NAME,
+                FRONT_RIGHT_DRIVE_NAME,
+                REAR_LEFT_DRIVE_NAME,
+                REAR_RIGHT_DRIVE_NAME);
         this.lift = new LiftMarkI(map, LIFT_DRIVE_NAME);
-        this.arm = new ArmMarkI(map, ARM_SLIDERS_DRIVE_NAME, ARM_ANGULAR_DRIVE_NAME, INTAKE_ANGULAR_SERVO_NAME, INTAKE_LID_SERVO_NAME);
-    }
-
-    @Override
-    public double getMMPerDriveRotation() {
-        return 0;
+        this.arm = new ArmMarkI(map,
+                ARM_SLIDERS_DRIVE_NAME,
+                ARM_ANGULAR_DRIVE_NAME,
+                INTAKE_ANGULAR_SERVO_NAME,
+                INTAKE_LID_SERVO_NAME);
     }
 
     @Override
@@ -75,73 +74,73 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
-    public void setFrontLeftDriveForRotations(double power, int rotations) {
+    public void setFrontLeftDriveForRotations(double power, double rotations) {
         driveTrain.setFrontLeftForRotations(power, rotations);
     }
 
     @Override
-    public void setFrontRightDriveForRotations(double power, int rotations) {
+    public void setFrontRightDriveForRotations(double power, double rotations) {
         driveTrain.setFrontRightForRotations(power, rotations);
     }
 
     @Override
-    public void setRearLeftDriveForRotations(double power, int rotations) {
+    public void setRearLeftDriveForRotations(double power, double rotations) {
         driveTrain.setRearLeftForRotations(power, rotations);
     }
 
     @Override
-    public void setRearRightDriveForRotations(double power, int rotations) {
+    public void setRearRightDriveForRotations(double power, double rotations) {
         driveTrain.setRearRightForRotations(power, rotations);
     }
 
     @Override
-    public void setArmSliderDriveForRotations(double power, int rotations) {
+    public void setArmSliderDriveForRotations(double power, double rotations) {
         arm.setSliderDriveForRotations(power, rotations);
     }
 
     @Override
-    public void setArmAngularDriveForRotations(double power, int rotations) {
+    public void setArmAngularDriveForRotations(double power, double rotations) {
         arm.setArmAngularDriveForRotations(power, rotations);
     }
 
     @Override
-    public void setLiftDriveForRotations(double power, int rotations) {
+    public void setLiftDriveForRotations(double power, double rotations) {
         lift.setCableDriveForRotations(power, rotations);
     }
 
     @Override
     public void setFrontLeftDriveForMM(double power, int mm) {
-        driveTrain.setFrontLeftForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setFrontLeftForMM(power, mm);
     }
 
     @Override
     public void setFrontRightDriveForMM(double power, int mm) {
-        driveTrain.setFrontRightForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setFrontRightForMM(power, mm);
     }
 
     @Override
     public void setRearLeftDriveForMM(double power, int mm) {
-        driveTrain.setRearLeftForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setRearLeftForMM(power, mm);
     }
 
     @Override
     public void setRearRightDriveForMM(double power, int mm) {
-        driveTrain.setRearRightForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setRearRightForMM(power, mm);
     }
 
     @Override
     public void setArmSliderDriveForMM(double power, int mm) {
-        arm.setSliderDriveForRotations(power, (int) ((mm / MM_PER_SLIDER_ROTATION) + .5));
+        arm.setSliderDriveForMM(power, mm);
     }
 
     @Override
     public void setArmAngularDriveForMM(double power, int mm) {
-        arm.setArmAngularDriveForRotations(power, (int) ((mm / MM_PER_SLIDER_ANGLER_ROTATION) + .5));
+        arm.setArmAngularDriveForMM(power, mm);
     }
 
     @Override
     public void setLiftDriveForMM(double power, int mm) {
-        lift.setCableDriveForRotations(power, (int) ((mm / MM_PER_LIFT_ROTATION) + .5));
+        lift.setCableDriveForMM(power, mm);
     }
 
     @Override
@@ -175,6 +174,90 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     }
 
     @Override
+    public void freezeAllMechanumDriveMotors() {
+        setFrontLeftDrive(0);
+        setFrontRightDrive(0);
+        setRearLeftDrive(0);
+        setRearRightDrive(0);
+    }
+
+    @Override
+    public void allMechanumDriveMotors(double power) {
+        setFrontLeftDrive(power);
+        setFrontRightDrive(power);
+        setRearLeftDrive(power);
+        setRearRightDrive(power);
+    }
+
+    @Override
+    public void allMechanumDriveMotors(double power, int mm) {
+        setFrontLeftDriveForMM(power, mm);
+        setFrontRightDriveForMM(power, mm);
+        setRearLeftDriveForMM(power, mm);
+        setRearRightDriveForMM(power, mm);
+    }
+
+    @Override
+    public void strafe(Direction direction, double power) {
+        if (direction == Direction.LEFT) {
+            setFrontLeftDrive(power);
+            setFrontRightDrive(-power);
+            setRearLeftDrive(-power);
+            setRearRightDrive(power);
+        } else {
+            setFrontLeftDrive(-power);
+            setFrontRightDrive(power);
+            setRearLeftDrive(power);
+            setRearRightDrive(-power);
+        }
+    }
+
+    @Override
+    public void strafe(Direction direction, double power, int mm) {
+        if (direction == Direction.LEFT) {
+            setFrontLeftDriveForMM(power, mmScaledForStrafing(mm));
+            setFrontRightDriveForMM(-power, mmScaledForStrafing(mm));
+            setRearLeftDriveForMM(-power, mmScaledForStrafing(mm));
+            setRearRightDriveForMM(power, mmScaledForStrafing(mm));
+        } else {
+            setFrontLeftDriveForMM(-power, mmScaledForStrafing(mm));
+            setFrontRightDriveForMM(power, mmScaledForStrafing(mm));
+            setRearLeftDriveForMM(power, mmScaledForStrafing(mm));
+            setRearRightDriveForMM(-power, mmScaledForStrafing(mm));
+        }
+    }
+
+    @Override
+    public void turn(Direction direction, double power) {
+        if (direction == Direction.LEFT) {
+            setFrontLeftDrive(-power);
+            setRearLeftDrive(-power);
+            setFrontLeftDrive(power);
+            setFrontRightDrive(power);
+        } else {
+            setFrontLeftDrive(power);
+            setRearLeftDrive(power);
+            setFrontRightDrive(-power);
+            setRearRightDrive(-power);
+        }
+    }
+
+    @Override
+    public void turn(Direction direction, double power, double degrees) {
+        if (direction == Direction.LEFT) {
+            setFrontLeftDriveForMM(-power, degreesToDriveMM(degrees));
+            setRearLeftDriveForMM(-power, degreesToDriveMM(degrees));
+            setFrontLeftDriveForMM(power, degreesToDriveMM(degrees));
+            setFrontRightDriveForMM(power, degreesToDriveMM(degrees));
+        } else {
+            setFrontLeftDriveForMM(power, degreesToDriveMM(degrees));
+            setRearLeftDriveForMM(power, degreesToDriveMM(degrees));
+            setFrontRightDriveForMM(-power, degreesToDriveMM(degrees));
+            setRearRightDriveForMM(-power, degreesToDriveMM(degrees));
+        }
+    }
+
+    @Override
     public void openArmLid() {
         arm.openLid();
     }
@@ -182,60 +265,6 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
     @Override
     public void closeArmLid() {
         arm.closeLid();
-    }
-
-    @Override
-    public void forward(double power, long ms) {
-        setFrontLeftDrive(power);
-        setFrontRightDrive(power);
-        setRearLeftDrive(power);
-        setRearRightDrive(power);
-        sleep(ms);
-    }
-
-    @Override
-    public void left(double power, long ms) {
-        setFrontLeftDrive(-power);
-        setFrontRightDrive(-power);
-        setRearLeftDrive(power);
-        setRearRightDrive(power);
-        sleep(ms);
-    }
-
-    @Override
-    public void right(double power, long ms) {
-        setFrontRightDrive(power);
-        setFrontRightDrive(power);
-        setRearLeftDrive(-power);
-        setRearRightDrive(-power);
-        sleep(ms);
-    }
-
-    @Override
-    public void backward(double power, long ms) {
-        setFrontLeftDrive(-power);
-        setFrontRightDrive(-power);
-        setRearLeftDrive(-power);
-        setRearRightDrive(-power);
-        sleep(ms);
-    }
-
-    @Override
-    public void turnLeft(double power, long ms) {
-        setFrontLeftDrive(-power);
-        setFrontRightDrive(power);
-        setRearLeftDrive(-power);
-        setRearRightDrive(power);
-        sleep(ms);
-    }
-
-    @Override
-    public void turnRight(double power, long ms) {
-        setFrontLeftDrive(power);
-        setFrontRightDrive(-power);
-        setRearLeftDrive(power);
-        setRearRightDrive(power);
-        sleep(ms);
     }
 
     @Override
@@ -254,11 +283,11 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
         return this.getClass();
     }
 
-    private void sleep(long ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        }
+    private int mmScaledForStrafing(int mm) {
+        return (int) ((mm * 1) + .5); //TODO: Measure this
+    }
+
+    private int degreesToDriveMM(double degrees) {
+        return (int) ((degrees * 1) + .5); //TODO: Measure this
     }
 }

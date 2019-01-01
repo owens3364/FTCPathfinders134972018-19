@@ -11,20 +11,22 @@ final class VisionCheckerThread extends Thread {
     private LinkedList<GoldMineralPosition> tfodDataOut = null;
     private GoldMineralPosition tfodFinalData = null;
     private final VisionUtils visionUtils;
-    VisionCheckerThread(VisionUtils visionUtils, long checkingInterval, CVCompatibleClass caller, VisionCheckerOutputType outputType) {
+
+    VisionCheckerThread(VisionUtils visionUtils, long checkingInterval, CVCompatibleClass caller,
+                        VisionCheckerOutputType outputType) {
         this.checkAtIntervalsOf = checkingInterval;
         this.caller = caller;
         switch (outputType) {
-            case VUFORIASTREAM:
+            case VUFORIA_STREAM:
                 vuforiaDataOut = new LinkedList<>();
                 break;
-            case VUFORIAONCE:
+            case VUFORIA_ONCE:
                 vuforiaFinalData = new VisionData[0];
                 break;
-            case TFODSTREAM:
+            case TFOD_STREAM:
                 tfodDataOut = new LinkedList<>();
                 break;
-            case TFODONCE:
+            case TFOD_ONCE:
                 tfodFinalData = GoldMineralPosition.CENTER;
                 break;
         }
@@ -35,7 +37,7 @@ final class VisionCheckerThread extends Thread {
         while (!stopped) {
             //If a stream is wanted then an list of VisionData[] arrays is generated and added to
             //Every checkingInterval
-            //Otherwise it's a VUFORIAONCE operation and the results of one check will be returned
+            //Otherwise it's a VUFORIA_ONCE operation and the results of one check will be returned
             if (vuforiaDataOut != null) {
                 vuforiaDataOut.add(visionUtils.checkForTargets());
             } else if (vuforiaFinalData != null) {

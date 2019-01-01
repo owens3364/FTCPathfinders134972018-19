@@ -2,7 +2,8 @@ package org.firstinspires.ftc.teamcode.memory;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.util.Log;
+
+import org.firstinspires.ftc.teamcode.errorlogging.LogUtils;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -40,6 +41,7 @@ public final class MemoryManagement {
             while (!stopped) {
                 if (objects.size() > objectLimit) {
                     for (Object object: objects) {
+                        objects.remove();
                         object = null;
                     }
                     System.gc();
@@ -47,11 +49,12 @@ public final class MemoryManagement {
                 try {
                     Thread.sleep(managementRate);
                 } catch(InterruptedException ie) {
-                    Log.d("ERROR", ie.toString());
+                    LogUtils.logError("ERROR" + ie.toString());
                 }
             }
             if (objects.size() > 0) {
                 for (Object object : objects) {
+                    objects.remove();
                     object = null;
                 }
             }
@@ -75,7 +78,8 @@ public final class MemoryManagement {
 
     public boolean memoryIntensiveOpAllowed(Context context) {
         ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
-        ((ActivityManager) Objects.requireNonNull(context.getSystemService(ACTIVITY_SERVICE))).getMemoryInfo(memoryInfo);
+        ((ActivityManager) Objects.requireNonNull(context.getSystemService(ACTIVITY_SERVICE)))
+                .getMemoryInfo(memoryInfo);
         return !memoryInfo.lowMemory;
     }
 }

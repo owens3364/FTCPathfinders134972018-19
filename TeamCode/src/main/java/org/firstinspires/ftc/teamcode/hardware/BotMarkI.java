@@ -3,10 +3,6 @@ package org.firstinspires.ftc.teamcode.hardware;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
-    private static final double MM_PER_DRIVE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_INTAKE_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_LIFT_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
-    private static final double MM_PER_HOOK_ROTATION = 1; //TODO: MEASURE CORRECT VALUES
     private static final double ROBOT_WEIGHT_LBS = 1; //TODO: MEASURE CORRECT VALUES
 
     private final DriveTrainMarkI driveTrain;
@@ -22,15 +18,11 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
     private static final String hookServoName = "hookServo";
 
     public BotMarkI(HardwareMap map) {
-        this.driveTrain = new DriveTrainMarkI(map, driveTrainLeftDriveName, driveTrainRightDriveName);
+        this.driveTrain = new DriveTrainMarkI(map, driveTrainLeftDriveName,
+                driveTrainRightDriveName);
         this.lift = new LiftMarkI(map, liftDriveName);
         this.intake = new IntakeMarkI(map, intakeDriveName);
         this.hook = new HookMarkI(map, hookDriveName, hookServoName);
-    }
-
-    @Override
-    public double getMMPerDriveRotation() {
-        return MM_PER_DRIVE_ROTATION;
     }
 
     //Drive motors by power
@@ -63,27 +55,27 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
     //Drive motors by rotations
 
     @Override
-    public void setLeftDriveForRotations(double power, int rotations) {
+    public void setLeftDriveForRotations(double power, double rotations) {
         driveTrain.setLeftForRotations(power, rotations);
     }
 
     @Override
-    public void setRightDriveForRotations(double power, int rotations) {
+    public void setRightDriveForRotations(double power, double rotations) {
         driveTrain.setRightForRotations(power, rotations);
     }
 
     @Override
-    public void setIntakeDriveForRotations(double power, int rotations) {
+    public void setIntakeDriveForRotations(double power, double rotations) {
         intake.setForRotations(power, rotations);
     }
 
     @Override
-    public void setLiftDriveForRotations(double power, int rotations) {
+    public void setLiftDriveForRotations(double power, double rotations) {
         lift.setCableDriveForRotations(power, rotations);
     }
 
     @Override
-    public void setHookDriveForRotations(double power, int rotations) {
+    public void setHookDriveForRotations(double power, double rotations) {
         hook.setDriveForRotations(power, rotations);
     }
 
@@ -91,27 +83,27 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
 
     @Override
     public void setLeftDriveForMM(double power, int mm) {
-        driveTrain.setLeftForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setLeftForMM(power, mm);
     }
 
     @Override
     public void setRightDriveForMM(double power, int mm) {
-        driveTrain.setRightForRotations(power, (int) ((mm / MM_PER_DRIVE_ROTATION) + .5));
+        driveTrain.setRightForMM(power, mm);
     }
 
     @Override
     public void setIntakeDriveForMM(double power, int mm) {
-        intake.setForRotations(power, (int) ((mm / MM_PER_INTAKE_ROTATION) + .5));
+        intake.setForMM(power, mm);
     }
 
     @Override
     public void setLiftDriveForMM(double power, int mm) {
-        lift.setCableDriveForRotations(power, (int) ((mm / MM_PER_LIFT_ROTATION) + .5));
+        lift.setCableDriveForMM(power, mm);
     }
 
     @Override
     public void setHookDriveForMM(double power, int mm) {
-        hook.setDriveForRotations(power, (int) ((mm / MM_PER_HOOK_ROTATION) + .5));
+        hook.setDriveForMM(power, mm);
     }
 
     //Freeze and coast hook and lift motors

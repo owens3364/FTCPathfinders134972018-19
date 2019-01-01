@@ -24,6 +24,7 @@ public final class FragmentDeploymentHelper {
         return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance())
                 .setTitle(title)
                 .setMessage(message)
-                .setPositiveButton(positiveButton, (dialog, which) -> Alexa.killDespacito()).create();
+                .setPositiveButton(positiveButton,
+                        (dialog, which) -> Alexa.killDespacito()).create();
     }
 }

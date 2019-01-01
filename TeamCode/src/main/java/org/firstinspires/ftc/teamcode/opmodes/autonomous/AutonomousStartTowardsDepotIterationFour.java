@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.opmodes.Autonomous;
+package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import org.firstinspires.ftc.teamcode.hardware.BotMarkIII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
 
-public final class AutonomousStartTowardsCraterIterationFour extends GenericAutonomous {
+public final class AutonomousStartTowardsDepotIterationFour extends GenericAutonomous {
 
     private MechanumDriveOpModeUsageMarkII bot;
 
@@ -13,7 +13,8 @@ public final class AutonomousStartTowardsCraterIterationFour extends GenericAuto
         bot = new BotMarkIII(hardwareMap);
         super.waitForStart();
         land(bot);
-        approachAllianceVuMark(bot, StartPosition.CRATER);
-        setHomePos(bot, StartPosition.CRATER);
+        approachAllianceVuMark(bot, StartPosition.DEPOT);
+        setHomePos(bot, StartPosition.DEPOT);
     }
+
 }

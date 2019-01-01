@@ -1,52 +1,48 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class LiftMarkI {
-    private final DcMotor cableDrive;
+    private final DcMotorWrapper cableDrive;
 
     LiftMarkI(HardwareMap map, String cableDriveName) {
-        cableDrive = map.get(DcMotor.class, cableDriveName);
-        cableDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        cableDrive = new DcMotorWrapper(map, cableDriveName, DcMotorSimple.Direction.FORWARD,
+                MotorType.NEVEREST_60);
+        cableDrive.freezeAtZeroPower();
     }
 
     void setCableDrive(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            cableDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            cableDrive.setPower(power);
-        }
+        cableDrive.set(power);
     }
 
     double getCableDrive() {
         return cableDrive.getPower();
     }
 
-    void setCableDriveForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            cableDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            cableDrive.setPower(power);
-            cableDrive.setTargetPosition(cableDrive.getCurrentPosition() + rotations);
-        }
+    void setCableDriveForRotations(double power, double rotations) {
+        cableDrive.driveForRotations(power, rotations);
+    }
+
+    void setCableDriveForMM(double power, int mm) {
+        cableDrive.set(power, mm);
     }
 
     void freeze(double robotWeightLBS) {
-        cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        cableDrive.setPower(robotWeightLBS / 50);
+        cableDrive.freezeAtZeroPower();
+        cableDrive.set(robotWeightLBS / 50); //TODO: Measue correct value
     }
 
     boolean liftFrozen() {
-        return cableDrive.getPower() == 0 && cableDrive.getZeroPowerBehavior() == DcMotor.ZeroPowerBehavior.BRAKE;
+        return cableDrive.getPower() == 0 && cableDrive.frozenAtZeroPower();
     }
 
     void coast() {
-        cableDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-        cableDrive.setPower(0);
+        cableDrive.coastAtZeroPower();
+        cableDrive.set(0);
     }
 
     boolean liftCoasting() {
-        return cableDrive.getPower() == 0 && cableDrive.getZeroPowerBehavior() == DcMotor.ZeroPowerBehavior.FLOAT;
+        return cableDrive.getPower() == 0 && cableDrive.coastingAtZeroPower();
     }
 }

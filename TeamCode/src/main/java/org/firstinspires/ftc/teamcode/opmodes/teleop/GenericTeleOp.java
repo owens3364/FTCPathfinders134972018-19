@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
-
-import android.util.Log;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -10,11 +8,11 @@ import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
+import org.firstinspires.ftc.teamcode.errorlogging.LogUtils;
 import org.firstinspires.ftc.teamcode.opmodes.DataRemovalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataRetrievalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 
@@ -24,6 +22,7 @@ class GenericTeleOp extends OpMode {
     private static final String LOG_CONNECTED = "CONNECTED";
     private static final String LOG_DISCONNECTED = "DISCONNECTED";
     private static final String GAMEPAD = "GAMEPAD";
+    private static final String TELEMETRY = "TELEMETRY";
 
     private static final String TELEMETRY_STATE_OF_EXECUTION = "State of Execution";
     private static final String TELEMETRY_CONTROLLER_1_SCHEME = "Controller 1 Scheme";
@@ -36,13 +35,15 @@ class GenericTeleOp extends OpMode {
         return setup;
     }
 
-    //The Telemetry telemetry object should NEVER be accessed outside of the setData() and updateTelemetry()
+    //The Telemetry telemetry object should NEVER be accessed outside of the setData() and
+    // updateTelemetry()
     //While the Telemetry object is accessible outside of this class...
     //It SHOULD ONLY be accessed from this class' setData() and updateTelemetry() methods
     //This is to keep telemetry from going crazy from all of the update() calls
     //And all of the addData() calls
     //When multiple objects are calling the update methods at different times on different runloops
-    //Then Telemetry goes crazy because it displays the set of data for each object before the next object calls update()
+    //Then Telemetry goes crazy because it displays the set of data for each object before the next
+    // object calls update()
     //The purpose of this HashMap is to store ALL of the telemetry data in one place
     //Then this HashMap can be iterated through to show all of the telemetry KV pairs
     private LinkedHashMap<String, String> telemetryData;
@@ -75,29 +76,38 @@ class GenericTeleOp extends OpMode {
 
 
     boolean setup(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
-        //This if statement is here to ensure the controllers are connected and initialized BEFORE TELEOP STARTS
+        this.telemetry = telemetry;
+        this.telemetryData = new LinkedHashMap<>();
+        addData("Status...", "Telemetry initialized and setup called");
+        //This if statement is here to ensure the controllers are connected and initialized
+        // BEFORE TELEOP STARTS
         //It shows an onscreen alert if controllers are disconnected
-        //It doesn't stop you from running the OpMode, but the OpMode won't do anything (in this class at least)
+        //It doesn't stop you from running the OpMode, but the OpMode won't do anything
+        // (in this class at least)
         //This eliminates NullPointerExcepions thrown because of this class.
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
+        LogUtils.logError(gamepad1.toString());
 
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
-            Log.d(LOG_DISCONNECTED, GAMEPAD);
+            LogUtils.logError(LOG_DISCONNECTED + GAMEPAD);
             new GamepadDisconnectedAlert().show(
                     FragmentDeploymentHelper.prepareForFragmentDeployment(
                             GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG),
                     GamepadDisconnectedAlert.CONTROLLER_DISCONNECTED_DIALOG);
+            setData("Status...", "Through gamepad checks");
             return setup;
         }
-        Log.d(LOG_CONNECTED, GAMEPAD);
+        LogUtils.logError(LOG_CONNECTED + GAMEPAD);
+        setData("Status...", "Gamepads connected");
 
 
-
-        //This if statement is here to ensure Telemetry is connected and initialized BEFORE TELEOP STARTS
+        //This if statement is here to ensure Telemetry is connected and initialized
+        // BEFORE TELEOP STARTS
         //It shows an onscreen alert if Telemetry is disconnected
-        //It doesn't stop you from running the OpMode, but the OpMode won't do anything (in this class at least)
+        //It doesn't stop you from running the OpMode, but the OpMode won't do anything
+        // (in this class at least)
         //This eliminates NullPointerExceptions thrown because of this class.
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
@@ -107,13 +117,13 @@ class GenericTeleOp extends OpMode {
                     FragmentDeploymentHelper.prepareForFragmentDeployment(
                             TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG),
                     TelemetryDisconnectedAlert.TELEMETRY_DISCONNECTED_DIALOG);
+            addData("Status...", "Through telemetry checks");
             return setup;
         }
-
+        LogUtils.logError(LOG_CONNECTED + TELEMETRY);
+        setData("Status...", "Telemetry connected");
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
-        this.telemetry = telemetry;
-        this.telemetryData = new LinkedHashMap<>();
         setup = true;
         return setup;
     }
@@ -164,7 +174,8 @@ class GenericTeleOp extends OpMode {
 
     @Override
     public void stop() {
-        if (stateOfExecution == StateOfExecution.INIT_LOOP_RUNNING || stateOfExecution == StateOfExecution.START_LOOP_RUNNING) {
+        if (stateOfExecution == StateOfExecution.INIT_LOOP_RUNNING ||
+                stateOfExecution == StateOfExecution.START_LOOP_RUNNING) {
             stateOfExecution = StateOfExecution.STOPPED;
             updateTelemetry();
         }
@@ -190,12 +201,17 @@ class GenericTeleOp extends OpMode {
             addData(TELEMETRY_CONTROLLER_1_SCHEME, controller1Scheme);
             addData(TELEMETRY_CONTROLLER_2_SCHEME, controller2Scheme);
 
-            for (HashMap.Entry<String, String> entry : telemetryData.entrySet()) {
+            for (LinkedHashMap.Entry<String, String> entry : telemetryData.entrySet()) {
                 telemetry.addData(entry.getKey(), entry.getValue());
             }
 
             telemetry.update();
         }
+    }
+
+    void cycleTelemetry(DataSetHashMapOperation<String, String, Boolean> operation, String[] keys, String[] values) {
+        telemetryOperation(operation, keys, values);
+        updateTelemetry();
     }
 
     boolean addData(String key, String value) {
@@ -277,7 +293,9 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    LinkedList<Boolean> telemetryOperation(DataSetHashMapOperation<String, String, Boolean> operation, String[] keys, String[] values) {
+    LinkedList<Boolean> telemetryOperation(DataSetHashMapOperation
+                                                   <String, String, Boolean> operation,
+                                           String[] keys, String[] values) {
         if (validateOperation(operation, keys, values)) {
             LinkedList<Boolean> operationCompletions = new LinkedList<>();
             for (int i = 0; i < keys.length; i++) {
@@ -288,7 +306,8 @@ class GenericTeleOp extends OpMode {
         return null;
     }
 
-    LinkedList<String> telemetryOperation(DataRetrievalHashMapOperation<String, String> operation, String[] keys) {
+    LinkedList<String> telemetryOperation(DataRetrievalHashMapOperation
+                                                  <String, String> operation, String[] keys) {
         if (validateOperation(operation, keys)) {
             LinkedList<String> operationCompletions = new LinkedList<>();
             for (String key : keys) {
@@ -299,7 +318,8 @@ class GenericTeleOp extends OpMode {
         return null;
     }
 
-    LinkedList<Boolean> telemetryOperation(DataRemovalHashMapOperation<String, Boolean> operation, String[] keys) {
+    LinkedList<Boolean> telemetryOperation(DataRemovalHashMapOperation
+                                                   <String, Boolean> operation, String[] keys) {
         if (validateOperation(operation, keys)) {
             LinkedList<Boolean> operationCompletions = new LinkedList<>();
             for (String key : keys) {

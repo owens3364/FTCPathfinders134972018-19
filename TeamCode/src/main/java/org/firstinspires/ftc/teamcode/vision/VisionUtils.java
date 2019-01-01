@@ -139,11 +139,15 @@ public final class VisionUtils {
             VuforiaTrackable trackable = trackables[i];
             if (((VuforiaTrackableDefaultListener)trackable.getListener()).isVisible()) {
                 //If the robot location is the same this returns null
-                OpenGLMatrix robotLocationTransform = ((VuforiaTrackableDefaultListener)trackable.getListener()).getUpdatedRobotLocation();
+                OpenGLMatrix robotLocationTransform = (
+                        (VuforiaTrackableDefaultListener)trackable.getListener())
+                        .getUpdatedRobotLocation();
                 if (robotLocationTransform != null) {
                     lastLocation = robotLocationTransform;
                 }
-                visionData[i] = new VisionData(lastLocation.getTranslation(), Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES), getVuMarkType(i));
+                visionData[i] = new VisionData(lastLocation.getTranslation(),
+                        Orientation.getOrientation(lastLocation, EXTRINSIC, XYZ, DEGREES),
+                        getVuMarkType(i));
             }
             visionData[i] = null;
         }

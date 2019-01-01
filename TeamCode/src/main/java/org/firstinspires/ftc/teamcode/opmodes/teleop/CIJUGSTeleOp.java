@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.TeleOp;
+package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -44,7 +44,8 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void init_loop() {
-        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED || super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.INITIALIZED ||
+                super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.init_loop();
 
             //ANY ADDITIONAL CODE HERE
@@ -63,7 +64,8 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void loop() {
-        if (super.getStateOfExecution() == StateOfExecution.STARTED || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.STARTED ||
+                super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.loop();
             double r = Math.hypot(controller1.leftStickX(), controller1.leftStickY());
             double rightX = controller1.rightStickX();
@@ -89,7 +91,8 @@ public final class CIJUGSTeleOp extends GenericTeleOp {
 
     @Override
     public void stop() {
-        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING || super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
+        if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING ||
+                super.getStateOfExecution() == StateOfExecution.START_LOOP_RUNNING) {
             super.stop();
 
             //ANY ADDITIONAL CODE HERE

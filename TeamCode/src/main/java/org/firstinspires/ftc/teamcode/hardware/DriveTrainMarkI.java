@@ -1,47 +1,40 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class DriveTrainMarkI {
-    private final DcMotor leftDrive;
-    private final DcMotor rightDrive;
+    private final DcMotorWrapper leftDrive;
+    private final DcMotorWrapper rightDrive;
 
     DriveTrainMarkI(HardwareMap map, String leftDriveName, String rightDriveName) {
-        leftDrive = map.get(DcMotor.class, leftDriveName);
-        leftDrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        rightDrive = map.get(DcMotor.class, rightDriveName);
-        rightDrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        leftDrive = new DcMotorWrapper(map, leftDriveName, DcMotorSimple.Direction.FORWARD,
+                MotorType.NEVEREST_60);
+        rightDrive = new DcMotorWrapper(map, rightDriveName, DcMotorSimple.Direction.REVERSE,
+                MotorType.NEVEREST_60);
     }
 
     void setLeft(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            leftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            leftDrive.setPower(power);
-        }
+        leftDrive.set(power);
     }
 
     void setRight(double power) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            rightDrive.setPower(power);
-        }
+        rightDrive.set(power);
     }
 
-    void setLeftForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            leftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            leftDrive.setPower(power);
-            leftDrive.setTargetPosition(leftDrive.getCurrentPosition() + rotations);
-        }
+    void setLeftForRotations(double power, double rotations) {
+        leftDrive.driveForRotations(power, rotations);
     }
 
-    void setRightForRotations(double power, int rotations) {
-        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
-            rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            rightDrive.setPower(power);
-            rightDrive.setTargetPosition(rightDrive.getCurrentPosition() + rotations);
-        }
+    void setRightForRotations(double power, double rotations) {
+        rightDrive.driveForRotations(power, rotations);
+    }
+
+    void setLeftForMM(double power, int mm) {
+        leftDrive.set(power, mm);
+    }
+
+    void setRightForMM(double power, int mm) {
+        rightDrive.set(mm);
     }
 }

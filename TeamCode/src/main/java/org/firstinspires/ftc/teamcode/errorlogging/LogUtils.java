@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class LogUtils {
@@ -17,8 +17,12 @@ public final class LogUtils {
     private static final String FILE_EXTENSION = ".txt";
     private static final String PREFFERED_DATE_FORMAT = "yyyy-MM-dd-HH-mm-ss";
 
-    public static void logError(HashMap<String, String>[] states) {
+    public static void logError(LinkedHashMap<String, String>[] states) {
         writeToFile(generateFile(generatePath()), generateOutput(states));
+    }
+
+    public static void logError(String error) {
+        writeToFile(generateFile(generatePath()), generateOutput(error));
     }
 
     private static File generatePath() {
@@ -37,20 +41,23 @@ public final class LogUtils {
 
     private static File generateFile(File path) {
         if (path != null) {
-            return new File(path, new SimpleDateFormat(PREFFERED_DATE_FORMAT).format(new Timestamp(System.currentTimeMillis())) + FILE_EXTENSION);
+            return new File(path, new SimpleDateFormat(PREFFERED_DATE_FORMAT).format(
+                    new Timestamp(System.currentTimeMillis())) + FILE_EXTENSION);
         }
         return null;
     }
 
-    private static String generateOutput(HashMap<String, String>[] states) {
+    private static String generateOutput(LinkedHashMap<String, String>[] states) {
         if (states != null) {
             StringBuilder output = new StringBuilder();
-            for (HashMap<String, String> state : states) {
+            for (LinkedHashMap<String, String> state : states) {
                 if (state != null) {
                     for (Map.Entry<String, String> entry : state.entrySet()) {
                         if (entry != null) {
                             if (entry.getKey() != null) {
-                                output.append(entry.getKey()).append(": ").append((entry.getValue() == null) ? "":entry.getValue()).append(NEW_LINE_CHARACTER);
+                                output.append(entry.getKey()).append(": ")
+                                        .append((entry.getValue() == null) ?
+                                                "" : entry.getValue()).append(NEW_LINE_CHARACTER);
                             }
                         }
                     }
@@ -60,6 +67,10 @@ public final class LogUtils {
             return output.toString();
         }
         return "";
+    }
+
+    private static String generateOutput(String input) {
+        return input;
     }
 
     private static void writeToFile(File file, String output) {
