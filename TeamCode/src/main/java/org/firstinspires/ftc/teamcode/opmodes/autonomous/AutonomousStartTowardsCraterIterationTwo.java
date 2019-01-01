@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
+import org.firstinspires.ftc.teamcode.hardware.Direction;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
 
 @Disabled
@@ -22,19 +23,19 @@ public final class AutonomousStartTowardsCraterIterationTwo extends GenericAuton
         //Descend from lander (less than gracefully)
         bot.coastLift();
         //Move backward from the lander a bit
-        bot.backward(50, 1000);
+        bot.allMechanumDriveMotors(-.5, 1000);
         //Turn right towards the wall
-        bot.turnRight(50, 1000);
+        bot.turn(Direction.LEFT, .5, 1000);
         //Move forward towards the wall
-        bot.forward(50, 2000);
+        bot.allMechanumDriveMotors(.5, 2000);
         //Turn parallel to the wall
-        bot.turnLeft(50, 500);
+        bot.turn(Direction.LEFT, .5, 500);
         //Move parallel to the wall towards the depot
-        bot.forward(50, 3000);
+        bot.allMechanumDriveMotors(.5, 3000);
         //Deposit the team marker in the depot
         bot.openArmLid();
         //Back into the crater
-        bot.backward(50, 6000);
+        bot.allMechanumDriveMotors(-.5, 6000);
         //Stop
         bot.zeroAll();
     }

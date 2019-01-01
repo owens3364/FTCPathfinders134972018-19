@@ -115,13 +115,6 @@ import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-/*
-START STUFF I ADDED
-*/
-/*
-END STUFF I ADDED
-*/
-
 @SuppressWarnings("WeakerAccess")
 public class FtcRobotControllerActivity extends Activity
 {

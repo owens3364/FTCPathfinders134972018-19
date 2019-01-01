@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
 import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
+import org.firstinspires.ftc.teamcode.hardware.Direction;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
 
 @Disabled
@@ -22,11 +23,11 @@ public final class AutonomousStartTowardsDepotIterationTwo extends GenericAutono
         //Descend from lander (less than gracefully)
         bot.coastLift();
         //Move backward from the lander a bit
-        bot.backward(50, 1000);
+        bot.allMechanumDriveMotors(-.5, 1000);
         //Turn 180 right towards the depot
-        bot.turnRight(50, 2000);
+        bot.turn(Direction.RIGHT, .5, 2000);
         //Forward into the depot
-        bot.forward(50, 4000);
+        bot.allMechanumDriveMotors(.5, 4000);
         //Deposit the team marker in the depot
         bot.openArmLid();
         //Stop
