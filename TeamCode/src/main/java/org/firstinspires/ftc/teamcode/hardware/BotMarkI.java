@@ -110,7 +110,7 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
 
     @Override
     public void freezeLift() {
-        lift.freeze(ROBOT_WEIGHT_LBS);
+        lift.freeze();
     }
 
     @Override
@@ -151,7 +151,7 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
     public void zeroAll() {
         driveTrain.setLeft(0);
         driveTrain.setRight(0);
-        lift.freeze(ROBOT_WEIGHT_LBS);
+        lift.freeze();
         intake.set(0);
         hook.freeze();
     }

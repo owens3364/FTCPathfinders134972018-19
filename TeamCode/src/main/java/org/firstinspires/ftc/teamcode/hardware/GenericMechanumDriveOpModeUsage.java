@@ -34,6 +34,7 @@ public interface GenericMechanumDriveOpModeUsage {
     void freezeAllMechanumDriveMotors();
     void allMechanumDriveMotors(double power);
     void allMechanumDriveMotors(double power, int mm);
+    void allMechanumDriveMotors(double power, double rotations);
     void strafe(Direction direction, double power);
     void strafe(Direction direction, double power, int mm);
     void turn(Direction direction, double power);

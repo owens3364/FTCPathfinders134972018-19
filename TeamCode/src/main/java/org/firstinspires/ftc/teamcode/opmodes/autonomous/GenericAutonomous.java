@@ -48,7 +48,7 @@ class GenericAutonomous extends LinearOpMode {
                     BLUE_TARGET_POSITION_A3,
                     0), VuMarkType.BLUE_ROVER);
 
-    private VisionUtils vision;
+    VisionUtils vision;
 
     @Override
     public void runOpMode() {
@@ -56,7 +56,29 @@ class GenericAutonomous extends LinearOpMode {
     }
 
     void land(GenericMechanumDriveOpModeUsage bot) {
-        bot.setLiftDriveForMM(1, 0); //TODO: Measure this
+        bot.setLiftDriveForMM(1, -3500); //Lowers bot
+        sleep(8000); //Waits for bot to go down
+        bot.setRearLeftDriveForMM(1, 100); //Backs up bot so it can be lowered more
+        bot.setRearRightDriveForMM(1, 100);
+        sleep(2000); //Waits for bot to back up
+        bot.setLiftDriveForMM(1, -800); //Lowers bot more
+        sleep(1000); //Waits for bot to go down
+        bot.setRearLeftDriveForMM(1, 60); //Backs up bot so it can be lowered more
+        bot.setRearRightDriveForMM(1, 60);
+        sleep(1000); //Waits for bot to go down
+        bot.setLiftDriveForMM(1, -4000); //Lowers bot
+        sleep(3000); //Waits for bot to go down and lift to go up
+        bot.setFrontLeftDriveForMM(.5, 40); //Turns out of lander support
+        bot.setFrontRightDriveForMM(.5, -40);
+        bot.setRearLeftDriveForMM(.5, 40);
+        bot.setRearRightDriveForMM(.5, -40);
+        sleep(750); //Waits for turn
+        bot.allMechanumDriveMotors(.5, 30); //Backs up bot so hook is out of latch
+        sleep(750); //Waits for bot to back up
+        bot.setFrontLeftDriveForMM(.5, -70); //Turns back to original orientation
+        bot.setFrontRightDriveForMM(.5, 70); //Also turns farther
+        bot.setRearLeftDriveForMM(.5, -70); //Original orientation tends angle left
+        bot.setRearRightDriveForMM(.5, 70);
     }
 
     void approachAllianceVuMark(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
@@ -121,7 +143,7 @@ class GenericAutonomous extends LinearOpMode {
 
     }
 
-    private void setVision() {
+    void setVision() {
         if (vision == null) {
             vision = VisionUtils.getInstance(hardwareMap);
         }
@@ -247,7 +269,7 @@ class GenericAutonomous extends LinearOpMode {
         bot.freezeAllMechanumDriveMotors();
     }
 
-    private void forwardForGlyphPosition(GenericMechanumDriveOpModeUsage bot,
+    void forwardForGlyphPosition(GenericMechanumDriveOpModeUsage bot,
                                          GoldMineralPosition goldMineralPosition) {
         if (goldMineralPosition != GoldMineralPosition.CENTER) {
             return;
@@ -256,7 +278,7 @@ class GenericAutonomous extends LinearOpMode {
         bot.freezeAllMechanumDriveMotors();
     }
 
-    private void backFromGlyphPosition(GenericMechanumDriveOpModeUsage bot,
+    void backFromGlyphPosition(GenericMechanumDriveOpModeUsage bot,
                                        GoldMineralPosition goldMineralPosition) {
         if (goldMineralPosition == GoldMineralPosition.CENTER) {
             //TODO: Proper turn durations and forward durations

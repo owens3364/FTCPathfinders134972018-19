@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import java.lang.Math;
+
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
@@ -67,13 +69,15 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             super.init();
             controller1 = super.getController1();
             controller2 = super.getController2();
+            controller2.setLeftStickYScheme(ControlScheme.CUBED);
+            controller2.setLeftStickYScale(-1, 1, -.75, .75);
             bot = new BotMarkIII(hardwareMap);
             bot.zeroAll();
 
             bot.freezeLift();
             bot.freezeArmSliders();
             bot.freezeArmAngular();
-            bot.setIntakeAngle(0.0);
+            bot.setIntakeAngle(1.0);
 
             //ANY ADDITIONAL CODE HERE
             controller2.setControlScheme(ControlScheme.SQUARED);
@@ -122,31 +126,22 @@ public final class TeleOpMarkIII extends GenericTeleOp {
                 bot.setLiftDrive(-1);
             }
             //b freezes the lift where it's at
-            if (controller2.b()) {
+            if (controller1.a()) {
                 bot.freezeLift();
             }
 
             //Controller2/Bot io
-            //Dpad up moves the arm angular drive clockwise
-            //Dpad down moves the arm angular drive counter clockwise
-            if (controller2.dpadUp()) {
-                bot.setLiftDrive(1);
-            } else if (controller2.dpadDown()) {
-                bot.setLiftDrive(-1);
-            }
-            //x freezes the arm angular drive where it's at
-            if (controller2.x()) {
+            //Left Stick Y controls the arm angular drive
+            bot.setArmAngularDrive(controller2.leftStickY());
+            //a freezes the arm angular drive where it's at
+            if (controller2.a()) {
                 bot.freezeArmAngular();
             }
 
-            //Left trigger retracts the arm linear sliders
-            //Right trigger extends the arm linear sliders
-            //a freezes the sliders where they're at
-            if (controller2.leftTrigger() != 0) {
-                bot.setArmSliderDrive(-controller2.leftTrigger() / 3);
-            } else if (controller2.rightTrigger() != 0) {
-                bot.setArmSliderDrive(controller2.rightTrigger() / 3);
-            } else if (controller2.a()) {
+            //Right Stick Y controls the arm slider drive
+            bot.setArmSliderDrive(controller2.rightStickY());
+            //b freezes the arm slider drive where it's at
+            if (controller2.b()) {
                 bot.freezeArmSliders();
             }
 

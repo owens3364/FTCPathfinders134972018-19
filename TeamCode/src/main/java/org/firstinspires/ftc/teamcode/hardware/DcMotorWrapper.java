@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 final class DcMotorWrapper {
-    private static final double mmPerDriveRotation = 319.185813596; //TODO: Measure exact value, this is only calculated
+    private static final double mmPerDriveRotation = 285; //TODO: Measure exact value, this is only calculated
 
     private DcMotor motor;
     private MotorType motorType;

@@ -89,7 +89,7 @@ class GenericTeleOp extends OpMode {
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
         LogUtils.logError(gamepad1.toString());
-
+/*
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
             LogUtils.logError(LOG_DISCONNECTED + GAMEPAD);
             new GamepadDisconnectedAlert().show(
@@ -99,6 +99,7 @@ class GenericTeleOp extends OpMode {
             setData("Status...", "Through gamepad checks");
             return setup;
         }
+        */
         LogUtils.logError(LOG_CONNECTED + GAMEPAD);
         setData("Status...", "Gamepads connected");
 

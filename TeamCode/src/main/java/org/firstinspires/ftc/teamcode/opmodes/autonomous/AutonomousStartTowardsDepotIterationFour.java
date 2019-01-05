@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.teamcode.hardware.BotMarkIII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
 
+@Autonomous(name = "AutoDepotOne", group = "Autonomous")
 public final class AutonomousStartTowardsDepotIterationFour extends GenericAutonomous {
 
     private MechanumDriveOpModeUsageMarkII bot;
@@ -11,10 +14,10 @@ public final class AutonomousStartTowardsDepotIterationFour extends GenericAuton
     public void runOpMode() {
         super.runOpMode();
         bot = new BotMarkIII(hardwareMap);
+        bot.setIntakeAngle(1.0);
         super.waitForStart();
         land(bot);
-        approachAllianceVuMark(bot, StartPosition.DEPOT);
-        setHomePos(bot, StartPosition.DEPOT);
+        bot.allMechanumDriveMotors(1, 1400);
     }
 
 }

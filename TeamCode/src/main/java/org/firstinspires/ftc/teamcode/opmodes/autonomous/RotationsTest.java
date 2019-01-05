@@ -6,9 +6,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import org.firstinspires.ftc.teamcode.hardware.BotMarkIII;
 import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkII;
 
-@Autonomous(name="AutoCraterThree", group="Autonomous")
+@Autonomous(name="RotationsTest", group="Autonomous")
 @Disabled
-public final class AutonomousStartTowardsCraterIterationThree extends GenericAutonomous {
+public final class RotationsTest extends GenericAutonomous {
+    private static final double POWER = 1;
+    private static final double ROTATIONS = 1;
+
 
     private MechanumDriveOpModeUsageMarkII bot;
 
@@ -17,16 +20,7 @@ public final class AutonomousStartTowardsCraterIterationThree extends GenericAut
         super.runOpMode();
         bot = new BotMarkIII(hardwareMap);
         super.waitForStart();
-        //bot.setLiftDrive(1);
-        bot.setFrontLeftDrive(-1);
-        bot.setFrontRightDrive(-1);
-        bot.setRearLeftDrive(-1);
-        bot.setRearRightDrive(-1);
-        sleep(1500);
-        bot.setIntakeAngle(1);
-        sleep(500);
-        bot.setIntakeAngle(0);
-        sleep(500);
+        bot.allMechanumDriveMotors(POWER, ROTATIONS);
+        sleep(5000);
     }
-
 }

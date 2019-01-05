@@ -28,9 +28,9 @@ final class LiftMarkI {
         cableDrive.set(power, mm);
     }
 
-    void freeze(double robotWeightLBS) {
+    void freeze() {
         cableDrive.freezeAtZeroPower();
-        cableDrive.set(robotWeightLBS / 50); //TODO: Measue correct value
+        cableDrive.set(0); //TODO: Measue correct value
     }
 
     boolean liftFrozen() {

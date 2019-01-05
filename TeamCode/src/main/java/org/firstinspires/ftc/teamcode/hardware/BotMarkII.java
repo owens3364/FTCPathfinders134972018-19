@@ -145,7 +145,7 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
 
     @Override
     public void freezeLift() {
-        lift.freeze(ROBOT_WEIGHT_LBS);
+        lift.freeze();
     }
 
     @Override
@@ -195,6 +195,14 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
         setFrontRightDriveForMM(power, mm);
         setRearLeftDriveForMM(power, mm);
         setRearRightDriveForMM(power, mm);
+    }
+
+    @Override
+    public void allMechanumDriveMotors(double power, double rotations) {
+        setFrontLeftDriveForRotations(power, rotations);
+        setFrontRightDriveForRotations(power, rotations);
+        setRearLeftDriveForRotations(power, rotations);
+        setRearRightDriveForRotations(power, rotations);
     }
 
     @Override
@@ -273,7 +281,7 @@ public final class BotMarkII implements MechanumDriveOpModeUsageMarkI {
         setFrontRightDrive(0);
         setRearLeftDrive(0);
         setRearRightDrive(0);
-        lift.freeze(ROBOT_WEIGHT_LBS);
+        lift.freeze();
         arm.freezeArmSliders();
         arm.freezeArmAngular();
     }
