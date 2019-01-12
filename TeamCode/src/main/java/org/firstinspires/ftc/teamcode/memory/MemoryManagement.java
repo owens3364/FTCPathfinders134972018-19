@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
+@SuppressWarnings("UnusedAssignment")
 public final class MemoryManagement {
     private LinkedList<Object> objects;
     private byte objectLimit;
@@ -42,6 +43,7 @@ public final class MemoryManagement {
                 if (objects.size() > objectLimit) {
                     for (Object object: objects) {
                         objects.remove();
+                        //noinspection UnusedAssignment
                         object = null;
                     }
                     System.gc();
@@ -55,6 +57,7 @@ public final class MemoryManagement {
             if (objects.size() > 0) {
                 for (Object object : objects) {
                     objects.remove();
+                    //noinspection UnusedAssignment
                     object = null;
                 }
             }

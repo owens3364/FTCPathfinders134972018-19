@@ -30,7 +30,7 @@ final class LiftMarkI {
 
     void freeze() {
         cableDrive.freezeAtZeroPower();
-        cableDrive.set(0); //TODO: Measue correct value
+        cableDrive.set(0); //TODO: Measure correct value
     }
 
     boolean liftFrozen() {

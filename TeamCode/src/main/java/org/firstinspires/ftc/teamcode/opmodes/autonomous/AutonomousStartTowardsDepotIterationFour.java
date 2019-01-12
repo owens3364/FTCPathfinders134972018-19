@@ -18,6 +18,7 @@ public final class AutonomousStartTowardsDepotIterationFour extends GenericAuton
         super.waitForStart();
         land(bot);
         bot.allMechanumDriveMotors(1, 1400);
+        sleep(8000);
     }
 
 }

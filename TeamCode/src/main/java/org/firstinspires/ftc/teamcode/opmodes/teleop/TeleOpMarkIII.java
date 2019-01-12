@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import java.lang.Math;
-
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
@@ -69,8 +67,18 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             super.init();
             controller1 = super.getController1();
             controller2 = super.getController2();
-            controller2.setLeftStickYScheme(ControlScheme.CUBED);
-            controller2.setLeftStickYScale(-1, 1, -.75, .75);
+            controller2.setCustomizedControlSchemes(Controller.DEFAULT_SCHEME,
+                    ControlScheme.CUBED,
+                    Controller.DEFAULT_SCHEME,
+                    Controller.DEFAULT_SCHEME,
+                    Controller.DEFAULT_SCHEME,
+                    Controller.DEFAULT_SCHEME);
+            controller2.setCustomizedStickScales(Controller.DEFAULT_STICK_SCALE,
+                    new double[] {
+                    -1, 1, -.75, .75
+                    },
+                    Controller.DEFAULT_STICK_SCALE,
+                    Controller.DEFAULT_STICK_SCALE); //LEFT STICK Y SCALED -1, 1 to -.75, .75
             bot = new BotMarkIII(hardwareMap);
             bot.zeroAll();
 

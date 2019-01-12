@@ -127,13 +127,13 @@ public final class VisionUtils {
 
     private VisionUtils(HardwareMap map) {
         this.map = map;
-        vuforiaActivated = activateVuforia();
+        activateVuforia();
         //Initialize TensorFlow Object Detection
         tfodActivated = activateTFOD();
     }
 
     public VisionData[] checkForTargets() {
-        vuforiaActivated = activateVuforia();
+        activateVuforia();
         VisionData[] visionData = new VisionData[4];
         for (int i = 0; i < trackables.length; i++) {
             VuforiaTrackable trackable = trackables[i];
@@ -169,7 +169,7 @@ public final class VisionUtils {
     }
 
     public GoldMineralPosition getGoldMineralPosition() {
-        vuforiaActivated = activateVuforia();
+        activateVuforia();
         tfodActivated = activateTFOD();
         GoldMineralPosition goldMineralPosition = null;
         if (tfod != null) {
@@ -204,7 +204,7 @@ public final class VisionUtils {
         return goldMineralPosition;
     }
 
-    private boolean activateVuforia() {
+    private void activateVuforia() {
         if (!vuforiaActivated) {
             //Initialize Vuforia and the Trackables
             //Generate working vuforia with the VUFORIA_KEY and rear camera
@@ -215,8 +215,8 @@ public final class VisionUtils {
             locateTrackables();
             alertTrackablesToCameraLocation(locateCamera());
             Vuforia.setHint(com.vuforia.HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 3);
+            vuforiaActivated = true;
         }
-        return true;
     }
 
     private boolean activateTFOD() {

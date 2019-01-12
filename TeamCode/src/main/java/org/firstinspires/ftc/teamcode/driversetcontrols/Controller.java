@@ -2,470 +2,755 @@ package org.firstinspires.ftc.teamcode.driversetcontrols;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-public final class Controller {
+import java.util.HashMap;
 
-    private static final double[] defaultStickScale = {-1, 1, -1, 1};
-    private static final double[] defaultTriggerScale = {0, 1, 0, 1};
+public class Controller {
+    public static final double[] DEFAULT_STICK_SCALE = {-1, 1, -1, 1};
+    public static final double[] DEFAULT_TRIGGER_SCALE = {0, 1, 0, 1};
+    private static final ScaleSchemeApplication DEFAULT_SCALE_SETTING =
+            ScaleSchemeApplication.STANDARD_SCALESCHEME_FOR_ALL;
 
-    private final Gamepad gamepad;
+    public static final ControlScheme DEFAULT_SCHEME = ControlScheme.LINEAR;
+    private static final ScaleSchemeApplication DEFAULT_SCHEME_SETTING =
+            ScaleSchemeApplication.STANDARD_SCALESCHEME_FOR_ALL;
 
-    private ScaleSchemeApplication schemeApplication = ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL;
+    private final Gamepad GAMEPAD;
 
-    //These are for custom scheming for individual non boolean values of the gamepad
-    //These are set to their default values, the same as linear scheming
-    private ControlScheme leftStickXScheme = ControlScheme.LINEAR;
-    private ControlScheme leftStickYScheme = ControlScheme.LINEAR;
-    private ControlScheme leftTriggerScheme = ControlScheme.LINEAR;
-    private ControlScheme rightStickXScheme = ControlScheme.LINEAR;
-    private ControlScheme rightStickYScheme = ControlScheme.LINEAR;
-    private ControlScheme rightTriggerScheme = ControlScheme.LINEAR;
+    private double[] leftStickXScale;
+    private double[] leftStickYScale;
+    private double[] leftTriggerScale;
+    private double[] rightStickXScale;
+    private double[] rightStickYScale;
+    private double[] rightTriggerScale;
+    private final double[][] stickScales;
+    private final double[][] triggerScales;
+    private ScaleSchemeApplication stickScaleSetting;
+    private ScaleSchemeApplication triggerScaleSetting;
 
-    private ScaleSchemeApplication scaleApplication = ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL;
+    private ControlScheme leftStickXScheme;
+    private ControlScheme leftStickYScheme;
+    private ControlScheme leftTriggerScheme;
+    private ControlScheme rightStickXScheme;
+    private ControlScheme rightStickYScheme;
+    private ControlScheme rightTriggerScheme;
+    private final ControlScheme[] schemes;
+    private ScaleSchemeApplication schemeSetting;
 
-    //This is the standard scaling for all of the non boolean values of the gamepad
-    //This is used by default
-    private double stickStartMin = -1;
-    private double stickStartMax = 1;
-    private double stickEndMin = -1;
-    private double stickEndMax = 1;
+    private PreSchemeOperation<Double> leftStickXPreScheme;
+    private PreSchemeOperation<Double> leftStickYPreScheme;
+    private PreSchemeOperation<Double> leftTriggerPreScheme;
+    private PreSchemeOperation<Double> rightStickXPreScheme;
+    private PreSchemeOperation<Double> rightStickYPreScheme;
+    private PreSchemeOperation<Double> rightTriggerPreScheme;
 
-    private double triggerStartMin = 0;
-    private double triggerStartMax = 1;
-    private double triggerEndMin = 0;
-    private double triggerEndMax = 1;
+    private PostSchemePreScaleOperation<Double> leftStickXPostSchemePreScale;
+    private PostSchemePreScaleOperation<Double> leftStickYPostSchemePreScale;
+    private PostSchemePreScaleOperation<Double> leftTriggerPostSchemePreScale;
+    private PostSchemePreScaleOperation<Double> rightStickXPostSchemePreScale;
+    private PostSchemePreScaleOperation<Double> rightStickYPostSchemePreScale;
+    private PostSchemePreScaleOperation<Double> rightTriggerPostSchemePreScale;
 
-    //These are for custom scaling for individual non boolean values of the gamepad
-    //These are set to their default values, the same as the standard scaling
-    private double[] leftStickXScale = defaultStickScale;
-    private double[] leftStickYScale = defaultStickScale;
-    private double[] leftTriggerScale = defaultTriggerScale;
-    private double[] rightStickXScale = defaultStickScale;
-    private double[] rightStickYScale = defaultStickScale;
-    private double[] rightTriggerScale = defaultTriggerScale;
+    private PostScaleOperation<Double> leftStickXPostScale;
+    private PostScaleOperation<Double> leftStickYPostScale;
+    private PostScaleOperation<Double> leftTriggerPostScale;
+    private PostScaleOperation<Double> rightStickXPostScale;
+    private PostScaleOperation<Double> rightStickYPostScale;
+    private PostScaleOperation<Double> rightTriggerPostScale;
+
 
     public Controller(Gamepad gamepad) {
-        this.gamepad = gamepad;
+        this.GAMEPAD = gamepad;
+
+        stickScaleSetting = DEFAULT_SCALE_SETTING;
+        stickScales = new double[4][4];
+        stickScales[0] = leftStickXScale;
+        stickScales[1] = leftStickYScale;
+        stickScales[2] = rightStickXScale;
+        stickScales[3] = rightStickYScale;
+
+        triggerScaleSetting = DEFAULT_SCALE_SETTING;
+        triggerScales = new double[2][4];
+        triggerScales[0] = leftTriggerScale;
+        triggerScales[1] = rightTriggerScale;
+
+        schemeSetting = DEFAULT_SCHEME_SETTING;
+        schemes = new ControlScheme[6];
+        schemes[0] = leftStickXScheme;
+        schemes[1] = leftStickYScheme;
+        schemes[2] = leftTriggerScheme;
+        schemes[3] = rightStickXScheme;
+        schemes[4] = rightStickYScheme;
+        schemes[5] = rightTriggerScheme;
+
+        leftStickXPreScheme = this::defaultPreScheme;
+        leftStickYPreScheme = this::defaultPreScheme;
+        leftTriggerPreScheme = this::defaultPreScheme;
+        rightStickXPreScheme = this::defaultPreScheme;
+        rightStickYPreScheme = this::defaultPreScheme;
+        rightTriggerPreScheme = this::defaultPreScheme;
+
+        leftStickXPostSchemePreScale = this::defaultPostSchemePreScale;
+        leftStickYPostSchemePreScale = this::defaultPostSchemePreScale;
+        leftTriggerPostSchemePreScale = this::defaultPostSchemePreScale;
+        rightStickXPostSchemePreScale = this::defaultPostSchemePreScale;
+        rightStickYPostSchemePreScale = this::defaultPostSchemePreScale;
+        rightTriggerPostSchemePreScale = this::defaultPostSchemePreScale;
+
+        leftStickXPostScale = this::defaultPostScale;
+        leftStickYPostScale = this::defaultPostScale;
+        leftTriggerPostScale = this::defaultPostScale;
+        rightStickXPostScale = this::defaultPostScale;
+        rightStickYPostScale = this::defaultPostScale;
+        rightTriggerPostScale = this::defaultPostScale;
+
+
+        applyToAllStickScales(DEFAULT_STICK_SCALE);
+        applyToAllTriggerScales(DEFAULT_TRIGGER_SCALE);
+        applyToAllSchemes(DEFAULT_SCHEME);
     }
 
-    public boolean a() {
-        return gamepad.a;
-    }
+    //Methods to set custom operations at different states of data retrieval
 
-    public boolean b() {
-        return gamepad.b;
-    }
-
-    public boolean x() {
-        return gamepad.x;
-    }
-
-    public boolean y() {
-        return gamepad.y;
-    }
-
-    public boolean dpadLeft() {
-        return gamepad.dpad_left;
-    }
-
-    public boolean dpadUp() {
-        return gamepad.dpad_up;
-    }
-
-    public boolean dpadRight() {
-        return gamepad.dpad_right;
-    }
-
-    public boolean dpadDown() {
-        return gamepad.dpad_down;
-    }
-
-    public boolean leftBumper() {
-        return gamepad.left_bumper;
-    }
-
-    public boolean rightBumper() {
-        return gamepad.right_bumper;
-    }
-
-    public boolean leftStick() {
-        return gamepad.left_stick_button;
-    }
-
-    public boolean rightStick() {
-        return gamepad.right_stick_button;
-    }
-
-    public boolean start() {
-        return gamepad.start;
-    }
-
-    public boolean guide() {
-        return gamepad.guide;
-    }
-
-    public double leftStickX() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.left_stick_x, leftStickXScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, leftStickXScheme),
-                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_x, leftStickXScheme),
-                        leftStickXScale[0],
-                        leftStickXScale[1],
-                        leftStickXScale[2],
-                        leftStickXScale[3]);
+    public boolean setLeftStickXPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            leftStickXPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.left_stick_x, leftStickXScheme);
+        return false;
     }
 
-    public double leftStickY() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.left_stick_y, leftStickYScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, leftStickYScheme),
-                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_stick_y, leftStickYScheme),
-                        leftStickYScale[0],
-                        leftStickYScale[1],
-                        leftStickYScale[2],
-                        leftStickYScale[3]);
+    public boolean setLeftStickYPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            leftStickYPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.left_stick_y, leftStickYScheme);
+        return false;
     }
 
-    public double leftTrigger() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.left_trigger, leftTriggerScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, leftTriggerScheme),
-                        triggerStartMin, triggerStartMax, triggerEndMin, triggerEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.left_trigger, leftTriggerScheme),
-                        leftTriggerScale[0],
-                        leftTriggerScale[1],
-                        leftTriggerScale[2],
-                        leftTriggerScale[3]);
+    public boolean setLeftTriggerPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            leftTriggerPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.left_trigger, leftTriggerScheme);
+        return false;
     }
 
-    public double rightStickX() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.right_stick_x, rightStickXScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, rightStickXScheme),
-                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_x, rightStickXScheme),
-                        rightStickXScale[0],
-                        rightStickXScale[1],
-                        rightStickXScale[2],
-                        rightStickXScale[3]);
+    public boolean setRightStickXPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            rightStickXPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.right_stick_x, rightStickXScheme);
+        return false;
     }
 
-    public double rightStickY() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.right_stick_y, rightStickYScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, rightStickYScheme),
-                        stickStartMin, stickStartMax, stickEndMin, stickEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_stick_y, rightStickYScheme),
-                        rightStickYScale[0],
-                        rightStickYScale[1],
-                        rightStickYScale[2],
-                        rightStickYScale[3]);
+    public boolean setRightStickYPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            rightStickYPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.right_stick_y, rightStickYScheme);
+        return false;
     }
 
-    public double rightTrigger() {
-        switch (scaleApplication) {
-            case STANDARD_SCALE_FOR_ALL:
-                return Schemer.schemeValue(gamepad.right_trigger, rightTriggerScheme);
-            case CUSTOM_SCALE_FOR_ALL:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, rightTriggerScheme),
-                        triggerStartMin, triggerStartMax, triggerEndMin, triggerEndMax);
-            case INDIVIDUALLY_CUSTOMIZED_SCALES:
-                return Scaler.scale(Schemer.schemeValue(gamepad.right_trigger, rightTriggerScheme),
-                        rightTriggerScale[0],
-                        rightTriggerScale[1],
-                        rightTriggerScale[2],
-                        rightTriggerScale[3]);
+    public boolean setRightTriggerPreScheme(PreSchemeOperation<Double> op) {
+        if (op != null) {
+            rightTriggerPreScheme = op;
+            return true;
         }
-        return Schemer.schemeValue(gamepad.right_trigger, rightTriggerScheme);
+        return false;
     }
 
-
-    //Control Scheme methods
-    public void setControlScheme(ControlScheme controlScheme) {
-        this.leftStickXScheme = controlScheme;
-        this.leftStickYScheme = controlScheme;
-        this.leftTriggerScheme = controlScheme;
-        this.rightStickXScheme = controlScheme;
-        this.rightStickYScheme = controlScheme;
-        this.rightTriggerScheme = controlScheme;
+    public boolean setLeftStickXPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            leftStickXPostSchemePreScale = op;
+            return true;
+        }
+        return false;
     }
 
-    public void incrScheme() {
-        if (schemeApplication == ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL ||
-                schemeApplication == ScaleSchemeApplication.CUSTOM_SCALE_FOR_ALL) {
-            switch (leftStickXScheme) {
-                case LINEAR:
-                    leftStickXScheme = ControlScheme.SQRT;
-                    leftStickYScheme = ControlScheme.SQRT;
-                    leftTriggerScheme = ControlScheme.SQRT;
-                    rightStickXScheme = ControlScheme.SQRT;
-                    rightStickYScheme = ControlScheme.SQRT;
-                    rightTriggerScheme = ControlScheme.SQRT;
-                    break;
-                case SQRT:
-                    leftStickXScheme = ControlScheme.CBRT;
-                    leftStickYScheme = ControlScheme.CBRT;
-                    leftTriggerScheme = ControlScheme.CBRT;
-                    rightStickXScheme = ControlScheme.CBRT;
-                    rightStickYScheme = ControlScheme.CBRT;
-                    rightTriggerScheme = ControlScheme.CBRT;
-                    break;
-                case CBRT:
-                    leftStickXScheme = ControlScheme.SQUARED;
-                    leftStickYScheme = ControlScheme.SQUARED;
-                    leftTriggerScheme = ControlScheme.SQUARED;
-                    rightStickXScheme = ControlScheme.SQUARED;
-                    rightStickYScheme = ControlScheme.SQUARED;
-                    rightTriggerScheme = ControlScheme.SQUARED;
-                    break;
-                case SQUARED:
-                    leftStickXScheme = ControlScheme.CUBED;
-                    leftStickYScheme = ControlScheme.CUBED;
-                    leftTriggerScheme = ControlScheme.CUBED;
-                    rightStickXScheme = ControlScheme.CUBED;
-                    rightStickYScheme = ControlScheme.CUBED;
-                    rightTriggerScheme = ControlScheme.CUBED;
-                    break;
-                case CUBED:
-                    leftStickXScheme = ControlScheme.FOURTH;
-                    leftStickYScheme = ControlScheme.FOURTH;
-                    leftTriggerScheme = ControlScheme.FOURTH;
-                    rightStickXScheme = ControlScheme.FOURTH;
-                    rightStickYScheme = ControlScheme.FOURTH;
-                    rightTriggerScheme = ControlScheme.FOURTH;
-                    break;
-                case FOURTH:
-                    leftStickXScheme = ControlScheme.LINEAR;
-                    leftStickYScheme = ControlScheme.LINEAR;
-                    leftTriggerScheme = ControlScheme.LINEAR;
-                    rightStickXScheme = ControlScheme.LINEAR;
-                    rightStickYScheme = ControlScheme.LINEAR;
-                    rightTriggerScheme = ControlScheme.LINEAR;
-                    break;
+    public boolean setLeftStickYPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            leftStickYPostSchemePreScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public void setLeftTriggerPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            leftTriggerPostSchemePreScale = op;
+        }
+    }
+
+    public boolean setRightStickXPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            rightStickXPostSchemePreScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setRightStickYPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            rightStickYPostSchemePreScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setRightTriggerPostScheme(PostSchemePreScaleOperation<Double> op) {
+        if (op != null) {
+            rightTriggerPostSchemePreScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setLeftStickXPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            leftStickXPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setLeftStickYPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            leftStickYPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setLeftTriggerPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            leftTriggerPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setRightStickXPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            rightStickXPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setRightStickYPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            rightStickYPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setRightTriggerPostScale(PostScaleOperation<Double> op) {
+        if (op != null) {
+            rightTriggerPostScale = op;
+            return true;
+        }
+        return false;
+    }
+
+    //Methods to read and write schemes
+
+    public boolean setControlScheme(ControlScheme controlScheme) {
+        if (applyToAllSchemes(controlScheme)) {
+            schemeSetting = ScaleSchemeApplication.CUSTOM_SCALESCHEME_FOR_ALL;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setCustomizedControlSchemes(ControlScheme leftStickXScheme,
+                                            ControlScheme leftStickYScheme,
+                                            ControlScheme leftTriggerScheme,
+                                            ControlScheme rightStickXScheme,
+                                            ControlScheme rightStickYScheme,
+                                            ControlScheme rightTriggerScheme) {
+        if (leftStickXScheme != null &&
+                leftStickYScheme != null &&
+                leftTriggerScheme != null &&
+                rightStickXScheme != null &&
+                rightStickYScheme != null &&
+                rightTriggerScheme != null) {
+            this.leftStickXScheme = leftStickXScheme;
+            this.leftStickYScheme = leftStickYScheme;
+            this.leftTriggerScheme = leftTriggerScheme;
+            this.rightStickXScheme = rightStickXScheme;
+            this.rightStickYScheme = rightStickYScheme;
+            this.rightTriggerScheme = rightTriggerScheme;
+            schemeSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This method takes arrays as arguments
+     * The array can be any length
+     * The array must be in the following order
+     * leftStickX, leftStickY, leftTrigger, rightStickX, rightStickY, rightTrigger
+     *
+     */
+    public boolean setCustomizedControlSchemes(ControlScheme ... proposedSchemes) {
+        for (ControlScheme scheme : proposedSchemes) {
+            if (scheme == null) {
+                return false;
             }
         }
+        System.arraycopy(schemes, 0, this.schemes, 0, schemes.length);
+        schemeSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+        return true;
     }
 
-    public void decrScheme() {
-        if (schemeApplication == ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL ||
-                schemeApplication == ScaleSchemeApplication.CUSTOM_SCALE_FOR_ALL) {
-            switch (leftStickXScheme) {
-                case LINEAR:
-                    leftStickXScheme = ControlScheme.FOURTH;
-                    leftStickYScheme = ControlScheme.FOURTH;
-                    leftTriggerScheme = ControlScheme.FOURTH;
-                    rightStickXScheme = ControlScheme.FOURTH;
-                    rightStickYScheme = ControlScheme.FOURTH;
-                    rightTriggerScheme = ControlScheme.FOURTH;
-                    break;
-                case SQRT:
-                    leftStickXScheme = ControlScheme.LINEAR;
-                    leftStickYScheme = ControlScheme.LINEAR;
-                    leftTriggerScheme = ControlScheme.LINEAR;
-                    rightStickXScheme = ControlScheme.LINEAR;
-                    rightStickYScheme = ControlScheme.LINEAR;
-                    rightTriggerScheme = ControlScheme.LINEAR;
-                    break;
-                case CBRT:
-                    leftStickXScheme = ControlScheme.SQRT;
-                    leftStickYScheme = ControlScheme.SQRT;
-                    leftTriggerScheme = ControlScheme.SQRT;
-                    rightStickXScheme = ControlScheme.SQRT;
-                    rightStickYScheme = ControlScheme.SQRT;
-                    rightTriggerScheme = ControlScheme.SQRT;
-                    break;
-                case SQUARED:
-                    leftStickXScheme = ControlScheme.CBRT;
-                    leftStickYScheme = ControlScheme.CBRT;
-                    leftTriggerScheme = ControlScheme.CBRT;
-                    rightStickXScheme = ControlScheme.CBRT;
-                    rightStickYScheme = ControlScheme.CBRT;
-                    rightTriggerScheme = ControlScheme.CBRT;
-                    break;
-                case CUBED:
-                    leftStickXScheme = ControlScheme.SQUARED;
-                    leftStickYScheme = ControlScheme.SQUARED;
-                    leftTriggerScheme = ControlScheme.SQUARED;
-                    rightStickXScheme = ControlScheme.SQUARED;
-                    rightStickYScheme = ControlScheme.SQUARED;
-                    rightTriggerScheme = ControlScheme.SQUARED;
-                    break;
-                case FOURTH:
-                    leftStickXScheme = ControlScheme.CUBED;
-                    leftStickYScheme = ControlScheme.CUBED;
-                    leftTriggerScheme = ControlScheme.CUBED;
-                    rightStickXScheme = ControlScheme.CUBED;
-                    rightStickYScheme = ControlScheme.CUBED;
-                    rightTriggerScheme = ControlScheme.CUBED;
-                    break;
-            }
+    public void setCustomizedControlSchemes(HashMap<ControlSurface, ControlScheme>
+                                                       controlSchemes) {
+        leftStickXScheme = controlSchemes.get(ControlSurface.LEFT_STICK_X) != null ?
+                controlSchemes.get(ControlSurface.LEFT_STICK_X) : leftStickXScheme;
+        leftStickYScheme = controlSchemes.get(ControlSurface.LEFT_STICK_Y) != null ?
+                controlSchemes.get(ControlSurface.LEFT_STICK_Y) : leftStickYScheme;
+        leftTriggerScheme = controlSchemes.get(ControlSurface.LEFT_TRIGGER) != null ?
+                controlSchemes.get(ControlSurface.LEFT_TRIGGER) : leftTriggerScheme;
+        rightStickXScheme = controlSchemes.get(ControlSurface.RIGHT_STICK_X) != null ?
+                controlSchemes.get(ControlSurface.RIGHT_STICK_X) : rightStickXScheme;
+        rightStickYScheme = controlSchemes.get(ControlSurface.RIGHT_STICK_Y) != null ?
+                controlSchemes.get(ControlSurface.RIGHT_STICK_Y) : rightStickYScheme;
+        rightTriggerScheme = controlSchemes.get(ControlSurface.RIGHT_TRIGGER) != null ?
+                controlSchemes.get(ControlSurface.RIGHT_TRIGGER) : rightTriggerScheme;
+        schemeSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+    }
+
+    public boolean setDefaultControlSchemes() {
+        if (applyToAllSchemes(DEFAULT_SCHEME)) {
+            schemeSetting = DEFAULT_SCHEME_SETTING;
+            return true;
         }
-    }
-
-    public void setDefaultScheme() {
-        leftStickXScheme = ControlScheme.LINEAR;
+        return false;
     }
 
     public ControlScheme getControlScheme() {
-        if (schemeApplication == ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL ||
-                schemeApplication == ScaleSchemeApplication.CUSTOM_SCALE_FOR_ALL) {
+        if (schemeSetting != ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES) {
             return leftStickXScheme;
         }
         return null;
     }
 
-    public ScaleSchemeApplication getScaleApplication() {
-        return scaleApplication;
+    public HashMap<ControlSurface, ControlScheme> getControlSchemes() {
+        HashMap<ControlSurface, ControlScheme> controlSchemes = new HashMap<>();
+        controlSchemes.put(ControlSurface.LEFT_STICK_X, leftStickXScheme);
+        controlSchemes.put(ControlSurface.LEFT_STICK_Y, leftStickYScheme);
+        controlSchemes.put(ControlSurface.LEFT_TRIGGER, leftTriggerScheme);
+        controlSchemes.put(ControlSurface.RIGHT_STICK_X, rightStickXScheme);
+        controlSchemes.put(ControlSurface.RIGHT_STICK_Y, rightStickYScheme);
+        controlSchemes.put(ControlSurface.RIGHT_TRIGGER, rightTriggerScheme);
+        return controlSchemes;
     }
 
-    public void useCustomScaleForAll(double stickStartMin,
-                                     double stickStartMax,
-                                     double stickEndMin,
-                                     double stickEndMax,
-                                     double triggerStartMin,
-                                     double triggerStartMax,
-                                     double triggerEndMin,
-                                     double triggerEndMax) {
-        this.stickStartMin = stickStartMin;
-        this.stickStartMax = stickStartMax;
-        this.stickEndMin = stickEndMin;
-        this.stickEndMax = stickEndMax;
-        this.triggerStartMin = triggerStartMin;
-        this.triggerStartMax = triggerStartMax;
-        this.triggerEndMin = triggerEndMin;
-        this.triggerEndMax = triggerEndMax;
-        scaleApplication = ScaleSchemeApplication.CUSTOM_SCALE_FOR_ALL;
+    public ScaleSchemeApplication getSchemeSetting() {
+        return schemeSetting;
     }
 
-    public void revertToStandardScaleForAll() {
-        stickStartMin = -1;
-        stickStartMax = 1;
-        stickEndMin = -1;
-        stickEndMax = 1;
-        triggerStartMin = 0;
-        triggerStartMax = 1;
-        triggerEndMin = 0;
-        triggerEndMax = 1;
-        scaleApplication = ScaleSchemeApplication.STANDARD_SCALE_FOR_ALL;
+    public void incrScheme() {
+        if (schemeSetting != ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES) {
+            applyToAllSchemes(leftStickXScheme.next());
+            return;
+        }
+        modifyAllControlSchemes(ControlScheme::next);
     }
 
-    public ScaleSchemeApplication getSchemeApplication() {
-        return schemeApplication;
+    public void decrScheme() {
+        if (schemeSetting != ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES) {
+            applyToAllSchemes(leftStickXScheme.prev());
+            return;
+        }
+        modifyAllControlSchemes(ControlScheme::prev);
     }
 
-    public void useCustomSchemeForAll(ControlScheme leftStickXScheme,
-                                      ControlScheme leftStickYScheme,
-                                      ControlScheme leftTriggerScheme,
-                                      ControlScheme rightStickXScheme,
-                                      ControlScheme rightStickYScheme,
-                                      ControlScheme rightTriggerScheme) {
-        this.leftStickXScheme = leftStickXScheme;
-        this.leftStickYScheme = leftStickYScheme;
-        this.leftTriggerScheme = leftTriggerScheme;
-        this.rightStickXScheme = rightStickXScheme;
-        this.rightStickYScheme = rightStickYScheme;
-        this.rightTriggerScheme = rightTriggerScheme;
-        schemeApplication = ScaleSchemeApplication.CUSTOM_SCALE_FOR_ALL;
+    public boolean setStickScale(double[] scale) {
+        if (applyToAllStickScales(scale)) {
+            stickScaleSetting = ScaleSchemeApplication.CUSTOM_SCALESCHEME_FOR_ALL;
+            return true;
+        }
+        return false;
     }
 
-    public void revertToStandardSchemeForAll() {
-        leftStickXScheme = ControlScheme.LINEAR;
-        leftStickYScheme = ControlScheme.LINEAR;
-        leftTriggerScheme = ControlScheme.LINEAR;
-        rightStickXScheme = ControlScheme.LINEAR;
-        rightStickYScheme = ControlScheme.LINEAR;
-        rightTriggerScheme = ControlScheme.LINEAR;
+    public boolean setTriggerScale(double[] scale) {
+        if (applyToAllTriggerScales(scale)) {
+            triggerScaleSetting = ScaleSchemeApplication.CUSTOM_SCALESCHEME_FOR_ALL;
+            return true;
+        }
+        return false;
     }
 
-    public void setLeftStickXScale(double startMin, double startMax, double endMin,
-                                   double endMax) {
-        leftStickXScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public boolean setCustomizedStickScales(double[] leftStickXScale, double[] leftStickYScale,
+                                         double[] rightStickXScale, double[] rightStickYScale) {
+        if (leftStickXScale != null &&
+                leftStickYScale != null &&
+                rightStickXScale != null &&
+                rightStickYScale != null) {
+            this.leftStickXScale = leftStickXScale;
+            this.leftStickYScale = leftStickYScale;
+            this.rightStickXScale = rightStickYScale;
+            this.rightStickYScale = rightStickYScale;
+            stickScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+            return true;
+        }
+        return false;
     }
 
-    public void setLeftStickYScale(double startMin, double startMax, double endMin,
-                                   double endMax) {
-        leftStickYScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    /**
+     * This method takes arrays as arguments
+     * The array can be any length
+     * The array must be in the following order
+     * leftStickX, leftStickY, leftTrigger, rightStickX, rightStickY, rightTrigger
+     *
+     */
+    public boolean setCustomizedStickScales(double[] ... stickScales) {
+        for (double[] stickScale : stickScales) {
+            if (stickScale == null) {
+                return false;
+            }
+        }
+        System.arraycopy(stickScales, 0, this.stickScales, 0,
+                stickScales.length);
+        stickScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+        return true;
     }
 
-    public void setLeftTriggerScale(double startMin, double startMax, double endMin,
-                                    double endMax) {
-        leftTriggerScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public void setCustomizedStickScales(HashMap<ControlSurface, double[]> stickScales) {
+        leftStickXScale = stickScales.get(ControlSurface.LEFT_STICK_X) != null ?
+                stickScales.get(ControlSurface.LEFT_STICK_X) : leftStickXScale;
+        leftStickYScale = stickScales.get(ControlSurface.LEFT_STICK_Y) != null ?
+                stickScales.get(ControlSurface.LEFT_STICK_Y) : leftStickYScale;
+        rightStickXScale = stickScales.get(ControlSurface.RIGHT_STICK_X) != null ?
+                stickScales.get(ControlSurface.RIGHT_STICK_X) : rightStickXScale;
+        rightStickYScale = stickScales.get(ControlSurface.RIGHT_STICK_Y) != null ?
+                stickScales.get(ControlSurface.RIGHT_STICK_Y) : rightStickYScale;
+        stickScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
     }
 
-    public void setRightStickXScale(double startMin, double startMax, double endMin,
-                                    double endMax) {
-        rightStickXScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public boolean setCustomizedTriggerScales(double[] leftTriggerScale,
+                                              double[] rightTriggerScale) {
+        if (leftTriggerScale != null &&
+                rightTriggerScale != null) {
+            this.leftTriggerScale = leftTriggerScale;
+            this.rightTriggerScale = rightTriggerScale;
+            triggerScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+            return true;
+        }
+        return false;
     }
 
-    public void setRightStickYScale(double startMin, double startMax, double endMin,
-                                    double endMax) {
-        rightStickYScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public boolean setCustomizedTriggerScales(double[] ... triggerScales) {
+        for (double[] triggerScale : triggerScales) {
+            if (triggerScale == null) {
+                return false;
+            }
+        }
+        System.arraycopy(triggerScales, 0, this.triggerScales, 0,
+                triggerScales.length);
+        triggerScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+        return true;
     }
 
-    public void setRightTriggerScale(double startMin, double startMax, double endMin,
-                                     double endMax) {
-        rightTriggerScale = new double[] {startMin, startMax, endMin, endMax};
-        scaleApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public void setCustomizedTriggerScales(HashMap<ControlSurface, double[]> triggerScales) {
+        leftTriggerScale = triggerScales.get(ControlSurface.LEFT_TRIGGER) != null ?
+                triggerScales.get(ControlSurface.LEFT_TRIGGER) : leftTriggerScale;
+        rightTriggerScale = triggerScales.get(ControlSurface.RIGHT_TRIGGER) != null ?
+                triggerScales.get(ControlSurface.RIGHT_TRIGGER) : rightTriggerScale;
     }
 
-    public void setLeftStickXScheme(ControlScheme scheme) {
-        leftStickXScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public boolean setDefaultStickScales() {
+        if (applyToAllStickScales(DEFAULT_STICK_SCALE)) {
+            stickScaleSetting = DEFAULT_SCALE_SETTING;
+            return true;
+        }
+        return false;
     }
 
-    public void setLeftStickYScheme(ControlScheme scheme) {
-        leftStickYScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public boolean setDefaultTriggerScales() {
+        if (applyToAllTriggerScales(DEFAULT_TRIGGER_SCALE)) {
+            triggerScaleSetting = DEFAULT_SCALE_SETTING;
+            return true;
+        }
+        return false;
     }
 
-    public void setLeftTriggerScheme(ControlScheme scheme) {
-        leftTriggerScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public HashMap<ControlSurface, double[]> getStickScales() {
+        HashMap<ControlSurface, double[]> stickScaleDict = new HashMap<>();
+        stickScaleDict.put(ControlSurface.LEFT_STICK_X, leftStickXScale);
+        stickScaleDict.put(ControlSurface.LEFT_STICK_Y, leftStickYScale);
+        stickScaleDict.put(ControlSurface.RIGHT_STICK_X, rightStickXScale);
+        stickScaleDict.put(ControlSurface.RIGHT_STICK_Y, rightStickYScale);
+        return stickScaleDict;
     }
 
-    public void setRightStickXScheme(ControlScheme scheme) {
-        rightStickXScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public HashMap<ControlSurface, double[]> getTriggerScales() {
+        HashMap<ControlSurface, double[]> triggerScaleDict = new HashMap<>();
+        triggerScaleDict.put(ControlSurface.LEFT_TRIGGER, leftTriggerScale);
+        triggerScaleDict.put(ControlSurface.RIGHT_TRIGGER, rightTriggerScale);
+        return triggerScaleDict;
     }
 
-    public void setRightStickYScheme(ControlScheme scheme) {
-        rightStickYScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public ScaleSchemeApplication getStickScaleSetting() {
+        return stickScaleSetting;
     }
 
-    public void setRightTriggerScheme(ControlScheme scheme) {
-        rightTriggerScheme = scheme;
-        schemeApplication = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALES;
+    public ScaleSchemeApplication getTriggerScaleSetting() {
+        return triggerScaleSetting;
+    }
+
+    //Here's the non boolean Controller methods
+    public double leftStickX() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.left_stick_x,
+                ControlSurface.LEFT_STICK_X);
+    }
+
+    public double leftStickY() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.left_stick_y,
+                ControlSurface.LEFT_STICK_Y);
+    }
+
+    public double leftTrigger() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.left_trigger,
+                ControlSurface.LEFT_TRIGGER);
+    }
+
+    public double rightStickX() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.right_stick_x,
+                ControlSurface.RIGHT_STICK_X);
+    }
+
+    public double rightStickY() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.right_stick_y,
+                ControlSurface.RIGHT_STICK_Y);
+    }
+
+    public double rightTrigger() {
+        return getAppropriatelyScaledAndSchemedValue(GAMEPAD.right_trigger,
+                ControlSurface.RIGHT_TRIGGER);
+    }
+
+    // And the rest is simple boolean stuff
+    public boolean a() {
+        return GAMEPAD.a;
+    }
+
+    public boolean b() {
+        return GAMEPAD.b;
+    }
+
+    public boolean x() {
+        return GAMEPAD.x;
+    }
+
+    public boolean y() {
+        return GAMEPAD.y;
+    }
+
+    public boolean dpadLeft() {
+        return GAMEPAD.dpad_left;
+    }
+
+    public boolean dpadUp() {
+        return GAMEPAD.dpad_up;
+    }
+
+    public boolean dpadRight() {
+        return GAMEPAD.dpad_right;
+    }
+
+    public boolean dpadDown() {
+        return GAMEPAD.dpad_down;
+    }
+
+    public boolean leftBumper() {
+        return GAMEPAD.left_bumper;
+    }
+
+    public boolean rightBumper() {
+        return GAMEPAD.right_bumper;
+    }
+
+    public boolean leftStick() {
+        return GAMEPAD.left_stick_button;
+    }
+
+    public boolean rightStick() {
+        return GAMEPAD.right_stick_button;
+    }
+
+    public boolean start() {
+        return GAMEPAD.start;
+    }
+
+    public boolean guide() {
+        return GAMEPAD.guide;
+    }
+
+    private double getAppropriatelyScaledAndSchemedValue(double value,
+                                                         ControlSurface controlSurface) {
+        if (value != Double.NaN && controlSurface != null) {
+            return scaleAndSchemeValue(value,
+                    getSurfaceScale(controlSurface),
+                    getSurfaceScheme(controlSurface),
+                    getSurfacePreSchemeOp(controlSurface),
+                    getSurfacePostSchemePreScaleOp(controlSurface),
+                    getSurfacePostScaleOp(controlSurface));
+        }
+        return 0.0;
+    }
+
+    private double[] getSurfaceScale(ControlSurface controlSurface) {
+        switch (controlSurface) {
+            case LEFT_STICK_X:
+                return leftStickXScale;
+            case LEFT_STICK_Y:
+                return leftStickYScale;
+            case LEFT_TRIGGER:
+                return leftTriggerScale;
+            case RIGHT_STICK_X:
+                return rightStickXScale;
+            case RIGHT_STICK_Y:
+                return rightStickYScale;
+            case RIGHT_TRIGGER:
+                return rightTriggerScale;
+        }
+        return DEFAULT_STICK_SCALE;
+    }
+
+    private ControlScheme getSurfaceScheme(ControlSurface controlSurface) {
+        switch (controlSurface) {
+            case LEFT_STICK_X:
+                return leftStickXScheme;
+            case LEFT_STICK_Y:
+                return leftStickYScheme;
+            case LEFT_TRIGGER:
+                return leftTriggerScheme;
+            case RIGHT_STICK_X:
+                return rightStickXScheme;
+            case RIGHT_STICK_Y:
+                return rightStickYScheme;
+            case RIGHT_TRIGGER:
+                return rightTriggerScheme;
+        }
+        return DEFAULT_SCHEME;
+    }
+
+    private PreSchemeOperation<Double> getSurfacePreSchemeOp(ControlSurface controlSurface) {
+        switch (controlSurface) {
+            case LEFT_STICK_X:
+                return leftStickXPreScheme;
+            case LEFT_STICK_Y:
+                return leftStickYPreScheme;
+            case LEFT_TRIGGER:
+                return leftTriggerPreScheme;
+            case RIGHT_STICK_X:
+                return rightStickXPreScheme;
+            case RIGHT_STICK_Y:
+                return rightStickYPreScheme;
+            case RIGHT_TRIGGER:
+                return rightTriggerPreScheme;
+        }
+        return this::defaultPreScheme;
+    }
+
+    private PostSchemePreScaleOperation<Double> getSurfacePostSchemePreScaleOp(
+            ControlSurface controlSurface) {
+        switch (controlSurface) {
+            case LEFT_STICK_X:
+                return leftStickXPostSchemePreScale;
+            case LEFT_STICK_Y:
+                return leftStickYPostSchemePreScale;
+            case LEFT_TRIGGER:
+                return leftTriggerPostSchemePreScale;
+            case RIGHT_STICK_X:
+                return rightStickXPostSchemePreScale;
+            case RIGHT_STICK_Y:
+                return rightStickYPostSchemePreScale;
+            case RIGHT_TRIGGER:
+                return rightTriggerPostSchemePreScale;
+        }
+        return this::defaultPostSchemePreScale;
+    }
+
+    private PostScaleOperation<Double> getSurfacePostScaleOp(ControlSurface controlSurface) {
+        switch (controlSurface) {
+            case LEFT_STICK_X:
+                return leftStickXPostScale;
+            case LEFT_STICK_Y:
+                return leftStickYPostScale;
+            case LEFT_TRIGGER:
+                return leftTriggerPostScale;
+            case RIGHT_STICK_X:
+                return rightStickXPostScale;
+            case RIGHT_STICK_Y:
+                return rightStickYPostScale;
+            case RIGHT_TRIGGER:
+                return rightTriggerPostScale;
+        }
+        return this::defaultPostScale;
+    }
+
+    private double scaleAndSchemeValue(double value, double[] scale, ControlScheme scheme,
+                                       PreSchemeOperation<Double> preSchemeOperation,
+                                       PostSchemePreScaleOperation<Double> postSchemeOperation,
+                                       PostScaleOperation<Double> postScaleOperation) {
+        return (postScaleOperation.apply(Scaler.scale(postSchemeOperation.apply(
+                Schemer.schemeValue(preSchemeOperation.apply(value), scheme)),
+                scale[0], scale[1], scale[2], scale[3])));
+    }
+
+    private void modifyAllControlSchemes(PrevNextMethod prevNextMethod) {
+        setCustomizedControlSchemes(prevNextMethod.apply(leftStickXScheme),
+                prevNextMethod.apply(leftStickYScheme),
+                prevNextMethod.apply(leftTriggerScheme),
+                prevNextMethod.apply(rightStickXScheme),
+                prevNextMethod.apply(rightStickXScheme),
+                prevNextMethod.apply(rightTriggerScheme));
+    }
+
+    private boolean applyToAllSchemes(ControlScheme scheme) {
+        if (scheme != null) {
+            for (int i = 0; i < schemes.length; i++) {
+                schemes[i] = scheme;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean applyToAllStickScales(double[] scale) {
+        if (scale != null) {
+            for (int i = 0; i < stickScales.length; i++) {
+                stickScales[i] = scale;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean applyToAllTriggerScales(double[] scale) {
+        if (scale != null) {
+            for (int i = 0; i < triggerScales.length; i++) {
+                triggerScales[i] = scale;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private double defaultPreScheme(double in) {
+        return in;
+    }
+
+    private double defaultPostSchemePreScale(double in) {
+        return in;
+    }
+
+    private double defaultPostScale(double in) {
+        return in;
     }
 }

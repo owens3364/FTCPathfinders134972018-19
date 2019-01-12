@@ -17,5 +17,6 @@ public final class AutonomousStartTowardsCraterIterationFour extends GenericAuto
         super.waitForStart();
         land(bot);
         bot.allMechanumDriveMotors(1, 1400);
+        sleep(8000);
     }
 }

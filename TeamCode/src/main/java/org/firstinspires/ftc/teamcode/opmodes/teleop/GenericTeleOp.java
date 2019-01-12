@@ -126,17 +126,15 @@ class GenericTeleOp extends OpMode {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
         setup = true;
-        return setup;
+        return true;
     }
 
     @Override
     public void init() {
         if (setup) {
             controller1 = new Controller(gamepad1);
-            controller1.setDefaultScheme();
             controller1Scheme = controller1.getControlScheme().name();
             controller2 = new Controller(gamepad2);
-            controller2.setDefaultScheme();
             controller2Scheme = controller2.getControlScheme().name();
             stateOfExecution = StateOfExecution.INITIALIZED;
             updateTelemetry();

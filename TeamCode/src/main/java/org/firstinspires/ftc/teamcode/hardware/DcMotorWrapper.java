@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 final class DcMotorWrapper {
     private static final double mmPerDriveRotation = 285; //TODO: Measure exact value, this is only calculated
 
-    private DcMotor motor;
+    private final DcMotor motor;
     private MotorType motorType;
 
     DcMotorWrapper(HardwareMap map, String motorName, Direction motorRotatingDirection, MotorType motorType) {

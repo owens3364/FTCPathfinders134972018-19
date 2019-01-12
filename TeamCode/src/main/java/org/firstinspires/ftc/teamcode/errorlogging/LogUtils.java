@@ -15,7 +15,7 @@ public final class LogUtils {
     private static final String ERROR_LOG_DIRECTORY = "FTCRobotController Error Logs";
     private static final String NEW_LINE_CHARACTER = System.lineSeparator();
     private static final String FILE_EXTENSION = ".txt";
-    private static final String PREFFERED_DATE_FORMAT = "yyyy-MM-dd-HH-mm-ss";
+    private static final String PREFERRED_DATE_FORMAT = "yyyy-MM-dd-HH-mm-ss";
 
     public static void logError(LinkedHashMap<String, String>[] states) {
         writeToFile(generateFile(generatePath()), generateOutput(states));
@@ -41,7 +41,7 @@ public final class LogUtils {
 
     private static File generateFile(File path) {
         if (path != null) {
-            return new File(path, new SimpleDateFormat(PREFFERED_DATE_FORMAT).format(
+            return new File(path, new SimpleDateFormat(PREFERRED_DATE_FORMAT).format(
                     new Timestamp(System.currentTimeMillis())) + FILE_EXTENSION);
         }
         return null;
