@@ -1,18 +1,20 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
 
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 
-final class LimitedDriveMarkI {
+public final class LimitedDriveMarkI {
     private final DcMotorWrapper drive;
     //Limit switches
     private final DigitalChannel driveMin;
     private final DigitalChannel driveMax;
 
-    LimitedDriveMarkI(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
-        drive = new DcMotorWrapper(map, driveName, FORWARD, null);
+    public LimitedDriveMarkI(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
+        drive = new DcMotorWrapper(map, driveName, FORWARD, Motor.UnspecifiedMotor);
         driveMin = map.get(DigitalChannel.class, minLimitName);
         driveMin.setMode(DigitalChannel.Mode.INPUT);
         driveMax = map.get(DigitalChannel.class, maxLimitName);
@@ -21,7 +23,7 @@ final class LimitedDriveMarkI {
 
     //Safely sets the power of the LimitedDriveMarkI, ensures it does not go past
     // minimum or maximum limits
-    void set(double power) {
+    public void set(double power) {
         if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
             //Ensure the actuator is not at its limit
             if (power == 0) {

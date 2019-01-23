@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.memory;
 import android.app.ActivityManager;
 import android.content.Context;
 
-import org.firstinspires.ftc.teamcode.errorlogging.LogUtils;
+import org.firstinspires.ftc.teamcode.errorio.LogUtils;
 
 import java.util.LinkedList;
 import java.util.Objects;
@@ -51,7 +51,7 @@ public final class MemoryManagement {
                 try {
                     Thread.sleep(managementRate);
                 } catch(InterruptedException ie) {
-                    LogUtils.logError("ERROR" + ie.toString());
+                    LogUtils.logError("ERROR" + ie.getMessage());
                 }
             }
             if (objects.size() > 0) {

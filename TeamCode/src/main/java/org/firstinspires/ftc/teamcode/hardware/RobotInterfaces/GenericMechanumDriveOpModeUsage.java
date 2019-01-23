@@ -1,6 +1,8 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotInterfaces;
 
-public interface GenericMechanumDriveOpModeUsage {
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.Direction;
+
+public interface GenericMechanumDriveOpModeUsage extends Robot {
     //Any data all bots should have is listed here and implemented by class names starting with
     // "Bot"
     void setFrontLeftDrive(double power);

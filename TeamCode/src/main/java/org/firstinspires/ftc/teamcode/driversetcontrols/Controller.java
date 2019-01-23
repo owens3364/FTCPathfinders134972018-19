@@ -294,13 +294,13 @@ public class Controller {
      * leftStickX, leftStickY, leftTrigger, rightStickX, rightStickY, rightTrigger
      *
      */
-    public boolean setCustomizedControlSchemes(ControlScheme ... proposedSchemes) {
-        for (ControlScheme scheme : proposedSchemes) {
+    public boolean setCustomizedControlSchemes(ControlScheme ... schemes) {
+        for (ControlScheme scheme : schemes) {
             if (scheme == null) {
                 return false;
             }
         }
-        System.arraycopy(schemes, 0, this.schemes, 0, schemes.length);
+        System.arraycopy(schemes, 0, this.schemes, 0,schemes.length);
         schemeSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
         return true;
     }

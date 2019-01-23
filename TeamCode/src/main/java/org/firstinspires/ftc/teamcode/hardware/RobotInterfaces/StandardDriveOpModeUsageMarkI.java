@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotInterfaces;
 
-public interface StandardDriveOpModeUsageMarkI {
+public interface StandardDriveOpModeUsageMarkI extends Robot {
     //Any data all bots should have is listed here and implemented by class names starting with
     // "Bot"
     void setLeftDrive(double power);

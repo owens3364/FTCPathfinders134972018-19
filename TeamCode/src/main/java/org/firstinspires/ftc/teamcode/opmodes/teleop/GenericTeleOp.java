@@ -4,11 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.activityadditions.GamepadDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
-import org.firstinspires.ftc.teamcode.errorlogging.LogUtils;
+import org.firstinspires.ftc.teamcode.errorio.LogUtils;
 import org.firstinspires.ftc.teamcode.opmodes.DataRemovalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataRetrievalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
@@ -31,7 +30,7 @@ class GenericTeleOp extends OpMode {
     //State of this class
     private boolean setup = false;
 
-    boolean isSetup() {
+    final boolean isSetup() {
         return setup;
     }
 
@@ -75,7 +74,7 @@ class GenericTeleOp extends OpMode {
     }
 
 
-    boolean setup(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
+    final boolean setup(Gamepad gamepad1, Gamepad gamepad2, Telemetry telemetry) {
         this.telemetry = telemetry;
         this.telemetryData = new LinkedHashMap<>();
         addData("Status...", "Telemetry initialized and setup called");
@@ -194,7 +193,7 @@ class GenericTeleOp extends OpMode {
         }
     }
 
-    void updateTelemetry() {
+    final void updateTelemetry() {
         if (setup) {
             addData(TELEMETRY_STATE_OF_EXECUTION, stateOfExecution.name());
             addData(TELEMETRY_CONTROLLER_1_SCHEME, controller1Scheme);
@@ -208,12 +207,12 @@ class GenericTeleOp extends OpMode {
         }
     }
 
-    void cycleTelemetry(DataSetHashMapOperation<String, String, Boolean> operation, String[] keys, String[] values) {
+    final void cycleTelemetry(DataSetHashMapOperation<String, String, Boolean> operation, String[] keys, String[] values) {
         telemetryOperation(operation, keys, values);
         updateTelemetry();
     }
 
-    boolean addData(String key, String value) {
+    final boolean addData(String key, String value) {
         if (key != null && value != null) {
             if (setup) {
                 telemetryData.put(key, value);
@@ -223,7 +222,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    boolean addData(String key, double value) {
+    final boolean addData(String key, double value) {
         if (key != null) {
             if (setup) {
                 telemetryData.put(key, String.valueOf(value));
@@ -233,7 +232,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    boolean addData(String key, boolean value) {
+    final boolean addData(String key, boolean value) {
         if (key != null) {
             if (setup) {
                 telemetryData.put(key, String.valueOf(value));
@@ -243,7 +242,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    boolean setData(String key, String value) {
+    final boolean setData(String key, String value) {
         if (key != null && value != null) {
             if (setup) {
                 telemetryData.replace(key, value);
@@ -253,7 +252,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    boolean setData(String key, double value) {
+    final boolean setData(String key, double value) {
         if (key != null) {
             if (setup) {
                 telemetryData.replace(key, String.valueOf(value));
@@ -263,7 +262,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    boolean setData(String key, boolean value) {
+    final boolean setData(String key, boolean value) {
         if (key != null) {
             if (setup) {
                 telemetryData.replace(key, String.valueOf(value));
@@ -273,7 +272,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    String getData(String key) {
+    final String getData(String key) {
         if (key != null) {
             if (setup) {
                 return telemetryData.get(key);
@@ -282,7 +281,7 @@ class GenericTeleOp extends OpMode {
         return null;
     }
 
-    boolean removeData(String key) {
+    final boolean removeData(String key) {
         if (key != null) {
             if (setup) {
                 telemetryData.remove(key);
@@ -292,7 +291,7 @@ class GenericTeleOp extends OpMode {
         return false;
     }
 
-    LinkedList<Boolean> telemetryOperation(DataSetHashMapOperation
+    final LinkedList<Boolean> telemetryOperation(DataSetHashMapOperation
                                                    <String, String, Boolean> operation,
                                            String[] keys, String[] values) {
         if (validateOperation(operation, keys, values)) {
@@ -305,7 +304,7 @@ class GenericTeleOp extends OpMode {
         return null;
     }
 
-    LinkedList<String> telemetryOperation(DataRetrievalHashMapOperation
+    final LinkedList<String> telemetryOperation(DataRetrievalHashMapOperation
                                                   <String, String> operation, String[] keys) {
         if (validateOperation(operation, keys)) {
             LinkedList<String> operationCompletions = new LinkedList<>();
@@ -317,7 +316,7 @@ class GenericTeleOp extends OpMode {
         return null;
     }
 
-    LinkedList<Boolean> telemetryOperation(DataRemovalHashMapOperation
+    final LinkedList<Boolean> telemetryOperation(DataRemovalHashMapOperation
                                                    <String, Boolean> operation, String[] keys) {
         if (validateOperation(operation, keys)) {
             LinkedList<Boolean> operationCompletions = new LinkedList<>();
@@ -339,5 +338,4 @@ class GenericTeleOp extends OpMode {
     private boolean validateOperation(Object operation, String[] keys) {
         return operation != null && keys != null;
     }
-
 }

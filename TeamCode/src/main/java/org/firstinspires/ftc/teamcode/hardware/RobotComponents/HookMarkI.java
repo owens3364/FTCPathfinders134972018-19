@@ -1,46 +1,48 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-final class HookMarkI {
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+
+public final class HookMarkI {
     private final DcMotorWrapper hookDrive;
     private final Servo hookServo;
 
-    HookMarkI(HardwareMap map, String hookDriveName, String hookServoName) {
+    public HookMarkI(HardwareMap map, String hookDriveName, String hookServoName) {
         hookDrive = new DcMotorWrapper(map, hookDriveName, DcMotorSimple.Direction.FORWARD,
-                MotorType.NEVEREST_60);
+                Motor.NeveRest60Gearmotor);
         hookDrive.freezeAtZeroPower();
         hookServo = map.get(Servo.class, hookServoName);
     }
 
-    void setDrive(double power) {
+    public void setDrive(double power) {
         hookDrive.set(power);
     }
 
-    void setDriveForRotations(double power, double rotations) {
+    public void setDriveForRotations(double power, double rotations) {
         hookDrive.driveForRotations(power, rotations);
     }
 
-    void setDriveForMM(double power, int mm) {
+    public void setDriveForMM(double power, int mm) {
         hookDrive.set(power, mm);
     }
 
-    void activate() {
+    public void activate() {
         hookServo.setPosition(Servo.MAX_POSITION / 2);
     }
 
-    void retract () {
+    public void retract () {
         hookServo.setPosition(Servo.MIN_POSITION);
     }
 
-    void freeze() {
+    public void freeze() {
         hookDrive.freezeAtZeroPower();
         hookDrive.set(0);
     }
 
-    void coast() {
+    public void coast() {
         hookDrive.coastAtZeroPower();
         hookDrive.set(0);
     }

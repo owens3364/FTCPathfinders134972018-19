@@ -1,9 +1,15 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.Robots;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.ArmMarkII;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.Direction;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.LiftMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.MechanumDriveTrainMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotInterfaces.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+
 public final class BotMarkIII implements MechanumDriveOpModeUsageMarkII {
-    private static final double ROBOT_WEIGHT_LBS = 1; //TODO: MEASURE CORRECT VALUES
 
     private final MechanumDriveTrainMarkI driveTrain;
     private final LiftMarkI lift;
@@ -361,5 +367,16 @@ public final class BotMarkIII implements MechanumDriveOpModeUsageMarkII {
 
     private int degreesToDriveMM(double degrees) {
         return (int) ((degrees * 1) + .5); //TODO: Measure this
+    }
+
+    //TODO: IMPLEMENT THESE
+    @Override
+    public boolean createConfigurationFile() {
+        return false;
+    }
+
+    @Override
+    public boolean createConfigurationFile(String name) {
+        return false;
     }
 }

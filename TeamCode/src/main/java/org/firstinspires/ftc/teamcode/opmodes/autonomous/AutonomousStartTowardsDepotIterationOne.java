@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.hardware.BotMarkI;
-import org.firstinspires.ftc.teamcode.hardware.StandardDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.hardware.Robots.BotMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotInterfaces.StandardDriveOpModeUsageMarkI;
 
 @Autonomous(name = "AutoDepotOne", group = "Autonomous")
 @Disabled

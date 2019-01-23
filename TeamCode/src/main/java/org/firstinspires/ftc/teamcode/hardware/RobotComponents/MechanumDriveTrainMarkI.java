@@ -1,28 +1,30 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
+
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
 
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.FORWARD;
 import static com.qualcomm.robotcore.hardware.DcMotorSimple.Direction.REVERSE;
 
-final class MechanumDriveTrainMarkI {
+public final class MechanumDriveTrainMarkI {
     private final DcMotorWrapper frontLeftDrive;
     private final DcMotorWrapper frontRightDrive;
     private final DcMotorWrapper rearLeftDrive;
     private final DcMotorWrapper rearRightDrive;
 
-    MechanumDriveTrainMarkI(HardwareMap map,
+    public MechanumDriveTrainMarkI(HardwareMap map,
                             String frontLeftDriveName,
                             String frontRightDriveName,
                             String rearLeftDriveName,
                             String rearRightDriveName) {
-        frontLeftDrive = new DcMotorWrapper(map, frontLeftDriveName, FORWARD, MotorType.NEVEREST_60);
-        frontRightDrive = new DcMotorWrapper(map, frontRightDriveName, REVERSE, MotorType.NEVEREST_60);
-        rearLeftDrive = new DcMotorWrapper(map, rearLeftDriveName, FORWARD, MotorType.NEVEREST_60);
-        rearRightDrive = new DcMotorWrapper(map, rearRightDriveName, REVERSE, MotorType.NEVEREST_60);
+        frontLeftDrive = new DcMotorWrapper(map, frontLeftDriveName, FORWARD, Motor.NeveRest60Gearmotor);
+        frontRightDrive = new DcMotorWrapper(map, frontRightDriveName, REVERSE, Motor.NeveRest60Gearmotor);
+        rearLeftDrive = new DcMotorWrapper(map, rearLeftDriveName, FORWARD, Motor.NeveRest60Gearmotor);
+        rearRightDrive = new DcMotorWrapper(map, rearRightDriveName, REVERSE, Motor.NeveRest60Gearmotor);
     }
 
-    void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
+    public void driveMotorsBySticks(double leftRight, double forwardBackward, double turn) {
         double targetPoint = Math.hypot(-leftRight, forwardBackward);
         double targetAngle = Math.atan2(forwardBackward, -leftRight) - Math.PI / 4;
         setFrontLeft(targetPoint * Math.cos(targetAngle) - turn);
@@ -31,67 +33,67 @@ final class MechanumDriveTrainMarkI {
         setRearRight(targetPoint *Math.cos(targetAngle) + turn);
     }
 
-    double getFrontLeft() {
+    public double getFrontLeft() {
         return frontLeftDrive.getPower();
     }
 
-    void setFrontLeft(double power) {
+    public void setFrontLeft(double power) {
         frontLeftDrive.set(power);
     }
 
-    double getFrontRight() {
+    public double getFrontRight() {
         return frontRightDrive.getPower();
     }
 
-    void setFrontRight(double power) {
+    public void setFrontRight(double power) {
         frontRightDrive.set(power);
     }
 
-    double getRearLeft() {
+    public double getRearLeft() {
         return rearLeftDrive.getPower();
     }
 
-    void setRearLeft(double power) {
+    public void setRearLeft(double power) {
         rearLeftDrive.set(power);
     }
 
-    double getRearRight() {
+    public double getRearRight() {
         return rearRightDrive.getPower();
     }
 
-    void setRearRight(double power) {
+    public void setRearRight(double power) {
         rearRightDrive.set(power);
     }
 
-    void setFrontLeftForRotations(double power, double rotations) {
+    public void setFrontLeftForRotations(double power, double rotations) {
         frontLeftDrive.driveForRotations(power, rotations);
     }
 
-    void setFrontRightForRotations(double power, double rotations) {
+    public void setFrontRightForRotations(double power, double rotations) {
         frontRightDrive.driveForRotations(power, rotations);
     }
 
-    void setRearLeftForRotations(double power, double rotations) {
+    public void setRearLeftForRotations(double power, double rotations) {
         rearLeftDrive.driveForRotations(power, rotations);
     }
 
-    void setRearRightForRotations(double power, double rotations) {
+    public void setRearRightForRotations(double power, double rotations) {
         rearRightDrive.driveForRotations(power, rotations);
     }
 
-    void setFrontLeftForMM(double power, int mm) {
+    public void setFrontLeftForMM(double power, int mm) {
         frontLeftDrive.set(power, mm);
     }
 
-    void setFrontRightForMM(double power, int mm) {
+    public void setFrontRightForMM(double power, int mm) {
         frontRightDrive.set(power, mm);
     }
 
-    void setRearLeftForMM(double power, int mm) {
+    public void setRearLeftForMM(double power, int mm) {
         rearLeftDrive.set(power, mm);
     }
 
-    void setRearRightForMM(double power, int mm) {
+    public void setRearRightForMM(double power, int mm) {
         rearRightDrive.set(power, mm);
     }
 }

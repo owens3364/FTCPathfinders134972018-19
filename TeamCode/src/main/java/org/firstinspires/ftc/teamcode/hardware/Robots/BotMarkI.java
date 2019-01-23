@@ -1,9 +1,15 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.Robots;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.DriveTrainMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.HookMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.IntakeMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.LiftMarkI;
+import org.firstinspires.ftc.teamcode.hardware.RobotInterfaces.StandardDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+
 public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
-    private static final double ROBOT_WEIGHT_LBS = 1; //TODO: MEASURE CORRECT VALUES
 
     private final DriveTrainMarkI driveTrain;
     private final LiftMarkI lift;
@@ -154,5 +160,16 @@ public final class BotMarkI implements StandardDriveOpModeUsageMarkI {
         lift.freeze();
         intake.set(0);
         hook.freeze();
+    }
+
+    //TODO: IMPLEMENT THESE
+    @Override
+    public boolean createConfigurationFile() {
+        return false;
+    }
+
+    @Override
+    public boolean createConfigurationFile(String name) {
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotor.RunMode;
@@ -6,13 +6,15 @@ import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+
 final class DcMotorWrapper {
     private static final double mmPerDriveRotation = 285; //TODO: Measure exact value, this is only calculated
 
     private final DcMotor motor;
-    private MotorType motorType;
+    private Motor motorType;
 
-    DcMotorWrapper(HardwareMap map, String motorName, Direction motorRotatingDirection, MotorType motorType) {
+    DcMotorWrapper(HardwareMap map, String motorName, Direction motorRotatingDirection, Motor motorType) {
         this.motor = map.get(DcMotor.class, motorName);
         motor.setDirection(motorRotatingDirection);
         this.motorType = motorType;

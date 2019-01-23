@@ -1,81 +1,83 @@
-package org.firstinspires.ftc.teamcode.hardware;
+package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-final class ArmMarkI {
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+
+public final class ArmMarkI {
     private final DcMotorWrapper sliderDrive;
     private final DcMotorWrapper armAngularDrive;
     private final Servo intakeAngular;
     private final Servo lid;
 
-    ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularDriveName,
+    public ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularDriveName,
              String intakeAngularName, String lidName) {
         sliderDrive = new DcMotorWrapper(map, sliderDriveName, DcMotorSimple.Direction.FORWARD,
-                MotorType.TETRIX_MAX);
+                Motor.TetrixMotor);
         sliderDrive.freezeAtZeroPower();
         armAngularDrive = new DcMotorWrapper(map, armAngularDriveName, DcMotorSimple.Direction.FORWARD,
-                MotorType.TETRIX_MAX);
+                Motor.TetrixMotor);
         armAngularDrive.freezeAtZeroPower();
         intakeAngular = map.get(Servo.class, intakeAngularName);
         lid = map.get(Servo.class, lidName);
     }
 
-    void setSliderDrive(double power) {
+    public void setSliderDrive(double power) {
         sliderDrive.set(power);
     }
 
-    void setArmAngularDrive(double power) {
+    public void setArmAngularDrive(double power) {
         armAngularDrive.set(power);
     }
 
-    void setSliderDriveForRotations(double power, double rotations) {
+    public void setSliderDriveForRotations(double power, double rotations) {
         sliderDrive.driveForRotations(power, rotations);
     }
 
-    void setArmAngularDriveForRotations(double power, double rotations) {
+    public void setArmAngularDriveForRotations(double power, double rotations) {
         armAngularDrive.driveForRotations(power, rotations);
     }
 
-    void setSliderDriveForMM(double power, int mm) {
+    public void setSliderDriveForMM(double power, int mm) {
         sliderDrive.set(power, mm);
     }
 
-    void setArmAngularDriveForMM(double power, int mm) {
+    public void setArmAngularDriveForMM(double power, int mm) {
         sliderDrive.set(power, mm);
     }
 
-    void setIntakeAngle(double angle) {
+    public void setIntakeAngle(double angle) {
         if (HardwareInput.validate(angle, InputType.FOR_SERVO)) {
             intakeAngular.setPosition(angle);
         }
     }
 
-    void openLid() {
+    public void openLid() {
         lid.setPosition(Servo.MAX_POSITION);
     }
 
-    void closeLid() {
+    public void closeLid() {
         lid.setPosition(Servo.MIN_POSITION);
     }
 
-    void freezeArmAngular() {
+    public void freezeArmAngular() {
         armAngularDrive.freezeAtZeroPower();
         armAngularDrive.set(0);
     }
 
-    void coastArmAngular() {
+    public void coastArmAngular() {
         armAngularDrive.coastAtZeroPower();
         armAngularDrive.set(0);
     }
 
-    void freezeArmSliders() {
+    public void freezeArmSliders() {
         sliderDrive.coastAtZeroPower();
         sliderDrive.set(0);
     }
 
-    void coastArmSliders() {
+    public void coastArmSliders() {
         sliderDrive.coastAtZeroPower();
         sliderDrive.set(0);
     }

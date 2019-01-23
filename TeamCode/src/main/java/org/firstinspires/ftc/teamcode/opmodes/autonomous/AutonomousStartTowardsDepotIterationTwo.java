@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.hardware.BotMarkII;
-import org.firstinspires.ftc.teamcode.hardware.Direction;
-import org.firstinspires.ftc.teamcode.hardware.MechanumDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.hardware.Robots.BotMarkII;
+import org.firstinspires.ftc.teamcode.hardware.RobotComponents.Direction;
+import org.firstinspires.ftc.teamcode.hardware.RobotInterfaces.MechanumDriveOpModeUsageMarkI;
 
 @Disabled
 @Autonomous(name = "AutoDepotTwo", group = "Autonomous")
