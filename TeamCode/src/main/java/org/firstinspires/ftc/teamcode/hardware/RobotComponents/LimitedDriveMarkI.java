@@ -14,7 +14,7 @@ public final class LimitedDriveMarkI {
     private final DigitalChannel driveMax;
 
     public LimitedDriveMarkI(HardwareMap map, String driveName, String minLimitName, String maxLimitName) {
-        drive = new DcMotorWrapper(map, driveName, FORWARD, Motor.UnspecifiedMotor);
+        drive = new DcMotorWrapper(map, driveName, FORWARD, Motor.Motor);
         driveMin = map.get(DigitalChannel.class, minLimitName);
         driveMin.setMode(DigitalChannel.Mode.INPUT);
         driveMax = map.get(DigitalChannel.class, maxLimitName);

@@ -110,7 +110,7 @@ public final class XMLUtils {
                                                   String devicePort,
                                                   String deviceBus) {
         return generateElementWithAttributes(generateBaseDocument(),
-                device.name(),
+                device.toString(),
                 new String[] {
                         NAME,
                         PORT,
@@ -127,7 +127,7 @@ public final class XMLUtils {
                                                   String motorName,
                                                   String motorPort) {
         return generateElementWithAttributes(generateBaseDocument(),
-                motor.name(),
+                motor.toString(),
                 new String[] {
                         NAME,
                         PORT
@@ -142,7 +142,7 @@ public final class XMLUtils {
                                                   String servoName,
                                                   String servoPort) {
         return generateElementWithAttributes(generateBaseDocument(),
-                servo.name(),
+                servo.toString(),
                 new String[] {
                     NAME,
                     PORT
