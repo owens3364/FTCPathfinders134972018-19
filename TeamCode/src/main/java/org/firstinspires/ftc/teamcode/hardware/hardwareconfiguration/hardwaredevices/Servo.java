@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwarede
 
 public enum Servo {
     ContinuousRotationServo,
-    REVBlinkinLEDDriver,
-    REVSPARKMiniController,
+    REVBlinkinLedDriver,
+    RevSPARKMini,
     Servo
 }
