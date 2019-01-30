@@ -10,12 +10,4 @@
 // Custom definitions may go here
 // Include common definitions from above.
 
-repositories {
-    google()
-}
-
 apply from: '../build.common.gradle'
-
-dependencies {
-    implementation project(':FtcRobotController')
-}

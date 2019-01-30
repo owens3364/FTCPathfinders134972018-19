@@ -11,8 +11,6 @@ import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIV;
 @TeleOp(name = "TeleOpFour", group = "TeleOp")
 public final class TeleOpMarkIV extends GenericTeleOp {
 
-    private static final double SERVO_INCREMENT_DIVISOR = 40;
-
     private static final String[] BASIC_TELEMETRY_DATA_KEYS = {
             "Front Left Power",
             "Front Right Power",
@@ -65,7 +63,7 @@ public final class TeleOpMarkIV extends GenericTeleOp {
     private Controller controller1;
     private Controller controller2;
 
-    private double intakeAngle = 0.0;
+    private boolean intakeToggled = false;
 
     @Override
     public void init() {
@@ -74,11 +72,20 @@ public final class TeleOpMarkIV extends GenericTeleOp {
             controller1 = super.getController1();
             controller2 = super.getController2();
             controller2.setCustomizedControlSchemes(Controller.DEFAULT_SCHEME,
-                    ControlScheme.CUBED);
+                    ControlScheme.CUBED, ControlScheme.CUBED);
             controller2.setCustomizedStickScales(Controller.DEFAULT_STICK_SCALE,
                     new double[] {
-                            -1, 1, -.75, .75
+                            -1, 1, -.50, .50
                     }); //LEFT STICK Y SCALED -1, 1 to -.75, .75
+            controller2.setCustomizedTriggerScales(
+                    new double[] {
+                            -1, 0, -.5, 0
+                    },
+                    new double[] {
+                            0, 1, 0, .75
+                    }
+            );
+
             controller2.setLeftTriggerPreScheme((Double value) -> -value); //Left trigger inverted
 
             bot = new BotMarkIV(hardwareMap);
@@ -87,6 +94,7 @@ public final class TeleOpMarkIV extends GenericTeleOp {
             bot.freezeLift();
             bot.freezeArmSliders();
             bot.freezeArmAngular();
+            bot.freezeSecondaryArmAngularDrive();
             bot.setIntakeAngle(1.0);
 
             //ANY ADDITIONAL CODE HERE
@@ -133,7 +141,7 @@ public final class TeleOpMarkIV extends GenericTeleOp {
             } else if (controller1.dpadDown()) {
                 bot.setLiftDrive(-1);
             }
-            //b freezes the lift where it's at
+            //a freezes the lift where it's at
             if (controller1.a()) {
                 bot.freezeLift();
             }
@@ -146,66 +154,36 @@ public final class TeleOpMarkIV extends GenericTeleOp {
                 bot.freezeArmAngular();
             }
 
-            //Right Stick Y controls the arm slider drive
-            bot.setArmSliderDrive(controller2.rightStickY());
-            //b freezes the arm slider drive where it's at
-            if (controller2.b()) {
+            //Dpad moves arm sliders in and out
+            //Arm sliders freeze by default
+            if (controller2.dpadUp()) {
+                bot.setArmSliderDrive(1.0);
+            } else if (controller2.dpadDown()) {
+                bot.setArmSliderDrive(-1.0);
+            } else {
                 bot.freezeArmSliders();
             }
 
             //Left and right triggers control the secondary arm angular drive
+            //Secondary arm angular drive freezes by default
             if (controller2.leftTrigger() != 0) {
                 bot.setSecondaryArmAngularDrive(controller2.leftTrigger());
             } else if (controller2.rightTrigger() != 0) {
                 bot.setSecondaryArmAngularDrive(controller2.rightTrigger());
             } else {
-                bot.setSecondaryArmAngularDrive(0);
+                bot.freezeSecondaryArmAngularDrive();
             }
 
-            /*
-            This looks a bit odd... it's the code to control the angle of the intake box
-            With a servo motor.
-            Servo motors only accept a range between zero (zero degrees or zero radians)
-            And one (180 degrees or pi radians).
-            We don't want to scale the servo position to the stick value constantly.
-            That would cause the driver to have to worry about the servo position all the time.
-            Instead, we store the intake angle that the servo is set to in "intakeAngle"
-            Then we change it based upon the movement of leftStickX().
-            What if the leftStickX() tells the variable to move out of the range of the servo?
-            The hardware objects have built in protection for that- input is validated to ensure
-            it's in range of the possible inputs for that hardware object.
-            But intakeAngle could increase uncontrollably, even while the hardware object does
-            nothing with the calls being made to it.
-            To prevent this, the if statement ensures that adding the stick value will not cause
-            intakeAngle to exceed the bounds of its range.
-            If adding the stick value won't cause the intakeAngle to exceed its boundaries, we're
-            good. We set the intakeAngle and are on our way.
-            However, if adding the stick value WILL cause the intakeAngle to exceed its
-            boundaries, then we need to ensure that does not happen.
-            Doing nothing would be confusing to the drivers, because they'd need to reduce the
-            Extremes on the sticks which would just feel strange.
-            Instead, we check if the intakeAngle is positive or negative and set the value to
-            The extreme. We did this in a single ternary expression though- that seems a bit too
-            simple.
-            The reasoning for this is in the if statement. We are checking if the leftStickX()
-            will cause the intakeAngle to exceed its boundaries when leftStickX() is divided by
-            four. The range of possible (leftStickX() / 4) values is [-.25, .25].
-            If the that value is enough to cause the intakeAngle to exceed its boundaries,
-            then we know that the intake angle is at at least +.75 or at most -.75.
-            If the intakeAngle is already at least .75 or at most -.75, and being pushed past
-            extreme, then (while the most extreme possible leftStickX() / 4 is +1 or -1) -.75 or
-            less will go to -1 and +.75 or more will go to 1. We know intakeAngle is at least .75
-            or at most -.75 so all we need to check now is if it's negative. That's what the
-            ternary expression in the else block does.
-            */
-
-            if (0 <= (intakeAngle + (controller2.leftStickX()) / SERVO_INCREMENT_DIVISOR) &&
-                    (intakeAngle + (controller2.leftStickX()) / SERVO_INCREMENT_DIVISOR) <= 1) {
-                intakeAngle += (controller2.leftStickX() / SERVO_INCREMENT_DIVISOR);
-            } else {
-                intakeAngle = intakeAngle < 0.5 ? 0 : 1;
+            //Right stick button toggles the intake servo open and closed
+            if (controller2.rightStick()) {
+                intakeToggled = !intakeToggled;
             }
-            bot.setIntakeAngle(intakeAngle);
+            bot.setIntakeAngle(intakeToggled ? 1.0 : 0.0);
+
+            //Left stick button deploys the team marker
+            if (controller2.leftStick()) {
+                bot.deployMarker();
+            }
 
             //Telemetry updates
             cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());

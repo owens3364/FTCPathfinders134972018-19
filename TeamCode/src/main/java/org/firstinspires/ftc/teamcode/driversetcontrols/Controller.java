@@ -14,26 +14,27 @@ public class Controller {
     private static final ScaleSchemeApplication DEFAULT_SCHEME_SETTING =
             ScaleSchemeApplication.STANDARD_SCALESCHEME_FOR_ALL;
 
+    private static final int MAX_SCHEMES = 6;
+    private static final int MAX_STICK_SCALES = 4;
+    private static final int MAX_TRIGGER_SCALES = 2;
+
     private final Gamepad GAMEPAD;
 
-    private double[] leftStickXScale;
-    private double[] leftStickYScale;
-    private double[] leftTriggerScale;
-    private double[] rightStickXScale;
-    private double[] rightStickYScale;
-    private double[] rightTriggerScale;
-    private final double[][] stickScales;
-    private final double[][] triggerScales;
+    private double[] leftStickXScale = DEFAULT_STICK_SCALE;
+    private double[] leftStickYScale = DEFAULT_STICK_SCALE;
+    private double[] leftTriggerScale = DEFAULT_TRIGGER_SCALE;
+    private double[] rightStickXScale = DEFAULT_STICK_SCALE;
+    private double[] rightStickYScale = DEFAULT_STICK_SCALE;
+    private double[] rightTriggerScale = DEFAULT_TRIGGER_SCALE;
     private ScaleSchemeApplication stickScaleSetting;
     private ScaleSchemeApplication triggerScaleSetting;
 
-    private ControlScheme leftStickXScheme;
-    private ControlScheme leftStickYScheme;
-    private ControlScheme leftTriggerScheme;
-    private ControlScheme rightStickXScheme;
-    private ControlScheme rightStickYScheme;
-    private ControlScheme rightTriggerScheme;
-    private final ControlScheme[] schemes;
+    private ControlScheme leftStickXScheme = DEFAULT_SCHEME;
+    private ControlScheme leftStickYScheme = DEFAULT_SCHEME;
+    private ControlScheme leftTriggerScheme = DEFAULT_SCHEME;
+    private ControlScheme rightStickXScheme = DEFAULT_SCHEME;
+    private ControlScheme rightStickYScheme = DEFAULT_SCHEME;
+    private ControlScheme rightTriggerScheme = DEFAULT_SCHEME;
     private ScaleSchemeApplication schemeSetting;
 
     private PreSchemeOperation<Double> leftStickXPreScheme;
@@ -66,25 +67,8 @@ public class Controller {
         }
 
         stickScaleSetting = DEFAULT_SCALE_SETTING;
-        stickScales = new double[4][4];
-        stickScales[0] = leftStickXScale;
-        stickScales[1] = leftStickYScale;
-        stickScales[2] = rightStickXScale;
-        stickScales[3] = rightStickYScale;
-
         triggerScaleSetting = DEFAULT_SCALE_SETTING;
-        triggerScales = new double[2][4];
-        triggerScales[0] = leftTriggerScale;
-        triggerScales[1] = rightTriggerScale;
-
         schemeSetting = DEFAULT_SCHEME_SETTING;
-        schemes = new ControlScheme[6];
-        schemes[0] = leftStickXScheme;
-        schemes[1] = leftStickYScheme;
-        schemes[2] = leftTriggerScheme;
-        schemes[3] = rightStickXScheme;
-        schemes[4] = rightStickYScheme;
-        schemes[5] = rightTriggerScheme;
 
         leftStickXPreScheme = this::defaultPreScheme;
         leftStickYPreScheme = this::defaultPreScheme;
@@ -300,14 +284,40 @@ public class Controller {
      *
      */
     public boolean setCustomizedControlSchemes(ControlScheme ... schemes) {
-        if (schemes != null && schemes.length <= this.schemes.length) {
+        if (schemes != null && schemes.length <= MAX_SCHEMES && schemes.length > 0) {
             for (ControlScheme scheme : schemes) {
                 if (scheme == null) {
                     return false;
                 }
             }
-            System.arraycopy(schemes, 0, this.schemes, 0, schemes.length);
-            schemeSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
+            if (schemes.length == MAX_SCHEMES) {
+                leftStickXScheme = schemes[0];
+                leftStickYScheme = schemes[1];
+                leftTriggerScheme = schemes[2];
+                rightStickXScheme = schemes[3];
+                rightStickYScheme = schemes[4];
+                rightTriggerScheme = schemes[5];
+            } else if (schemes.length == MAX_SCHEMES - 1) {
+                leftStickXScheme = schemes[0];
+                leftStickYScheme = schemes[1];
+                leftTriggerScheme = schemes[2];
+                rightStickXScheme = schemes[3];
+                rightStickYScheme = schemes[4];
+            } else if (schemes.length == MAX_SCHEMES - 2) {
+                leftStickXScheme = schemes[0];
+                leftStickYScheme = schemes[1];
+                leftTriggerScheme = schemes[2];
+                rightStickXScheme = schemes[3];
+            } else if (schemes.length == MAX_SCHEMES - 3) {
+                leftStickXScheme = schemes[0];
+                leftStickYScheme = schemes[1];
+                leftTriggerScheme = schemes[2];
+            } else if (schemes.length == MAX_SCHEMES - 4) {
+                leftStickXScheme = schemes[0];
+                leftStickYScheme = schemes[1];
+            } else {
+                leftStickXScheme = schemes[0];
+            }
             return true;
         }
         return false;
@@ -422,14 +432,28 @@ public class Controller {
      *
      */
     public boolean setCustomizedStickScales(double[] ... stickScales) {
-        if (stickScales != null && stickScales.length <= this.stickScales.length) {
+        if (stickScales != null && stickScales.length <= MAX_STICK_SCALES &&
+                stickScales.length > 0) {
             for (double[] stickScale : stickScales) {
                 if (stickScale == null) {
                     return false;
                 }
             }
-            System.arraycopy(stickScales, 0, this.stickScales, 0,
-                    stickScales.length);
+            if (stickScales.length == MAX_STICK_SCALES) {
+                leftStickXScale = stickScales[0];
+                leftStickYScale = stickScales[1];
+                rightStickXScale = stickScales[2];
+                rightStickYScale = stickScales[3];
+            } else if (stickScales.length == MAX_STICK_SCALES - 1) {
+                leftStickXScale = stickScales[0];
+                leftStickYScale = stickScales[1];
+                rightStickXScale = stickScales[2];
+            } else if (stickScales.length == MAX_STICK_SCALES - 2) {
+                leftStickXScale = stickScales[0];
+                leftStickYScale = stickScales[1];
+            } else {
+                leftStickXScale = stickScales[0];
+            }
             stickScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
             return true;
         }
@@ -463,14 +487,19 @@ public class Controller {
     }
 
     public boolean setCustomizedTriggerScales(double[] ... triggerScales) {
-        if (triggerScales != null && triggerScales.length < this.triggerScales.length) {
+        if (triggerScales != null && triggerScales.length <= MAX_TRIGGER_SCALES &&
+        triggerScales.length > 0) {
             for (double[] triggerScale : triggerScales) {
                 if (triggerScale == null) {
                     return false;
                 }
             }
-            System.arraycopy(triggerScales, 0, this.triggerScales, 0,
-                    triggerScales.length);
+            if (triggerScales.length == MAX_TRIGGER_SCALES) {
+                leftTriggerScale = triggerScales[0];
+                rightTriggerScale = triggerScales[1];
+            } else {
+                leftTriggerScale = triggerScales[0];
+            }
             triggerScaleSetting = ScaleSchemeApplication.INDIVIDUALLY_CUSTOMIZED_SCALESCHEMES;
             return true;
         }
@@ -738,9 +767,12 @@ public class Controller {
 
     private boolean applyToAllSchemes(ControlScheme scheme) {
         if (scheme != null) {
-            for (int i = 0; i < schemes.length; i++) {
-                schemes[i] = scheme;
-            }
+            leftStickXScheme = scheme;
+            leftStickYScheme = scheme;
+            leftTriggerScheme = scheme;
+            rightStickXScheme = scheme;
+            rightStickYScheme = scheme;
+            rightTriggerScheme = scheme;
             return true;
         }
         return false;
@@ -748,9 +780,10 @@ public class Controller {
 
     private boolean applyToAllStickScales(double[] scale) {
         if (scale != null) {
-            for (int i = 0; i < stickScales.length; i++) {
-                stickScales[i] = scale;
-            }
+            leftStickXScale = scale;
+            leftStickYScale = scale;
+            rightStickXScale = scale;
+            rightStickYScale = scale;
             return true;
         }
         return false;
@@ -758,9 +791,8 @@ public class Controller {
 
     private boolean applyToAllTriggerScales(double[] scale) {
         if (scale != null) {
-            for (int i = 0; i < triggerScales.length; i++) {
-                triggerScales[i] = scale;
-            }
+            leftTriggerScale = scale;
+            rightTriggerScale = scale;
             return true;
         }
         return false;

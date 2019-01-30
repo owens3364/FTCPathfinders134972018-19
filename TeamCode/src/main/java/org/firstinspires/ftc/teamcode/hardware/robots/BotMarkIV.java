@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.hardware.robots;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.hardware.components.ArmMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.components.TeamMarkerPositionerMarkI;
 import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Servo;
 import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkIII;
 import org.firstinspires.ftc.teamcode.xmlio.DOMSourceTransformer;
 import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
@@ -12,13 +14,19 @@ public final class BotMarkIV extends BotMarkIII implements MechanumDriveOpModeUs
 
     private final ArmMarkIII arm;
 
+    private final TeamMarkerPositionerMarkI teamMarkerPositioner;
+
     private static final String SECONDARY_ARM_ANGULAR_DRIVE_NAME = "SecondaryArmAngularDrive";
+    private static final String TEAM_MARKER_POSITIONER_SERVO_NAME = "TeamMarkerPositioner";
 
     private static final boolean SECONDARY_ARM_ANGULAR_DRIVE_IS_PRIMARY = false;
+    private static final boolean TEAM_MARKER_POSITIONER_IS_PRIMARY = true;
 
     private static final String SECONDARY_ARM_ANGULAR_DRIVE_PORT = "2";
+    private static final String TEAM_MARKER_POSITIONER_PORT = "0";
 
     private static final Motor SECONDARY_ARM_ANGULAR_DRIVE_TYPE = Motor.TetrixMotor;
+    private static final Servo TEAM_MARKER_POSITIONER_SERVO_TYPE = Servo.Servo;
 
     private static final String CONFIGURATION_FILE_NAME = "BotMarkIV";
 
@@ -32,6 +40,11 @@ public final class BotMarkIV extends BotMarkIII implements MechanumDriveOpModeUs
                 ARM_ANGULAR_DRIVE_PORT, INTAKE_ANGULAR_SERVO_PORT, SECONDARY_ARM_ANGULAR_DRIVE_PORT,
                 ARM_SLIDERS_DRIVE_TYPE, ARM_ANGULAR_DRIVE_TYPE, INTAKE_ANGULAR_SERVO_TYPE,
                 SECONDARY_ARM_ANGULAR_DRIVE_TYPE);
+        teamMarkerPositioner = new TeamMarkerPositionerMarkI(map,
+                TEAM_MARKER_POSITIONER_SERVO_NAME,
+                TEAM_MARKER_POSITIONER_IS_PRIMARY,
+                TEAM_MARKER_POSITIONER_PORT,
+                TEAM_MARKER_POSITIONER_SERVO_TYPE);
     }
 
     @Override
@@ -165,6 +178,11 @@ public final class BotMarkIV extends BotMarkIII implements MechanumDriveOpModeUs
     }
 
     @Override
+    public void deployMarker() {
+        teamMarkerPositioner.dump();
+    }
+
+    @Override
     public void zeroAll() {
         setFrontLeftDrive(0);
         setFrontRightDrive(0);
@@ -189,7 +207,8 @@ public final class BotMarkIV extends BotMarkIII implements MechanumDriveOpModeUs
                                 .PRIMARY_REV_EXPANSION_HUB_ADDRESS,
                         ElementArrUtils.findPrimaryElements(driveTrain,
                                 lift,
-                                arm),
+                                arm,
+                                teamMarkerPositioner),
                         CommonREVExpansionHubConfiguration
                                 .PRIMARY_IMU_NAME,
                         CommonREVExpansionHubConfiguration
@@ -202,7 +221,8 @@ public final class BotMarkIV extends BotMarkIII implements MechanumDriveOpModeUs
                                 .SECONDARY_REV_EXPANSION_HUB_ADDRESS,
                         ElementArrUtils.findSecondaryElements(driveTrain,
                                 lift,
-                                arm),
+                                arm,
+                                teamMarkerPositioner),
                         CommonREVExpansionHubConfiguration
                                 .SECONDARY_IMU_NAME,
                         CommonREVExpansionHubConfiguration

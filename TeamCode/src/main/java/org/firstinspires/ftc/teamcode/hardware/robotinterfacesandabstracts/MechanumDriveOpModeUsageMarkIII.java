@@ -9,4 +9,5 @@ public interface MechanumDriveOpModeUsageMarkIII extends MechanumDriveOpModeUsag
     boolean getSecondaryArmAngularDriveFrozen();
     void coastSecondaryArmAngularDrive();
     boolean getSecondaryArmAngularDriveCoasting();
+    void deployMarker();
 }

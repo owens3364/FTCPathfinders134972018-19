@@ -17,10 +17,7 @@ final class Schemer {
                 return -Math.sqrt(Math.abs(value));
             case CBRT:
                 //Y = cbrt(X) controls
-                if (value > 0) {
-                    return Math.cbrt(value);
-                }
-                return -Math.cbrt(Math.abs(value));
+                return Math.cbrt(value);
             case SQUARED:
                 //Y = X^2 controls
                 if (value > 0) {
@@ -29,10 +26,7 @@ final class Schemer {
                 return -Math.pow(Math.abs(value), 2);
             case CUBED:
                 //Y = X^3 controls
-                if (value > 0) {
-                    return Math.pow(value, 3);
-                }
-                return -Math.pow(Math.abs(value), 3);
+                return Math.pow(value, 3);
             case FOURTH:
                 //Y = X^4 controls
                 if (value > 0) {

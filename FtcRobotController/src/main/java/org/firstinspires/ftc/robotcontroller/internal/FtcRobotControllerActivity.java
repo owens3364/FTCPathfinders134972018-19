@@ -286,9 +286,7 @@ public class FtcRobotControllerActivity extends Activity
         });
 
         updateMonitorLayout(getResources().getConfiguration());
-
         BlocksOpMode.setActivityAndWebView(this, findViewById(R.id.webViewBlocksRuntime));
-
         ClassManagerFactory.registerFilters();
         ClassManagerFactory.processAllClasses();
         cfgFileMgr = new RobotConfigFileManager(this);
