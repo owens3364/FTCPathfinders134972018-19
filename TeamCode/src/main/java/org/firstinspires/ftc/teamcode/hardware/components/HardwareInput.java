@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
+package org.firstinspires.ftc.teamcode.hardware.components;
 
 final class HardwareInput {
 

@@ -9,8 +9,13 @@
 // before doing so.
 // Custom definitions may go here
 // Include common definitions from above.
-apply from: '../build.common.gradle'
 
 repositories {
     google()
+}
+
+apply from: '../build.common.gradle'
+
+dependencies {
+    implementation project(':FtcRobotController')
 }

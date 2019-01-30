@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwarede
 import android.support.annotation.NonNull;
 
 public enum Motor {
-    //TODO: ENSURE THESE ARE THE CORRECT XML KEYS
     Matrix12vMotor,
     MatrixLegacyMotor,
     NeveRest20Gearmotor,
@@ -16,7 +15,6 @@ public enum Motor {
     TetrixMotor,
     Motor;
 
-    //TODO: FIND OTHER MOTOR ENCODER TICKS
     private static final double MATRIX_12V_MOTOR_ENCODER_TICKS = 1478.4;
     private static final double MATRIX_LEGACY_MOTOR_ENCODER_TICKS = 757.12;
     private static final double NEVEREST_20_GEARMOTOR_ENCODER_TICKS = 537.6;

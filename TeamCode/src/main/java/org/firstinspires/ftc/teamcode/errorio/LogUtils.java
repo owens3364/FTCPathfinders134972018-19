@@ -11,14 +11,10 @@ public final class LogUtils {
     private static final String NEW_LINE_CHARACTER = System.lineSeparator();
 
     public static boolean logError(LinkedHashMap<String, String>[] states) {
-        return generalLogError(generateOutput(states));
+        return logError(generateOutput(states));
     }
 
     public static boolean logError(String error) {
-        return generalLogError(error);
-    }
-
-    private static boolean generalLogError(String error) {
         return FileIOUtils.writeToFile(FileIOUtils.generateFile(FileIOUtils
                 .generatePath(FileIOUtils.ERROR_LOG_DIRECTORY),
                 Purpose.ERROR_LOGGING,

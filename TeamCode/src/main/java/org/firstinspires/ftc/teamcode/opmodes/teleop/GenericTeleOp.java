@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
 import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
@@ -26,6 +27,10 @@ class GenericTeleOp extends OpMode {
     private static final String TELEMETRY_STATE_OF_EXECUTION = "State of Execution";
     private static final String TELEMETRY_CONTROLLER_1_SCHEME = "Controller 1 Scheme";
     private static final String TELEMETRY_CONTROLLER_2_SCHEME = "Controller 2 Scheme";
+
+    private static final String INDIVIDUALIZED_SCHEMES = "Individualized Control Schemes";
+    private static final String INDIVIDUALIZED_STICK_SCALES = "Individualized Stick Scales";
+    private static final String INDIVIDUALIZED_TRIGGER_SCALES = "Individualized Trigger Scales";
 
     //State of this class
     private boolean setup = false;
@@ -132,9 +137,19 @@ class GenericTeleOp extends OpMode {
     public void init() {
         if (setup) {
             controller1 = new Controller(gamepad1);
-            controller1Scheme = controller1.getControlScheme().name();
             controller2 = new Controller(gamepad2);
-            controller2Scheme = controller2.getControlScheme().name();
+            ControlScheme scheme1 = controller1.getControlScheme();
+            if (scheme1 != null) {
+                controller1Scheme = scheme1.toString();
+            } else {
+                controller1Scheme = INDIVIDUALIZED_SCHEMES;
+            }
+            ControlScheme scheme2 = controller2.getControlScheme();
+            if (scheme2 != null) {
+                controller2Scheme = scheme2.toString();
+            } else {
+                controller2Scheme = INDIVIDUALIZED_SCHEMES;
+            }
             stateOfExecution = StateOfExecution.INITIALIZED;
             updateTelemetry();
         }

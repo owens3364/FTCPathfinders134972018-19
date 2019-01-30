@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
 import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIII;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIV;
 
-@TeleOp(name = "TeleOpThree", group = "TeleOp")
-public final class TeleOpMarkIII extends GenericTeleOp {
+@TeleOp(name = "TeleOpFour", group = "TeleOp")
+public final class TeleOpMarkIV extends GenericTeleOp {
 
     private static final double SERVO_INCREMENT_DIVISOR = 40;
 
@@ -28,7 +28,10 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             "Arm Angular Frozen",
             "Arm Angular Coasting",
             "Intake Angle Position Unscaled",
-            "Intake Angle Position Scaled"
+            "Intake Angle Position Scaled",
+            "Secondary Arm Angular Power",
+            "Secondary Arm Angular Frozen",
+            "Secondary Arm Angular Coasting"
     };
 
     private String[] getBasicDataValues() {
@@ -51,11 +54,14 @@ public final class TeleOpMarkIII extends GenericTeleOp {
                         0,
                         1,
                         0,
-                        180))
+                        180)),
+                String.valueOf(bot.getSecondaryArmAngularDrive()),
+                String.valueOf(bot.getSecondaryArmAngularDriveFrozen()),
+                String.valueOf(bot.getSecondaryArmAngularDriveCoasting())
         };
     }
 
-    private MechanumDriveOpModeUsageMarkII bot;
+    private MechanumDriveOpModeUsageMarkIII bot;
     private Controller controller1;
     private Controller controller2;
 
@@ -71,10 +77,11 @@ public final class TeleOpMarkIII extends GenericTeleOp {
                     ControlScheme.CUBED);
             controller2.setCustomizedStickScales(Controller.DEFAULT_STICK_SCALE,
                     new double[] {
-                    -1, 1, -.75, .75
+                            -1, 1, -.75, .75
                     }); //LEFT STICK Y SCALED -1, 1 to -.75, .75
+            controller2.setLeftTriggerPreScheme((Double value) -> -value); //Left trigger inverted
 
-            bot = new BotMarkIII(hardwareMap);
+            bot = new BotMarkIV(hardwareMap);
             bot.zeroAll();
 
             bot.freezeLift();
@@ -83,7 +90,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             bot.setIntakeAngle(1.0);
 
             //ANY ADDITIONAL CODE HERE
-            controller2.setControlScheme(ControlScheme.SQUARED);
+            controller2.setControlScheme(ControlScheme.CUBED);
             cycleTelemetry(super::addData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
@@ -103,8 +110,6 @@ public final class TeleOpMarkIII extends GenericTeleOp {
     public void start() {
         if (super.getStateOfExecution() == StateOfExecution.INIT_LOOP_RUNNING) {
             super.start();
-            controller2.setControlScheme(ControlScheme.CUBED);
-
             //ANY ADDITIONAL CODE HERE
             cycleTelemetry(super::setData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
@@ -146,6 +151,15 @@ public final class TeleOpMarkIII extends GenericTeleOp {
             //b freezes the arm slider drive where it's at
             if (controller2.b()) {
                 bot.freezeArmSliders();
+            }
+
+            //Left and right triggers control the secondary arm angular drive
+            if (controller2.leftTrigger() != 0) {
+                bot.setSecondaryArmAngularDrive(controller2.leftTrigger());
+            } else if (controller2.rightTrigger() != 0) {
+                bot.setSecondaryArmAngularDrive(controller2.rightTrigger());
+            } else {
+                bot.setSecondaryArmAngularDrive(0);
             }
 
             /*

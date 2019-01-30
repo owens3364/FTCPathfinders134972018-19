@@ -61,6 +61,7 @@ public final class FragmentDeploymentHelper {
         if (title == null || message == null || positiveButton == null) {
             return null;
         }
+
         return new AlertDialog.Builder(FtcRobotControllerActivity.soloInstance())
                 .setTitle(title)
                 .setMessage(message)

@@ -18,5 +18,5 @@ public enum Device {
     LynxColorSensor,
     LynxEmbeddedIMU,
     KauaiLabsNavxMicro,
-    I2cDeviceSynch,
+    I2cDeviceSynch
 }

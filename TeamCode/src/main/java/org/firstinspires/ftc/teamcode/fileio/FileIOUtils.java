@@ -40,16 +40,16 @@ public final class FileIOUtils {
     }
 
     public static File generateFile(File path, Purpose purpose, String name) {
+        String givenName = name == null ? getSimpleDateFormat() : name;
         if (path != null && purpose != null) {
             switch (purpose) {
                 case ERROR_LOGGING:
-                    return generateFile(path, new SimpleDateFormat(PREFERRED_DATE_FORMAT)
-                            .format(new Timestamp(System.currentTimeMillis())),
+                    return generateFile(path, getSimpleDateFormat(),
                             GENERIC_TEXT_EXTENSION);
                 case CONFIGURATION_FILE:
-                    return generateFile(path, name, CONFIGURATION_EXTENSION);
+                    return generateFile(path, givenName, CONFIGURATION_EXTENSION);
                 default:
-                    return generateFile(path, name, GENERIC_TEXT_EXTENSION);
+                    return generateFile(path, givenName, GENERIC_TEXT_EXTENSION);
             }
         }
         return null;
@@ -90,5 +90,10 @@ public final class FileIOUtils {
             }
         }
         return false;
+    }
+
+    private static String getSimpleDateFormat() {
+        return new SimpleDateFormat(PREFERRED_DATE_FORMAT)
+                .format(new Timestamp(System.currentTimeMillis()));
     }
 }

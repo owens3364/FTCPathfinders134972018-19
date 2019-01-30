@@ -13,7 +13,7 @@ import javax.xml.transform.dom.DOMSource;
 import org.firstinspires.ftc.teamcode.fileio.FileIOUtils;
 import org.firstinspires.ftc.teamcode.fileio.Purpose;
 
-final class DOMSourceTransformer {
+public final class DOMSourceTransformer {
 
     private static final String METHOD = "xml";
     private static final String VERSION = "1.0";

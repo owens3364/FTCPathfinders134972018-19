@@ -1,17 +1,27 @@
-package org.firstinspires.ftc.teamcode.hardware.RobotComponents;
+package org.firstinspires.ftc.teamcode.hardware.components;
 
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.hardware.componentinterfaces.Component;
 import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
 
-public final class LiftMarkI {
+public final class LiftMarkI implements Component {
     private final DcMotorWrapper cableDrive;
+    private final String cableDriveName;
+    private final boolean cableDriveIsPrimary;
+    private final String cableDrivePort;
 
-    public LiftMarkI(HardwareMap map, String cableDriveName) {
+    public LiftMarkI(HardwareMap map, String cableDriveName, boolean cableDriveIsPrimary,
+                     String cableDrivePort, Motor cableDriveType) {
         cableDrive = new DcMotorWrapper(map, cableDriveName, DcMotorSimple.Direction.FORWARD,
-                Motor.NeveRest60Gearmotor);
+                cableDriveType, WheelStats.WHEEL_DIAMETER_FOUR);
         cableDrive.freezeAtZeroPower();
+
+        this.cableDriveName = cableDriveName;
+        this.cableDriveIsPrimary = cableDriveIsPrimary;
+        this.cableDrivePort = cableDrivePort;
     }
 
     public void setCableDrive(double power) {
@@ -46,5 +56,14 @@ public final class LiftMarkI {
 
     public boolean liftCoasting() {
         return cableDrive.getPower() == 0 && cableDrive.coastingAtZeroPower();
+    }
+
+    @Override
+    public ElementWrapper[] getHardwareDeviceElements() {
+        return new ElementWrapper[] {
+                new ElementWrapper(cableDriveIsPrimary, XMLUtils.generateHardwareElement(
+                        cableDrive.getMotorType(), cableDriveName, cableDrivePort
+                ))
+        };
     }
 }

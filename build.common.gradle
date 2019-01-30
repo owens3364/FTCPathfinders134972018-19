@@ -23,6 +23,11 @@ android {
 
     compileSdkVersion 28
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     signingConfigs {
         debug {
             keyAlias 'androiddebugkey'
@@ -88,11 +93,6 @@ android {
                 abiFilters "armeabi-v7a"
             }
         }
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     sourceSets.main {

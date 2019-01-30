@@ -231,6 +231,7 @@ public class FtcRobotControllerActivity extends Activity
         START STUFF I ADDED
         */
         activityReference = new WeakReference<>(this);
+        FtcRobotRegistrar.autoGenerateConfigurations();
         /*
         END STUFF I ADDED
         */
