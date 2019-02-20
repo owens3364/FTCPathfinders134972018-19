@@ -1,3 +1,6 @@
+## Welcome to the 13497 FTC Pathfinders Repository!
+This is our code, in addition to the FTC SDK graciously provided by FTC and Qualcomm. I am not in any way taking or claiming credit for the code hosted at https://github.com/ftctechnh/ftc_app. I have modified the FTCRobotControllerActivity class that was created by them, which is clearly marked in that file. I have also modified the Gradle files. Documentation for all of this can be found at http://bit.ly/PathfindersDocumentation.
+
 ## Welcome!
 This GitHub repository contains the source code that is used to build an Android app to control a *FIRST* Tech Challenge competition robot.  To use this SDK, download/clone the entire project to your local computer.
 
