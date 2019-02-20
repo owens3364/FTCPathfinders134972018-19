@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.memory.ManagementOptions;
 import org.firstinspires.ftc.teamcode.memory.MemoryManagement;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -41,7 +42,7 @@ public final class VisionUtils {
      *
      * The phone starts out lying flat, with the screen facing
      * up and with the physical top of the phone
-     * pointing to the LEFT side of the Robot.
+     * pointing to the LEFT side of the GenericRobot.
      * It's very important when you test this code that the top of the
      * camera is pointing to the left side of the  robot.
      * The rotation angles don't work if you flip the phone.
@@ -61,9 +62,9 @@ public final class VisionUtils {
 
     //TODO: MODIFY FOR PHONE'S POSITION
     // eg: Camera is 110 mm in front of robot center
-    private static final int CAMERA_FORWARD_DISPLACEMENT = 110;
+    private static final int CAMERA_FORWARD_DISPLACEMENT = -190;
     // eg: Camera is 200 mm above ground
-    private static final int CAMERA_VERTICAL_DISPLACEMENT = 200;
+    private static final int CAMERA_VERTICAL_DISPLACEMENT = 165;
     // eg: Camera is ON the robot's center line
     private static final int CAMERA_LEFT_DISPLACEMENT = 0;
 
@@ -171,24 +172,21 @@ public final class VisionUtils {
     public GoldMineralPosition getGoldMineralPosition() {
         activateVuforia();
         tfodActivated = activateTFOD();
-        GoldMineralPosition goldMineralPosition = null;
+        GoldMineralPosition goldMineralPosition = GoldMineralPosition.RIGHT;
         if (tfod != null) {
             List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
             if (updatedRecognitions != null) {
+                filterRecognitions(updatedRecognitions);
                 if (updatedRecognitions.size() == 3) {
-                    int goldMineralX = -1;
-                    int silverMineral1X = -1;
-                    int silverMineral2X = -1;
-                    for (Recognition recognition : updatedRecognitions) {
-                        if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getLeft();
-                        } else if (silverMineral1X == -1) {
-                            silverMineral1X = (int) recognition.getLeft();
-                        } else {
-                            silverMineral2X = (int) recognition.getLeft();
-                        }
-                    }
-                    if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
+                    List<Recognition> filteredRecognitions =
+                            filterRecognitions(updatedRecognitions);
+                    if (filteredRecognitions.get(0) != null &&
+                    filteredRecognitions.get(1) != null &&
+                    filteredRecognitions.get(2) != null) {
+                        float goldMineralX = filteredRecognitions.get(0).getLeft();
+                        float silverMineral1X = filteredRecognitions.get(1).getLeft();
+                        float silverMineral2X = filteredRecognitions.get(2).getLeft();
+
                         if (goldMineralX < silverMineral1X && goldMineralX < silverMineral2X) {
                             goldMineralPosition = GoldMineralPosition.LEFT;
                         } else if (goldMineralX > silverMineral1X
@@ -342,7 +340,7 @@ public final class VisionUtils {
                         map.appContext.getPackageName()));
         TFObjectDetector tfod = ClassFactory.getInstance()
                 .createTFObjectDetector(parameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL);
         tfod.activate();
         return tfod;
     }
@@ -359,5 +357,46 @@ public final class VisionUtils {
                 return VuMarkType.BACK_SPACE;
         }
         return null;
+    }
+
+    private List<Recognition> filterRecognitions(List<Recognition> recognitions) {
+        LinkedList<Recognition> filteredRecognitions = new LinkedList<>();
+
+        Recognition lowestGold = null;
+        Recognition lowestSilver = null;
+        Recognition secondLowestSilver = null;
+
+        for (Recognition recognition : recognitions) {
+            if (recognition != null) {
+                switch (recognition.getLabel()) {
+                    case LABEL_GOLD_MINERAL:
+                        if (lowestGold != null) {
+                            if (recognition.getBottom() > lowestGold.getBottom()) {
+                                lowestGold = recognition;
+                            }
+                        } else {
+                            lowestGold = recognition;
+                        }
+                    case LABEL_SILVER_MINERAL:
+                        if (lowestSilver != null) {
+                            if (recognition.getBottom() > lowestSilver.getBottom()) {
+                                secondLowestSilver = lowestSilver;
+                                lowestSilver = recognition;
+                            } else if (secondLowestSilver != null) {
+                                if (recognition.getBottom() > secondLowestSilver.getBottom()) {
+                                    secondLowestSilver = recognition;
+                                }
+                            }
+                        } else {
+                            lowestSilver = recognition;
+                        }
+                }
+            }
+        }
+
+        filteredRecognitions.add(lowestGold);
+        filteredRecognitions.add(lowestSilver);
+        filteredRecognitions.add(secondLowestSilver);
+        return filteredRecognitions;
     }
 }

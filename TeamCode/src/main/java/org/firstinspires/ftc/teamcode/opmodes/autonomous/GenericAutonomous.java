@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.hardware.components.Direction;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.GenericMechanumDriveOpModeUsage;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.GenericMecanumDriveOpModeUsage;
 import org.firstinspires.ftc.teamcode.vision.GoldMineralPosition;
 import org.firstinspires.ftc.teamcode.vision.VisionData;
 import org.firstinspires.ftc.teamcode.vision.VisionUtils;
@@ -55,54 +55,48 @@ class GenericAutonomous extends LinearOpMode {
 
     }
 
-    void land(GenericMechanumDriveOpModeUsage bot) {
-        bot.setLiftDriveForMM(1, -3500); //Lowers bot
-        sleep(8000); //Waits for bot to go down
-        bot.setRearLeftDriveForMM(1, 100); //Backs up bot so it can be lowered more
+    void land(GenericMecanumDriveOpModeUsage bot) {
+        bot.setLiftDriveForMM(1, -5500); //Lowers bot
+        sleep(12000); //Waits for bot to go down
+        //Turn out
+        bot.setFrontLeftDriveForMM(1, -100);
+        bot.setRearLeftDriveForMM(1, -100);
+        bot.setFrontRightDriveForMM(1, 100);
         bot.setRearRightDriveForMM(1, 100);
-        sleep(2000); //Waits for bot to back up
-        bot.setLiftDriveForMM(1, -800); //Lowers bot more
-        sleep(1000); //Waits for bot to go down
-        bot.setRearLeftDriveForMM(1, 60); //Backs up bot so it can be lowered more
-        bot.setRearRightDriveForMM(1, 60);
-        sleep(1000); //Waits for bot to go down
-        bot.setLiftDriveForMM(1, -4000); //Lowers bot
-        sleep(3000); //Waits for bot to go down and lift to go up
-        bot.setFrontLeftDriveForMM(.5, 40); //Turns out of lander support
-        bot.setFrontRightDriveForMM(.5, -40);
-        bot.setRearLeftDriveForMM(.5, 40);
-        bot.setRearRightDriveForMM(.5, -40);
-        sleep(750); //Waits for turn
-        bot.allMechanumDriveMotors(.5, 30); //Backs up bot so hook is out of latch
-        sleep(750); //Waits for bot to back up
-        bot.setFrontLeftDriveForMM(.5, -70); //Turns back to original orientation
-        bot.setFrontRightDriveForMM(.5, 70); //Also turns farther
-        bot.setRearLeftDriveForMM(.5, -70); //Original orientation tends angle left
-        bot.setRearRightDriveForMM(.5, 70);
+        sleep(750);
+        //Backs up
+        bot.allMecanumDriveMotors(1, 200);
+        sleep(500);
+        //Turns normally
+        bot.setFrontLeftDriveForMM(1, 100);
+        bot.setRearLeftDriveForMM(1, 100);
+        bot.setFrontRightDriveForMM(1, -100);
+        bot.setRearRightDriveForMM(1, -100);
+        sleep(750);
     }
 
-    void approachAllianceVuMark(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
+    void approachAllianceVuMark(GenericMecanumDriveOpModeUsage bot, StartPosition startPosition) {
         //Point the back of the robot straight at the wall
         if (startPosition == StartPosition.CRATER) {
             bot.turn(Direction.LEFT, .5, 45);
-            bot.freezeAllMechanumDriveMotors();
+            bot.freezeAllMecanumDriveMotors();
         } else {
             bot.turn(Direction.RIGHT, .5, 45);
-            bot.freezeAllMechanumDriveMotors();
+            bot.freezeAllMecanumDriveMotors();
         }
         //Back up until there's only 6 inches to the wall
-        bot.allMechanumDriveMotors(-.5, 0); //TODO: Measure this
-        bot.freezeAllMechanumDriveMotors();
+        bot.allMecanumDriveMotors(-.5, 0); //TODO: Measure this
+        bot.freezeAllMecanumDriveMotors();
         //Strafe until near the VuMark
         if (startPosition == StartPosition.CRATER) {
             bot.strafe(Direction.RIGHT, .5, 0); //TODO: Measure this
         } else {
             bot.strafe(Direction.LEFT, .5, 0); //TODO: Measure this
         }
-        bot.freezeAllMechanumDriveMotors();
+        bot.freezeAllMecanumDriveMotors();
     }
 
-    void setHomePos(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
+    void setHomePos(GenericMecanumDriveOpModeUsage bot, StartPosition startPosition) {
         setVision();
         VisionData currentPos = onlyValidPosition(vision);
         if (currentPos == null) {
@@ -120,7 +114,7 @@ class GenericAutonomous extends LinearOpMode {
         goHome(bot, startPosition);
     }
 
-    void sampling(GenericMechanumDriveOpModeUsage bot) {
+    void sampling(GenericMecanumDriveOpModeUsage bot) {
         setVision();
         switch (vision.getGoldMineralPosition()) {
             case LEFT:
@@ -135,11 +129,11 @@ class GenericAutonomous extends LinearOpMode {
         }
     }
 
-    void claiming(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
+    void claiming(GenericMecanumDriveOpModeUsage bot, StartPosition startPosition) {
         setVision();
     }
 
-    void parking(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
+    void parking(GenericMecanumDriveOpModeUsage bot, StartPosition startPosition) {
 
     }
 
@@ -174,7 +168,7 @@ class GenericAutonomous extends LinearOpMode {
         }
     }
 
-    private void correctPosition(GenericMechanumDriveOpModeUsage bot,
+    private void correctPosition(GenericMecanumDriveOpModeUsage bot,
                                  float targetX, float targetY, float targetZ,
                                  VisionData originalPos, VisionData targetPos) {
         float currentX;
@@ -210,7 +204,7 @@ class GenericAutonomous extends LinearOpMode {
         }
     }
 
-    private void correctOrientation(GenericMechanumDriveOpModeUsage bot,
+    private void correctOrientation(GenericMecanumDriveOpModeUsage bot,
                                     float targetAngle1, float targetAngle2, float targetAngle3,
                                     VisionData originalPos, VisionData targetPos) {
         float currentA1;
@@ -246,17 +240,17 @@ class GenericAutonomous extends LinearOpMode {
         }
     }
 
-    private void goHome(GenericMechanumDriveOpModeUsage bot, StartPosition startPosition) {
+    private void goHome(GenericMecanumDriveOpModeUsage bot, StartPosition startPosition) {
         //TODO: DEFINE THIS
-        //Robot will start with the camera facing exactly the alliance VuMark
-        //Robot will start with the back exactly 6" away from the alliance VuMark
-        //Robot will start with the back edge exactly parallel to the alliance wall
-        //Robot will end where it began autonomous mode
-        //Robot will end with the rear facing phone camera facing AWAY from the lander
-        //Robot will end precisely positioned, not necessarily exactly where it started
+        //GenericRobot will start with the camera facing exactly the alliance VuMark
+        //GenericRobot will start with the back exactly 6" away from the alliance VuMark
+        //GenericRobot will start with the back edge exactly parallel to the alliance wall
+        //GenericRobot will end where it began autonomous mode
+        //GenericRobot will end with the rear facing phone camera facing AWAY from the lander
+        //GenericRobot will end precisely positioned, not necessarily exactly where it started
     }
 
-    private void turnForGlyphPosition(GenericMechanumDriveOpModeUsage bot,
+    private void turnForGlyphPosition(GenericMecanumDriveOpModeUsage bot,
                                       GoldMineralPosition goldMineralPosition) {
         if (goldMineralPosition == GoldMineralPosition.CENTER) {
             return;
@@ -264,37 +258,37 @@ class GenericAutonomous extends LinearOpMode {
         Direction turnDirection = goldMineralPosition == GoldMineralPosition.LEFT ?
                 Direction.LEFT : Direction.RIGHT;
         bot.turn(turnDirection, .5, 0); //TODO: Measure this
-        bot.freezeAllMechanumDriveMotors();
-        bot.allMechanumDriveMotors(.5, 0); //TODO: Measure this
-        bot.freezeAllMechanumDriveMotors();
+        bot.freezeAllMecanumDriveMotors();
+        bot.allMecanumDriveMotors(.5, 0); //TODO: Measure this
+        bot.freezeAllMecanumDriveMotors();
     }
 
-    void forwardForGlyphPosition(GenericMechanumDriveOpModeUsage bot,
+    void forwardForGlyphPosition(GenericMecanumDriveOpModeUsage bot,
                                          GoldMineralPosition goldMineralPosition) {
         if (goldMineralPosition != GoldMineralPosition.CENTER) {
             return;
         }
-        bot.allMechanumDriveMotors(.5, 0); //TODO: Measure this
-        bot.freezeAllMechanumDriveMotors();
+        bot.allMecanumDriveMotors(.5, 0); //TODO: Measure this
+        bot.freezeAllMecanumDriveMotors();
     }
 
-    void backFromGlyphPosition(GenericMechanumDriveOpModeUsage bot,
+    void backFromGlyphPosition(GenericMecanumDriveOpModeUsage bot,
                                        GoldMineralPosition goldMineralPosition) {
         if (goldMineralPosition == GoldMineralPosition.CENTER) {
             //TODO: Proper turn durations and forward durations
-            bot.allMechanumDriveMotors(-.5);
+            bot.allMecanumDriveMotors(-.5);
             sleep(500);
-            bot.freezeAllMechanumDriveMotors();
+            bot.freezeAllMecanumDriveMotors();
             return;
         }
         //TODO: Proper turn durations and forward durations
-        bot.allMechanumDriveMotors(-.5);
+        bot.allMecanumDriveMotors(-.5);
         sleep(500);
-        bot.freezeAllMechanumDriveMotors();
+        bot.freezeAllMecanumDriveMotors();
         Direction turnDirection = goldMineralPosition == GoldMineralPosition.LEFT ?
                 Direction.RIGHT : Direction.LEFT;
         bot.turn(turnDirection, .5);
         sleep(500);
-        bot.freezeAllMechanumDriveMotors();
+        bot.freezeAllMecanumDriveMotors();
     }
 }

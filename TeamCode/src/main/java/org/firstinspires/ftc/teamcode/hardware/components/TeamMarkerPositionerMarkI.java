@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.hardware.components;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.hardware.componentinterfaces.Component;
-import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+import org.firstinspires.ftc.teamcode.hardware.components.regulators.Component;
+import org.firstinspires.ftc.teamcode.xmlIO.XMLUtils;
 
 public final class TeamMarkerPositionerMarkI implements Component {
     private final ServoWrapper marker;
@@ -14,10 +14,9 @@ public final class TeamMarkerPositionerMarkI implements Component {
 
     public TeamMarkerPositionerMarkI(HardwareMap map, String markerName, boolean markerIsPrimary,
                                      String markerPort, org.firstinspires.ftc.teamcode.hardware
-                                             .hardwareconfiguration.hardwaredevices
+                                             .configuration.devices
                                              .Servo markerType) {
-        marker = new ServoWrapper(map, markerName, Servo.Direction.FORWARD, markerType,
-                WheelStats.WHEEL_DEFAULT_DIAMETER);
+        marker = new ServoWrapper(map, markerName, Servo.Direction.FORWARD, markerType);
         this.markerName = markerName;
         this.markerIsPrimary = markerIsPrimary;
         this.markerPort = markerPort;

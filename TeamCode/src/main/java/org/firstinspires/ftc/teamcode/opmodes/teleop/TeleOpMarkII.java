@@ -3,16 +3,16 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkII;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.controls.ControlScheme;
+import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkII;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.MecanumDriveOpModeUsageMarkI;
 
 @Disabled
 @TeleOp(name = "TeleOpTwo", group = "TeleOp")
 public final class TeleOpMarkII extends GenericTeleOp {
 
-    private MechanumDriveOpModeUsageMarkI bot;
+    private MecanumDriveOpModeUsageMarkI bot;
     private Controller controller1;
     private Controller controller2;
     private boolean yToggled = false;
@@ -59,7 +59,7 @@ public final class TeleOpMarkII extends GenericTeleOp {
             super.loop();
 
             //Controller1/Bot io
-            //Mechanum wheel code
+            //Mecanum wheel code
             double triggerY = evalTriggers();
             double targetPoint = Math.hypot(controller1.leftStickX(), triggerY);
             double targetAngle = Math.atan2(triggerY, controller1.leftStickX()) - Math.PI / 4;

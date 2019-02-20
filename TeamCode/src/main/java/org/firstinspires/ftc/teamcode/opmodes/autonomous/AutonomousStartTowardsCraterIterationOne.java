@@ -3,8 +3,8 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkI;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.StandardDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkI;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.StandardDriveOpModeUsageMarkI;
 
 @Autonomous(name = "AutoCraterOne", group = "Autonomous")
 @Disabled

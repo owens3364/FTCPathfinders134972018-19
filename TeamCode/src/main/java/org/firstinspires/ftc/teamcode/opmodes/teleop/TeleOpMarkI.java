@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.opmodes.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkI;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.StandardDriveOpModeUsageMarkI;
+import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkI;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.StandardDriveOpModeUsageMarkI;
 
 @Disabled
 @TeleOp(name="TeleOpOne", group="TeleOp")

@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo.Direction;
 
-import org.firstinspires.ftc.teamcode.hardware.componentinterfaces.Component;
-import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
-import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+import org.firstinspires.ftc.teamcode.hardware.components.regulators.Component;
+import org.firstinspires.ftc.teamcode.hardware.configuration.devices.Motor;
+import org.firstinspires.ftc.teamcode.xmlIO.XMLUtils;
 
 public final class ArmMarkI implements Component {
     private final DcMotorWrapper sliderDrive;
@@ -30,14 +30,14 @@ public final class ArmMarkI implements Component {
     private final String lidPort;
 
     public ArmMarkI(HardwareMap map, String sliderDriveName, String armAngularDriveName,
-             String intakeAngularName, String lidName, boolean sliderDriveIsPrimary,
+                    String intakeAngularName, String lidName, boolean sliderDriveIsPrimary,
                     boolean armAngularDriveIsPrimary, boolean intakeAngularIsPrimay,
                     boolean lidIsPrimary, String sliderDrivePort,
                     String armAngularDrivePort, String intakeAngularPort,
                     String lidPort, Motor sliderDriveType, Motor armAngularDriveType,
-                    org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration
-                            .hardwaredevices.Servo intakeAngularType, org.firstinspires
-                    .ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Servo
+                    org.firstinspires.ftc.teamcode.hardware.configuration
+                            .devices.Servo intakeAngularType, org.firstinspires
+                    .ftc.teamcode.hardware.configuration.devices.Servo
                     lidType) {
         sliderDrive = new DcMotorWrapper(map, sliderDriveName, DcMotorSimple.Direction.FORWARD,
                 sliderDriveType, WheelStats.WHEEL_DIAMETER_FOUR);
@@ -47,9 +47,8 @@ public final class ArmMarkI implements Component {
                 WheelStats.WHEEL_DIAMETER_FOUR);
         armAngularDrive.freezeAtZeroPower();
         intakeAngular = new ServoWrapper(map, intakeAngularName, Direction.FORWARD,
-                intakeAngularType, WheelStats.WHEEL_DEFAULT_DIAMETER);
-        lid = new ServoWrapper(map, lidName, Direction.FORWARD, lidType,
-                WheelStats.WHEEL_DEFAULT_DIAMETER);
+                intakeAngularType);
+        lid = new ServoWrapper(map, lidName, Direction.FORWARD, lidType);
 
         this.sliderDriveName = sliderDriveName;
         this.armAngularDriveName = armAngularDriveName;

@@ -4,9 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.hardware.componentinterfaces.Component;
-import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
-import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+import org.firstinspires.ftc.teamcode.hardware.components.regulators.Component;
+import org.firstinspires.ftc.teamcode.hardware.configuration.devices.Motor;
+import org.firstinspires.ftc.teamcode.xmlIO.XMLUtils;
 
 public final class HookMarkI implements Component {
     private final DcMotorWrapper hookDrive;
@@ -22,12 +22,11 @@ public final class HookMarkI implements Component {
     public HookMarkI(HardwareMap map, String hookDriveName, String hookName,
                      boolean hookDriveIsPrimary, boolean hookIsPrimary, String hookDrivePort,
                      String hookPort, Motor hookDriveType, org.firstinspires.ftc.teamcode.hardware
-                             .hardwareconfiguration.hardwaredevices.Servo hookType) {
+                             .configuration.devices.Servo hookType) {
         hookDrive = new DcMotorWrapper(map, hookDriveName, DcMotorSimple.Direction.FORWARD,
                 hookDriveType, WheelStats.WHEEL_DIAMETER_FOUR);
         hookDrive.freezeAtZeroPower();
-        hook = new ServoWrapper(map, hookName, Servo.Direction.FORWARD, hookType,
-                WheelStats.WHEEL_DEFAULT_DIAMETER);
+        hook = new ServoWrapper(map, hookName, Servo.Direction.FORWARD, hookType);
 
         this.hookDriveName = hookDriveName;
         this.hookName = hookName;

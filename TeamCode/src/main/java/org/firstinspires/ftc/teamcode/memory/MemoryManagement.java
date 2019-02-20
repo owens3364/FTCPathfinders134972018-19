@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.memory;
 import android.app.ActivityManager;
 import android.content.Context;
 
-import org.firstinspires.ftc.teamcode.errorio.LogUtils;
+import org.firstinspires.ftc.teamcode.errorIO.LogUtils;
 
 import java.util.LinkedList;
 import java.util.Objects;

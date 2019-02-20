@@ -1,15 +1,19 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkIII;
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIV;
+import org.firstinspires.ftc.teamcode.controls.ControlScheme;
+import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.controls.Scaler;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.MecanumDriveOpModeUsageMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkIV;
 
+@Disabled
 @TeleOp(name = "TeleOpFour", group = "TeleOp")
 public final class TeleOpMarkIV extends GenericTeleOp {
+
+    private static final double INTAKE_INCREMENT = 0.02;
 
     private static final String[] BASIC_TELEMETRY_DATA_KEYS = {
             "Front Left Power",
@@ -59,11 +63,11 @@ public final class TeleOpMarkIV extends GenericTeleOp {
         };
     }
 
-    private MechanumDriveOpModeUsageMarkIII bot;
+    private MecanumDriveOpModeUsageMarkIII bot;
     private Controller controller1;
     private Controller controller2;
 
-    private boolean intakeToggled = false;
+    private double intakeAngle = 1.0;
 
     @Override
     public void init() {
@@ -72,21 +76,15 @@ public final class TeleOpMarkIV extends GenericTeleOp {
             controller1 = super.getController1();
             controller2 = super.getController2();
             controller2.setCustomizedControlSchemes(Controller.DEFAULT_SCHEME,
-                    ControlScheme.CUBED, ControlScheme.CUBED);
-            controller2.setCustomizedStickScales(Controller.DEFAULT_STICK_SCALE,
-                    new double[] {
-                            -1, 1, -.50, .50
-                    }); //LEFT STICK Y SCALED -1, 1 to -.75, .75
-            controller2.setCustomizedTriggerScales(
-                    new double[] {
-                            -1, 0, -.5, 0
-                    },
-                    new double[] {
-                            0, 1, 0, .75
-                    }
-            );
+                    Controller.DEFAULT_SCHEME, ControlScheme.CUBED,
+                    Controller.DEFAULT_SCHEME, ControlScheme.CUBED,
+                    ControlScheme.CUBED);
 
             controller2.setLeftTriggerPreScheme((Double value) -> -value); //Left trigger inverted
+            controller2.setCustomizedTriggerScales(new double[] {
+                    -1, 0, -1, 0
+            });
+
 
             bot = new BotMarkIV(hardwareMap);
             bot.zeroAll();
@@ -98,7 +96,6 @@ public final class TeleOpMarkIV extends GenericTeleOp {
             bot.setIntakeAngle(1.0);
 
             //ANY ADDITIONAL CODE HERE
-            controller2.setControlScheme(ControlScheme.CUBED);
             cycleTelemetry(super::addData, BASIC_TELEMETRY_DATA_KEYS, getBasicDataValues());
         }
     }
@@ -136,19 +133,18 @@ public final class TeleOpMarkIV extends GenericTeleOp {
 
             //Dpad up moves the lift up
             //Dpad down moves the lift down
+            //Lift freezes by default
             if (controller1.dpadUp()) {
                 bot.setLiftDrive(1);
             } else if (controller1.dpadDown()) {
                 bot.setLiftDrive(-1);
-            }
-            //a freezes the lift where it's at
-            if (controller1.a()) {
+            } else {
                 bot.freezeLift();
             }
 
             //Controller2/Bot io
-            //Left Stick Y controls the arm angular drive
-            bot.setArmAngularDrive(controller2.leftStickY());
+            //Right Stick Y controls the arm angular drive
+            bot.setArmAngularDrive(controller2.rightStickY());
             //a freezes the arm angular drive where it's at
             if (controller2.a()) {
                 bot.freezeArmAngular();
@@ -174,11 +170,21 @@ public final class TeleOpMarkIV extends GenericTeleOp {
                 bot.freezeSecondaryArmAngularDrive();
             }
 
-            //Right stick button toggles the intake servo open and closed
-            if (controller2.rightStick()) {
-                intakeToggled = !intakeToggled;
+            //Left and right bumpers spin the intake servo
+            if (controller2.leftBumper()) {
+                if (intakeAngle - INTAKE_INCREMENT >= 0.0) {
+                    intakeAngle -= INTAKE_INCREMENT;
+                } else {
+                    intakeAngle = 0.0;
+                }
+            } else if (controller2.rightBumper()) {
+                if (intakeAngle + INTAKE_INCREMENT <= 1.0) {
+                    intakeAngle += INTAKE_INCREMENT;
+                } else {
+                    intakeAngle = 1.0;
+                }
             }
-            bot.setIntakeAngle(intakeToggled ? 1.0 : 0.0);
+            bot.setIntakeAngle(intakeAngle);
 
             //Left stick button deploys the team marker
             if (controller2.leftStick()) {

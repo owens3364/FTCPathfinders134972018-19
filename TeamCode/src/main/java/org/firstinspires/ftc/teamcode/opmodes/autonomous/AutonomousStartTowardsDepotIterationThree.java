@@ -3,14 +3,14 @@ package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIII;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.MecanumDriveOpModeUsageMarkII;
 
 @Autonomous(name="AutoDepotThree", group="Autonomous")
 @Disabled
 public final class AutonomousStartTowardsDepotIterationThree extends GenericAutonomous {
 
-    private MechanumDriveOpModeUsageMarkII bot;
+    private MecanumDriveOpModeUsageMarkII bot;
 
     @Override
     public void runOpMode() {

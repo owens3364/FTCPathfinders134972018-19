@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.hardware.components;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.hardware.componentinterfaces.Component;
-import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
-import org.firstinspires.ftc.teamcode.xmlio.XMLUtils;
+import org.firstinspires.ftc.teamcode.hardware.components.regulators.Component;
+import org.firstinspires.ftc.teamcode.hardware.configuration.devices.Motor;
+import org.firstinspires.ftc.teamcode.xmlIO.XMLUtils;
 
 public final class DriveTrainMarkI implements Component {
     private final DcMotorWrapper leftDrive;

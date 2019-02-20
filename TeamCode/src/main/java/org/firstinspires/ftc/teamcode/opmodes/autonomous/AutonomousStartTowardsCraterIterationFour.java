@@ -1,13 +1,16 @@
 package org.firstinspires.ftc.teamcode.opmodes.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIII;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.MecanumDriveOpModeUsageMarkII;
+
+@Disabled
 @Autonomous(name = "AutoCraterOne", group = "Autonomous")
 public final class AutonomousStartTowardsCraterIterationFour extends GenericAutonomous {
 
-    private MechanumDriveOpModeUsageMarkII bot;
+    private MecanumDriveOpModeUsageMarkII bot;
 
     @Override
     public void runOpMode() {
@@ -16,7 +19,7 @@ public final class AutonomousStartTowardsCraterIterationFour extends GenericAuto
         bot.setIntakeAngle(1.0);
         super.waitForStart();
         land(bot);
-        bot.allMechanumDriveMotors(1, 1400);
+        bot.allMecanumDriveMotors(1, 1400);
         sleep(8000);
     }
 }

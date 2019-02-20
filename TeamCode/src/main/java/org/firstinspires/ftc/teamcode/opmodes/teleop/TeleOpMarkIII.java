@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.opmodes.teleop;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Scaler;
-import org.firstinspires.ftc.teamcode.hardware.robots.BotMarkIII;
-import org.firstinspires.ftc.teamcode.hardware.robotinterfacesandabstracts.MechanumDriveOpModeUsageMarkII;
+import org.firstinspires.ftc.teamcode.controls.ControlScheme;
+import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.controls.Scaler;
+import org.firstinspires.ftc.teamcode.hardware.robots.robots.BotMarkIII;
+import org.firstinspires.ftc.teamcode.hardware.robots.regulators.MecanumDriveOpModeUsageMarkII;
 
+@Disabled
 @TeleOp(name = "TeleOpThree", group = "TeleOp")
 public final class TeleOpMarkIII extends GenericTeleOp {
 
@@ -55,7 +57,7 @@ public final class TeleOpMarkIII extends GenericTeleOp {
         };
     }
 
-    private MechanumDriveOpModeUsageMarkII bot;
+    private MecanumDriveOpModeUsageMarkII bot;
     private Controller controller1;
     private Controller controller2;
 

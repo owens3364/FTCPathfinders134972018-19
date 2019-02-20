@@ -4,11 +4,10 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.driversetcontrols.ControlScheme;
-import org.firstinspires.ftc.teamcode.driversetcontrols.Controller;
-import org.firstinspires.ftc.teamcode.activityadditions.FragmentDeploymentHelper;
-import org.firstinspires.ftc.teamcode.activityadditions.TelemetryDisconnectedAlert;
-import org.firstinspires.ftc.teamcode.errorio.LogUtils;
+import org.firstinspires.ftc.teamcode.controls.ControlScheme;
+import org.firstinspires.ftc.teamcode.controls.Controller;
+import org.firstinspires.ftc.teamcode.activity.FragmentDeploymentHelper;
+import org.firstinspires.ftc.teamcode.activity.TelemetryDisconnectedAlert;
 import org.firstinspires.ftc.teamcode.opmodes.DataRemovalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataRetrievalHashMapOperation;
 import org.firstinspires.ftc.teamcode.opmodes.DataSetHashMapOperation;
@@ -92,7 +91,6 @@ class GenericTeleOp extends OpMode {
         //By checking the public state of execution booleans of this class by its subclasses,
         //The subclasses can ensure that the OpMode doesn't do anything in their classes,
         //And that no NullPointerExceptions are thrown.
-        LogUtils.logError(gamepad1.toString());
 /*
         if (gamepad1.getUser() == null || gamepad2.getUser() == null) {
             LogUtils.logError(LOG_DISCONNECTED + GAMEPAD);
@@ -104,7 +102,6 @@ class GenericTeleOp extends OpMode {
             return setup;
         }
         */
-        LogUtils.logError(LOG_CONNECTED + GAMEPAD);
         setData("Status...", "Gamepads connected");
 
 
@@ -125,7 +122,6 @@ class GenericTeleOp extends OpMode {
             addData("Status...", "Through telemetry checks");
             return setup;
         }
-        LogUtils.logError(LOG_CONNECTED + TELEMETRY);
         setData("Status...", "Telemetry connected");
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;

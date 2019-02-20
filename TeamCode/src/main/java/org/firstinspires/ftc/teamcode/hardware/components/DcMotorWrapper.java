@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior;
 import com.qualcomm.robotcore.hardware.DcMotorSimple.Direction;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-import org.firstinspires.ftc.teamcode.hardware.hardwareconfiguration.hardwaredevices.Motor;
+import org.firstinspires.ftc.teamcode.hardware.configuration.devices.Motor;
 
 final class DcMotorWrapper {
 
@@ -20,6 +20,7 @@ final class DcMotorWrapper {
         motor.setDirection(motorRotatingDirection);
         this.motorType = motorType;
         this.mmPerDriveRotation = WheelStats.mmPerDriveRotationFromInDiameter(wheelDiameter);
+        motor.setMode(RunMode.STOP_AND_RESET_ENCODER);
     }
 
     void set(double power) {
@@ -45,6 +46,18 @@ final class DcMotorWrapper {
             motor.setTargetPosition((int) (rotations * motorType.encoderTicks()));
             motor.setPower(power);
         }
+    }
+
+    void setPosition(double power, double position) {
+        if (HardwareInput.validate(power, InputType.FOR_MOTOR)) {
+            motor.setMode(RunMode.RUN_TO_POSITION);
+            motor.setTargetPosition((int) (position + .5));
+            motor.setPower(power);
+        }
+    }
+
+    double getPosition() {
+        return motor.getCurrentPosition();
     }
 
     double getPower() {
